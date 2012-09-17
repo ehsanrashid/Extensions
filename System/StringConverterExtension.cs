@@ -50,13 +50,11 @@
                 {
                     return ToInt32(value, defaultValue, false);
                 }
-                catch
-                { }
+                catch {}
                 return defaultValue;
             }
 
             return int.Parse(value.Value);
         }
-
     }
 }

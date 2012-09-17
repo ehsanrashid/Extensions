@@ -62,8 +62,7 @@
         /// </example>
         public static Array ClearAll(this Array array)
         {
-            if (default(Array) != array)
-                Array.Clear(array, 0, array.Length);
+            if (default(Array) != array) Array.Clear(array, 0, array.Length);
             return array;
         }
 
@@ -83,8 +82,7 @@
             if (default(Array) != array)
             {
                 var arrIndex = at.GetArrayIndex();
-                if (arrIndex.IsIndexInArray(array))
-                    Array.Clear(array, arrIndex, 1);
+                if (arrIndex.IsIndexInArray(array)) Array.Clear(array, arrIndex, 1);
             }
             return array;
         }
@@ -104,9 +102,7 @@
         /// </example>
         public static T[] ClearAll<T>(this T[] array)
         {
-            if (default(T[]) != array)
-                for (var i = array.GetLowerBound(0); i <= array.GetUpperBound(0); ++i)
-                    array[i] = default(T);
+            if (default(T[]) != array) for (var i = array.GetLowerBound(0); i <= array.GetUpperBound(0); ++i) array[i] = default(T);
             return array;
         }
 
@@ -127,8 +123,7 @@
             if (default(T[]) != array)
             {
                 var arrIndex = at.GetArrayIndex();
-                if (arrIndex.IsIndexInArray(array))
-                    array[arrIndex] = default(T);
+                if (arrIndex.IsIndexInArray(array)) array[arrIndex] = default(T);
             }
             return array;
         }
@@ -162,8 +157,7 @@
 
         public static T[] Slice<T>(this T[] array, int index, int count)
         {
-            if (index < 0 || count < 0 || (array.Length - index) < count)
-                throw new ArgumentException();
+            if (index < 0 || count < 0 || (array.Length - index) < count) throw new ArgumentException();
             var result = new T[count];
             Array.Copy(array, index, result, 0, count);
             return result;

@@ -24,7 +24,8 @@
         /// <param name = "timespan">The TimeSpan to be applied.</param>
         /// <param name = "localTimeZone">The local time zone.</param>
         /// <returns>/// The DateTimeOffset including the new time value/// </returns>
-        public static DateTimeOffset SetTime(this DateTimeOffset datetimeOff, TimeSpan timespan, TimeZoneInfo localTimeZone)
+        public static DateTimeOffset SetTime(this DateTimeOffset datetimeOff, TimeSpan timespan,
+                                             TimeZoneInfo localTimeZone)
         {
             var localDate = datetimeOff.ToLocalDateTime(localTimeZone);
             localDate.SetTime(timespan);
@@ -77,6 +78,5 @@
         {
             return dateTimeUtc.ToLocalDateTime(default(TimeZoneInfo));
         }
-
     }
 }

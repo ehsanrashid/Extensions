@@ -8,6 +8,7 @@ namespace System
     public struct Complex : IComparable, ICloneable
     {
         #region Fields
+
         /// <summary>
         /// </summary>
         public static readonly Complex Iota;
@@ -72,9 +73,11 @@ namespace System
             get { return _imag; }
             set { _imag = value; }
         }
+
         #endregion
 
         #region Properties
+
         /// <summary>
         /// </summary>
         public bool IsReal
@@ -88,9 +91,11 @@ namespace System
         {
             get { return (0.0 == _real); }
         }
+
         #endregion
 
         #region Constructors
+
         /// <summary>
         /// </summary>
         static Complex()
@@ -120,9 +125,7 @@ namespace System
         ///   Complex number with imaginary part = 0.
         /// </summary>
         /// <param name="real"> </param>
-        public Complex(double real) : this(real, default(double))
-        {
-        }
+        public Complex(double real) : this(real, default(double)) {}
 
         ///// <summary>
         ///// Complex number as (0, 0).
@@ -133,9 +136,7 @@ namespace System
         ///   Copy Constructor
         /// </summary>
         /// <param name="complex"> </param>
-        public Complex(Complex complex) : this(complex._real, complex._imag)
-        {
-        }
+        public Complex(Complex complex) : this(complex._real, complex._imag) {}
 
         /// <summary>
         ///   Complex number from String like "a+bi".
@@ -147,8 +148,7 @@ namespace System
             if (!regex.IsMatch(complex))
             {
                 regex = new Regex(reiComplex);
-                if (!regex.IsMatch(complex))
-                    throw new FormatException();
+                if (!regex.IsMatch(complex)) throw new FormatException();
             }
             var match = regex.Match(complex);
             try
@@ -161,11 +161,13 @@ namespace System
                 _real = _imag = 0;
             }
         }
+
         #endregion
 
         #region Methods
 
         #region Statics
+
         /// <summary>
         /// </summary>
         /// <param name="complex"> </param>
@@ -184,8 +186,7 @@ namespace System
         public static Complex Parse(String complex)
         {
             var regex = new Regex(reComplex);
-            if (!regex.IsMatch(complex))
-                throw new FormatException();
+            if (!regex.IsMatch(complex)) throw new FormatException();
             var match = regex.Match(complex);
             try
             {
@@ -230,6 +231,7 @@ namespace System
         }
 
         #region Trignometry
+
         /// <summary>
         ///   Complex's Sine.
         /// </summary>
@@ -349,9 +351,11 @@ namespace System
         {
             return Inverse(Sinh(complex));
         }
+
         #endregion
 
         #region Arithmatic
+
         public static Complex Pow(Complex c1, Complex c2)
         {
             return Exp(c2*Log(c1));
@@ -374,10 +378,8 @@ namespace System
         /// <returns> </returns>
         public static Complex Sqrt(double real)
         {
-            if (real >= 0)
-                return new Complex(Math.Sqrt(real));
-            else
-                return new Complex(0, Math.Sqrt(-real));
+            if (real >= 0) return new Complex(Math.Sqrt(real));
+            else return new Complex(0, Math.Sqrt(-real));
         }
 
         /// <summary>
@@ -420,13 +422,13 @@ namespace System
         public static double Arg(Complex complex)
         {
             if (complex._real < 0)
-                if (complex._imag < 0)
-                    return Math.Atan(complex._imag/complex._real) - Math.PI;
-                else
-                    return Math.PI - Math.Atan(-complex._imag/complex._real);
-            else
-                return Math.Atan(complex._imag/complex._real);
+            {
+                if (complex._imag < 0) return Math.Atan(complex._imag/complex._real) - Math.PI;
+                else return Math.PI - Math.Atan(-complex._imag/complex._real);
+            }
+            else return Math.Atan(complex._imag/complex._real);
         }
+
         #endregion
 
         #endregion
@@ -475,12 +477,9 @@ namespace System
 
         public String ToString(String format)
         {
-            if (this == Zero)
-                return "0";
-            else if (double.IsInfinity(_real) || double.IsInfinity(_imag))
-                return (_real < 0 || _imag < 0 ? "-" : "") + "oo";
-            else if (double.IsNaN(_real) || double.IsNaN(_imag))
-                return "?";
+            if (this == Zero) return "0";
+            else if (double.IsInfinity(_real) || double.IsInfinity(_imag)) return (_real < 0 || _imag < 0 ? "-" : "") + "oo";
+            else if (double.IsNaN(_real) || double.IsNaN(_imag)) return "?";
             var reval = _real.ToString(format);
             var imval = _imag.ToString(format);
             imval = (imval == "1" ? "" : imval) + "i";
@@ -497,14 +496,12 @@ namespace System
         }
 
         #region Overrided
+
         public override String ToString()
         {
-            if (this == Zero)
-                return "0";
-            else if (double.IsInfinity(_real) || double.IsInfinity(_imag))
-                return (_real < 0 || _imag < 0 ? "-" : "") + "oo";
-            else if (double.IsNaN(_real) || double.IsNaN(_imag))
-                return "?";
+            if (this == Zero) return "0";
+            else if (double.IsInfinity(_real) || double.IsInfinity(_imag)) return (_real < 0 || _imag < 0 ? "-" : "") + "oo";
+            else if (double.IsNaN(_real) || double.IsNaN(_imag)) return "?";
             var reval = _real.ToString();
             var imval = _imag.ToString();
             imval = (imval == "1" ? "" : imval) + "i";
@@ -523,6 +520,7 @@ namespace System
         {
             return _real.GetHashCode() ^ _imag.GetHashCode() ^ base.GetHashCode();
         }
+
         #endregion
 
         #endregion
@@ -530,6 +528,7 @@ namespace System
         #region Operators
 
         #region Conversions
+
         /// <summary>
         /// </summary>
         /// <param name="real"> </param>
@@ -547,9 +546,11 @@ namespace System
         {
             return new Complex(complex);
         }
+
         #endregion
 
         #region Operations
+
         public static Complex operator -(Complex complex)
         {
             return new Complex(-complex._real, -complex._imag);
@@ -590,14 +591,10 @@ namespace System
 
         public static Complex operator *(Complex c1, Complex c2)
         {
-            if (c1.IsReal && c2.IsReal)
-                return new Complex(c1._real*c2._real);
-            if (c1.IsImag && c2.IsImag)
-                return new Complex(-c1._imag*c2._imag);
-            if (c1.IsReal && c2.IsImag)
-                return new Complex(0, c1._real*c2._imag);
-            if (c1.IsImag && c2.IsReal)
-                return new Complex(0, c1._imag*c2._real);
+            if (c1.IsReal && c2.IsReal) return new Complex(c1._real*c2._real);
+            if (c1.IsImag && c2.IsImag) return new Complex(-c1._imag*c2._imag);
+            if (c1.IsReal && c2.IsImag) return new Complex(0, c1._real*c2._imag);
+            if (c1.IsImag && c2.IsReal) return new Complex(0, c1._imag*c2._real);
             return new Complex
                 (
                 c1._real*c2._real - c1._imag*c2._imag,
@@ -632,10 +629,8 @@ namespace System
 
         public static bool operator ==(Complex c1, Complex c2)
         {
-            if (ReferenceEquals(c1, c2))
-                return true;
-            if (null == (object) c1 || null == (object) c2)
-                return false;
+            if (ReferenceEquals(c1, c2)) return true;
+            if (null == (object) c1 || null == (object) c2) return false;
             return c1._real == c2._real && c1._imag == c2._imag;
         }
 
@@ -663,22 +658,27 @@ namespace System
         {
             return !(real == complex);
         }
+
         #endregion
 
         #endregion
 
         #region ICloneable Members
+
         object ICloneable.Clone()
         {
             return MemberwiseClone();
         }
+
         #endregion
 
         #region IComparable Members
+
         int IComparable.CompareTo(object obj)
         {
             throw new Exception("The method or operation is not implemented.");
         }
+
         #endregion
     }
 }

@@ -52,13 +52,11 @@
         /// </remarks>
         public static bool IsBaseType(this Type type, Type checkingType)
         {
-            while (type != typeof(object))
+            while (type != typeof (object))
             {
-                if (type == null)
-                    continue;
+                if (type == null) continue;
 
-                if (type == checkingType)
-                    return true;
+                if (type == checkingType) return true;
 
                 type = type.BaseType;
             }
@@ -73,7 +71,7 @@
         ///<returns></returns>
         public static bool IsSubclassOfRawGeneric(this Type type, Type typeCheck)
         {
-            while (typeof(Object) != typeCheck)
+            while (typeof (Object) != typeCheck)
             {
                 if (default(Type) == typeCheck) continue;
                 var cur = typeCheck.IsGenericType ? typeCheck.GetGenericTypeDefinition() : typeCheck;
@@ -96,6 +94,5 @@
             var instance = Activator.CreateInstance(constructedType);
             return (instance as T);
         }
-
     }
 }

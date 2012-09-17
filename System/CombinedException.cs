@@ -14,7 +14,6 @@
         /// <value>The inner exceptions.</value>
         public Exception[] InnerExceptions { get; protected set; }
 
-
         /// <summary>
         /// 	Initializes a new instance of the <see cref = "CombinedException" /> class.
         /// </summary>
@@ -48,6 +47,5 @@
         {
             return Combine(message, innerExceptions.ToArray());
         }
-
     }
 }

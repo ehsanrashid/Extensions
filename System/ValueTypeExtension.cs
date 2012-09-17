@@ -37,7 +37,5 @@
         {
             return value.IsEmpty() ? null : (T?) value;
         }
-
-
     }
 }

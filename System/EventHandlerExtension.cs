@@ -82,13 +82,11 @@
         /// <param name="eventHandler">The EventHandler instance use to raise the event.</param>
         /// <param name="sender">The sender object instance to pass to subscribers.</param>
         /// <param name="ent">The EventArgs (or derivative) to pass to subscribers.</param>
-        public static void RaiseEvent<TEventArgs>(this EventHandler<TEventArgs> eventHandler, object sender, TEventArgs ent)
+        public static void RaiseEvent<TEventArgs>(this EventHandler<TEventArgs> eventHandler, object sender,
+                                                  TEventArgs ent)
             where TEventArgs : EventArgs
         {
-            if (eventHandler != null)
-            {
-                eventHandler(sender, ent);
-            }
+            if (eventHandler != null) eventHandler(sender, ent);
         }
 
         /// <summary>
@@ -184,7 +182,7 @@
                     if (syncInvoke != null && syncInvoke.InvokeRequired)
                     {
                         // Invoke the event on the event subscribers thread
-                        syncInvoke.Invoke(eventHandler, new[] { sender, ent });
+                        syncInvoke.Invoke(eventHandler, new[] {sender, ent});
                     }
                     else
                     {

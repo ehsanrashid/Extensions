@@ -20,6 +20,7 @@
     public static class StringExtension
     {
         #region Validate
+
         /// <summary>
         ///   Determines whether the specified String is null or empty.
         /// </summary>
@@ -130,6 +131,7 @@
             str = str.Trim();
 
             #region Old
+
             // ============================
             //foreach (var c in str)
             //{
@@ -155,6 +157,7 @@
             //    return false;
             //}
             //return true;
+
             #endregion
 
             // ============================
@@ -166,9 +169,11 @@
             long lint;
             return long.TryParse(str, out lint);
         }
+
         #endregion
 
         #region If Condition
+
         /// <summary>
         ///   Returns a default value if the String is null or empty.
         /// </summary>
@@ -202,9 +207,11 @@
             if (IsNullOrEmpty(str)) throw new ArgumentException(message, name);
             return str;
         }
+
         #endregion
 
         #region Ensure
+
         /// <summary>
         ///   Ensures that a String starts with a given prefix.
         /// </summary>
@@ -234,9 +241,11 @@
         {
             return (IsNotNullOrEmpty(str) && str.EndsWith(suffix)) ? str : String.Concat(str, suffix);
         }
+
         #endregion
 
         #region To Value
+
         public static String ToNull(this String str)
         {
             return IsNullOrWhiteSpace(str) ? default(String) : str.Trim();
@@ -254,9 +263,7 @@
             {
                 return Convert.ToInt16(str);
             }
-            catch
-            {
-            }
+            catch {}
             return default(Int16?);
         }
 
@@ -267,9 +274,7 @@
             {
                 return Convert.ToInt32(str);
             }
-            catch
-            {
-            }
+            catch {}
             return default(Int32?);
         }
 
@@ -280,9 +285,7 @@
             {
                 return Convert.ToInt64(str);
             }
-            catch
-            {
-            }
+            catch {}
             return default(Int64?);
         }
 
@@ -293,9 +296,7 @@
             {
                 return Convert.ToDouble(str);
             }
-            catch
-            {
-            }
+            catch {}
             return default(Double?);
         }
 
@@ -306,9 +307,7 @@
             {
                 return Convert.ToDecimal(str);
             }
-            catch
-            {
-            }
+            catch {}
             return default(Decimal?);
         }
 
@@ -319,9 +318,7 @@
             {
                 return Convert.ToDateTime(str).Date;
             }
-            catch
-            {
-            }
+            catch {}
             return default(DateTime?);
         }
 
@@ -332,9 +329,7 @@
             {
                 return Convert.ToDateTime(str).TimeOfDay;
             }
-            catch
-            {
-            }
+            catch {}
             return default(TimeSpan?);
         }
 
@@ -345,9 +340,7 @@
             {
                 return Convert.ToBoolean(str);
             }
-            catch
-            {
-            }
+            catch {}
             return false;
         }
 
@@ -358,9 +351,7 @@
             {
                 return Convert.ToInt32(str);
             }
-            catch
-            {
-            }
+            catch {}
             return -1;
         }
 
@@ -371,9 +362,7 @@
             {
                 return Convert.ToInt32(str);
             }
-            catch
-            {
-            }
+            catch {}
             return 0;
         }
 
@@ -381,11 +370,13 @@
         {
             return IsNullOrWhiteSpace(str) ? default(T) : (T) Enum.Parse(typeof (T), str);
         }
+
         #endregion
 
         #region Manupulate
 
         #region Remove
+
         /// <summary>
         ///   Return the String with the leftmost number_of_characters characters removed.
         /// </summary>
@@ -411,9 +402,11 @@
         {
             return str.Length <= count ? String.Empty : str.Substring(0, str.Length - count);
         }
+
         #endregion
 
         #region Trim
+
         /// <summary>
         ///   Trims the text to a provided maximum length and adds a suffix if required.
         /// </summary>
@@ -438,6 +431,7 @@
         {
             return TrimToMaxLength(str, maxLength, String.Empty);
         }
+
         #endregion
 
         /// <summary>
@@ -450,8 +444,10 @@
         {
             if (IsNullOrEmpty(str)) return str;
             if (count >= str.Length)
+            {
                 throw new ArgumentOutOfRangeException("count", count,
                                                       "count must be less than length of String");
+            }
             return
                 //str.Substring(0, count);
                 str.Remove(count);
@@ -467,8 +463,10 @@
         {
             if (IsNullOrEmpty(str)) return str;
             if (count >= str.Length)
+            {
                 throw new ArgumentOutOfRangeException("count", count,
                                                       "count must be less than length of String");
+            }
             return str.Substring(str.Length - count); //, countChar);
         }
 
@@ -531,9 +529,11 @@
         {
             return (culture ?? ExtensionMethodSetting.DefaultCulture).TextInfo.ToTitleCase(str);
         }
+
         #endregion
 
         #region Replace
+
         /// <summary>
         ///   Replace all values in String
         /// </summary>
@@ -637,13 +637,17 @@
             foreach (var oldValue in oldValues)
             {
                 if (!newValuesEnum.MoveNext())
+                {
                     throw new ArgumentOutOfRangeException("newValues",
                                                           "newValues sequence is shorter than oldValues sequence");
+                }
                 sb.Replace(oldValue, newValuesEnum.Current);
             }
             if (newValuesEnum.MoveNext())
+            {
                 throw new ArgumentOutOfRangeException("newValues",
                                                       "newValues sequence is longer than oldValues sequence");
+            }
             return sb.ToString();
         }
 
@@ -682,9 +686,11 @@
         {
             return Regex.Replace(str, regexPattern, evaluator, options);
         }
+
         #endregion
 
         #region Remove
+
         /// <summary>
         ///   Remove any instance of the given character from the current String.
         /// </summary>
@@ -739,9 +745,11 @@
         {
             return Replace(str, regexPattern, String.Empty, options);
         }
+
         #endregion
 
         #region Contains
+
         public static bool Contains(this String str, String subString, int startIndex = 0)
         {
             //foreach (var c in subString)
@@ -778,6 +786,7 @@
             return IsNullOrWhiteSpace(str) && IsNullOrWhiteSpace(subString)
                    || Contains(str, subString, StringComparison.InvariantCultureIgnoreCase);
         }
+
         #endregion
 
         /// <summary>
@@ -876,6 +885,7 @@
         }
 
         #region Get String
+
         /// <summary>
         ///   Gets the String before the given String parameter.
         /// </summary>
@@ -926,9 +936,11 @@
             var startIndex = subString.Length + index;
             return (startIndex >= str.Length) ? String.Empty : str.Substring(startIndex).Trim();
         }
+
         #endregion
 
         #region Substring
+
         /// <summary>
         ///   Returns the right part of the String from index.
         /// </summary>
@@ -950,6 +962,7 @@
         {
             return (index < 0) ? str : str.Substring(0, index + 1);
         }
+
         #endregion
 
         /// <summary>
@@ -984,12 +997,12 @@
         }
 
         #region Chop
+
         //[ObsoleteAttribute("This method is obsolute. Use 3 parameter Chop method")]
         public static String Chop(this String str, int length, String ending = default(String))
         {
             if (length <= 0) throw new ArgumentException("value can't be less then one", "length");
-            if (ending.IsNotNullOrEmpty() && length < ending.Length)
-                throw new Exception("Failed to reduce to less then endings length.");
+            if (ending.IsNotNullOrEmpty() && length < ending.Length) throw new Exception("Failed to reduce to less then endings length.");
             if (str.Length > length)
             {
                 var startIndex = length - (ending.IsNullOrEmpty() ? 0 : ending.Length);
@@ -1001,15 +1014,13 @@
         public static String Chop(this String str, int length, int maxLength = 5, String ending = default(String))
         {
             if (length <= 0) throw new ArgumentException("value can't be less then one", "length");
-            if (ending.IsNotNullOrEmpty() && length < ending.Length)
-                throw new Exception("Failed to reduce to less then endings length.");
+            if (ending.IsNotNullOrEmpty() && length < ending.Length) throw new Exception("Failed to reduce to less then endings length.");
             if (str.Length > length)
             {
                 var strChop = String.Empty;
                 foreach (var strItem in str.Split(' '))
                 {
-                    if (strChop.Length > length)
-                        break;
+                    if (strChop.Length > length) break;
                     var splitLength = strItem.Length;
                     if ((strChop.Length + splitLength) > length)
                     {
@@ -1018,8 +1029,7 @@
                     }
                     strChop += (strItem + ' ');
                 }
-                if (strChop.Length < str.Length)
-                    return strChop += (ending ?? String.Empty);
+                if (strChop.Length < str.Length) return strChop += (ending ?? String.Empty);
             }
             return str;
         }
@@ -1059,6 +1069,7 @@
         //    }
         //    return s;
         //}
+
         #endregion
 
         /// <summary>
@@ -1138,8 +1149,7 @@
                 // -----------------------------------------
                 var sb = new StringBuilder();
                 // --------------------------------------
-                foreach (Match match in Regex.Matches(str, "[0-9]"))
-                    sb.Append(match.Value);
+                foreach (Match match in Regex.Matches(str, "[0-9]")) sb.Append(match.Value);
                 // --------------------------------------
                 //foreach (char c in str)
                 //{
@@ -1166,8 +1176,7 @@
         public static String GetWordByIndex(this String str, int index)
         {
             var words = str.GetWords();
-            if ((index < 0) || (index > words.Length - 1))
-                throw new IndexOutOfRangeException("The word number is out of range.");
+            if ((index < 0) || (index > words.Length - 1)) throw new IndexOutOfRangeException("The word number is out of range.");
             return words[index];
         }
 
@@ -1242,6 +1251,7 @@
             // {-,/,--}param{ ,=,:}((",')value(",'))
             // Examples: -param1 value1 --param2 /param3:"Test-:-work" /param4=happy -param5 '--=nice=--'
             foreach (var parts in arrStr.Select(str => spliter.Split(str, 3)))
+            {
                 switch (parts.Length)
                 {
                         // Found a value (for the last parameter found (space separator))
@@ -1260,15 +1270,13 @@
                         // Found just a parameter
                     case 2:
                         // The last parameter is still waiting. With no value, set it to true.
-                        if (parameter.IsNotNullOrEmpty())
-                            if (!parameters.ContainsKey(parameter)) parameters.Add(parameter, "true");
+                        if (parameter.IsNotNullOrEmpty()) if (!parameters.ContainsKey(parameter)) parameters.Add(parameter, "true");
                         parameter = parts[1];
                         break;
                         // Parameter with enclosed value
                     case 3:
                         // The last parameter is still waiting. With no value, set it to true.
-                        if (parameter.IsNotNullOrEmpty())
-                            if (!parameters.ContainsKey(parameter)) parameters.Add(parameter, "true");
+                        if (parameter.IsNotNullOrEmpty()) if (!parameters.ContainsKey(parameter)) parameters.Add(parameter, "true");
                         parameter = parts[1];
                         // Remove possible enclosing characters (",')
                         if (!parameters.ContainsKey(parameter))
@@ -1279,6 +1287,7 @@
                         parameter = default(String);
                         break;
                 }
+            }
             // In case a parameter is still waiting
             if (parameter.IsNotNullOrEmpty() && !parameters.ContainsKey(parameter)) parameters.Add(parameter, "true");
             return parameters;
@@ -1313,8 +1322,7 @@
             var result = final ? new String[count + 1] : new String[count];
             // Loop through each index and take a substring.
             // ... The starting index is computed with multiplication.
-            for (var i = 0; i < count; i++)
-                result[i] = str.Substring((i*size), size);
+            for (var i = 0; i < count; i++) result[i] = str.Substring((i*size), size);
             // Sometimes we need to set the final String fragment.
             if (final) result[result.Length - 1] = str.Substring(count*size);
             return result;
@@ -1339,6 +1347,7 @@
         }
 
         #region ExtractArguments extension
+
         /// <summary>
         ///   Options to match the template with the original String
         /// </summary>
@@ -1365,9 +1374,9 @@
             Whole,
         }
 
-        static readonly String[] _ReservedRegexOperators = new[] {@"\", "^", "$", "*", "+", "?", ".", "(", ")"};
+        private static readonly String[] _ReservedRegexOperators = new[] {@"\", "^", "$", "*", "+", "?", ".", "(", ")"};
 
-        static String GetRegexPattern(String template, ComparsionTemplateOptions compareTemplateOptions)
+        private static String GetRegexPattern(String template, ComparsionTemplateOptions compareTemplateOptions)
         {
             template = template.Replace(_ReservedRegexOperators, v => String.Concat(@"\", v));
             var comparingFromStart = compareTemplateOptions == ComparsionTemplateOptions.FromStart ||
@@ -1378,10 +1387,10 @@
             if (comparingFromStart) sbPattern.Append("^");
             sbPattern.Append(Regex.Replace(template, @"\{[0-9]+\}",
                                            (match) =>
-                                               {
-                                                   var argNum = match.ToString().Replace("{", "").Replace("}", "");
-                                                   return String.Format("(?<{0}>.*?)", int.Parse(argNum) + 1);
-                                               }));
+                                           {
+                                               var argNum = match.ToString().Replace("{", "").Replace("}", "");
+                                               return String.Format("(?<{0}>.*?)", int.Parse(argNum) + 1);
+                                           }));
             return comparingAtTheEnd ||
                    (template.LastOrDefault() == '}' && compareTemplateOptions == ComparsionTemplateOptions.Default)
                        ? sbPattern.Append("$").ToString()
@@ -1434,9 +1443,11 @@
         {
             return ExtractGroupArguments(str, template, compareTemplateOptions, regexOptions).Select(g => g.Value);
         }
+
         #endregion ExtractArguments extension
 
         #region Encode & Decode
+
         /// <summary>
         ///   Converts the String to a byte-array using the supplied encoding
         /// </summary>
@@ -1474,9 +1485,11 @@
         {
             return (encoding ?? Encoding.UTF8).GetString(Convert.FromBase64String(strEncoded));
         }
+
         #endregion
 
         #region Guid
+
         /// <summary>
         ///   Convert the provided String to a Guid value and returns the provided default value if the conversion fails.
         /// </summary>
@@ -1490,9 +1503,7 @@
             {
                 return value.ToGuid();
             }
-            catch
-            {
-            }
+            catch {}
             return defaultValue;
         }
 
@@ -1515,9 +1526,11 @@
         {
             return new Guid(value);
         }
+
         #endregion
 
         #region XML
+
         /// <summary>
         ///   Loads the String into a LINQ to XML XDocument
         /// </summary>
@@ -1560,9 +1573,11 @@
         {
             return XElement.Parse(xml);
         }
+
         #endregion
 
         #region Html
+
         //ditches html tags - note it doesnt get rid of things like &nbsp;
         public static String StripHtml(this String html)
         {
@@ -1604,13 +1619,13 @@
                                       : String.Concat("&#", Convert.ToString(acode), ";");
                         break;
                 }
-                if (replace.IsNotNullOrEmpty())
-                    HtmlEncode = String.Concat(HtmlEncode.Substring(0, i - 1), replace, HtmlEncode.Substring(i));
+                if (replace.IsNotNullOrEmpty()) HtmlEncode = String.Concat(HtmlEncode.Substring(0, i - 1), replace, HtmlEncode.Substring(i));
             }
             return HtmlEncode;
         }
 
         #region HtmlSafe
+
         /// <summary>
         ///   Makes the current instance HTML safe.
         /// </summary>
@@ -1622,38 +1637,38 @@
         {
             if (IsNullOrWhiteSpace(str)) return String.Empty;
             var entities = new[]
-                               {
-                                   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-                                   24
-                                   , 25, 26, 28, 29, 30, 31, 34, 39, 38, 60, 62, 123, 124, 125, 126, 127, 160, 161, 162,
-                                   163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179,
-                                   180
-                                   , 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 215, 247, 192, 193, 194, 195
-                                   ,
-                                   196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212,
-                                   213
-                                   , 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230
-                                   ,
-                                   231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247,
-                                   248
-                                   , 249, 250, 251, 252, 253, 254, 255, 256, 8704, 8706, 8707, 8709, 8711, 8712, 8713,
-                                   8715
-                                   , 8719, 8721, 8722, 8727, 8730, 8733, 8734, 8736, 8743, 8744, 8745, 8746, 8747, 8756,
-                                   8764, 8773, 8776, 8800, 8801, 8804, 8805, 8834, 8835, 8836, 8838, 8839, 8853, 8855,
-                                   8869
-                                   , 8901, 913, 914, 915, 916, 917, 918, 919, 920, 921, 922, 923, 924, 925, 926, 927,
-                                   928,
-                                   929, 931, 932, 933, 934, 935, 936, 937, 945, 946, 947, 948, 949, 950, 951, 952, 953,
-                                   954
-                                   , 955, 956, 957, 958, 959, 960, 961, 962, 963, 964, 965, 966, 967, 968, 969, 977, 978
-                                   ,
-                                   982, 338, 339, 352, 353, 376, 402, 710, 732, 8194, 8195, 8201, 8204, 8205, 8206, 8207
-                                   ,
-                                   8211, 8212, 8216, 8217, 8218, 8220, 8221, 8222, 8224, 8225, 8226, 8230, 8240, 8242,
-                                   8243
-                                   , 8249, 8250, 8254, 8364, 8482, 8592, 8593, 8594, 8595, 8596, 8629, 8968, 8969, 8970,
-                                   8971, 9674, 9824, 9827, 9829, 9830
-                               };
+                           {
+                               0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
+                               24
+                               , 25, 26, 28, 29, 30, 31, 34, 39, 38, 60, 62, 123, 124, 125, 126, 127, 160, 161, 162,
+                               163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179,
+                               180
+                               , 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 215, 247, 192, 193, 194, 195
+                               ,
+                               196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212,
+                               213
+                               , 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230
+                               ,
+                               231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247,
+                               248
+                               , 249, 250, 251, 252, 253, 254, 255, 256, 8704, 8706, 8707, 8709, 8711, 8712, 8713,
+                               8715
+                               , 8719, 8721, 8722, 8727, 8730, 8733, 8734, 8736, 8743, 8744, 8745, 8746, 8747, 8756,
+                               8764, 8773, 8776, 8800, 8801, 8804, 8805, 8834, 8835, 8836, 8838, 8839, 8853, 8855,
+                               8869
+                               , 8901, 913, 914, 915, 916, 917, 918, 919, 920, 921, 922, 923, 924, 925, 926, 927,
+                               928,
+                               929, 931, 932, 933, 934, 935, 936, 937, 945, 946, 947, 948, 949, 950, 951, 952, 953,
+                               954
+                               , 955, 956, 957, 958, 959, 960, 961, 962, 963, 964, 965, 966, 967, 968, 969, 977, 978
+                               ,
+                               982, 338, 339, 352, 353, 376, 402, 710, 732, 8194, 8195, 8201, 8204, 8205, 8206, 8207
+                               ,
+                               8211, 8212, 8216, 8217, 8218, 8220, 8221, 8222, 8224, 8225, 8226, 8230, 8240, 8242,
+                               8243
+                               , 8249, 8250, 8254, 8364, 8482, 8592, 8593, 8594, 8595, 8596, 8629, 8968, 8969, 8970,
+                               8971, 9674, 9824, 9827, 9829, 9830
+                           };
             var sb = new StringBuilder();
             //foreach (var c in str)
             //{
@@ -1668,11 +1683,13 @@
                        ? sb.Replace("", "<br />").Replace("\n", "<br />").Replace(" ", "&nbsp;").ToString()
                        : sb.ToString();
         }
+
         #endregion
 
         #endregion
 
         #region SecureString
+
         /// <summary>
         ///   Converts a regular string into SecureString
         /// </summary>
@@ -1689,9 +1706,11 @@
             if (makeReadOnly) secureString.MakeReadOnly();
             return secureString;
         }
+
         #endregion
 
         #region Enum
+
         /// <summary>
         ///   Parse a String to a enum item if that String exists in the enum otherwise return the default enum item.
         /// </summary>
@@ -1724,9 +1743,11 @@
         {
             return () => (str.IsNotNullOrEmpty() || !Enum.IsDefined(typeof (T), str));
         }
+
         #endregion
 
         #region Encrypt Decrypt
+
         /// <summary>
         ///   Encrypt this String into a byte array.
         /// </summary>
@@ -1780,16 +1801,18 @@
             str = str.Replace(" ", String.Empty);
             var maxBytes = str.Length/2 - 1;
             var bytes = new byte[maxBytes + 1];
-            for (var i = 0; i <= maxBytes; ++i)
-                bytes[i] = byte.Parse(str.Substring(2*i, 2), NumberStyles.AllowHexSpecifier);
+            for (var i = 0; i <= maxBytes; ++i) bytes[i] = byte.Parse(str.Substring(2*i, 2), NumberStyles.AllowHexSpecifier);
             return bytes;
         }
+
         #endregion
 
         #region ReplaceWith
+
         #endregion
 
         #region GetMatches
+
         /// <summary>
         ///   Uses regular expressions to determine all matches of a given regex pattern.
         /// </summary>
@@ -1857,9 +1880,11 @@
         //{
         //    return GetMatchingValues(str, regexPattern, RegexOptions.None);
         //}
+
         #endregion
 
         #region Split
+
         /// <summary>
         ///   Uses regular expressions to split a String into parts.
         /// </summary>
@@ -1896,9 +1921,11 @@
             return new[] { str };
         }
         */
+
         #endregion
 
         #region Static Methods
+
         /// <summary>
         ///   A generic version of System.String.Join()
         /// </summary>
@@ -1930,11 +1957,13 @@
             // Find a valid key size for this provider.
             var keySize = 0;
             for (var i = 1024; i >= 1; --i)
+            {
                 if (desProvider.ValidKeySize(i))
                 {
                     keySize = i;
                     break;
                 }
+            }
             // Get the block size for this provider.
             var blockSize = desProvider.BlockSize;
             // Generate the key and initialization vector.
@@ -1998,6 +2027,7 @@
                 initVector = rfcDerive.GetBytes(sizeBlock/8);
             }
         }
+
         #endregion
     }
 }

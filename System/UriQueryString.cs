@@ -10,7 +10,7 @@
     {
         /// <summary>
         /// </summary>
-        readonly Dictionary<String, String> _values = new Dictionary<String, String>();
+        private readonly Dictionary<String, String> _values = new Dictionary<String, String>();
 
         /// <summary>
         ///   Adds the specified key.

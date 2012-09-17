@@ -6,7 +6,6 @@
 
     public static class DateTimeExtension
     {
-
         public static DateTime? AddTimeNull(this DateTime? datetime, TimeSpan timeSpan)
         {
             return datetime.HasValue
@@ -27,7 +26,6 @@
                        ? new DateTime(datetime.Value.Year, datetime.Value.Month, datetime.Value.Day, 23, 59, 59)
                        : default(DateTime?);
         }
-
 
         public static DateTime? ToYearBegin(this DateTime? datetime)
         {
@@ -57,41 +55,38 @@
                        : String.Empty;
         }
 
-
         public static String ToYearBeginString(this DateTime? datetime)
         {
-            return datetime.HasValue ?
-                        (new DateTime(datetime.Value.Year, 1, 1, 0, 0, 0)).ToString(CultureInfo.InvariantCulture) :
-                        String.Empty;
+            return datetime.HasValue
+                       ? (new DateTime(datetime.Value.Year, 1, 1, 0, 0, 0)).ToString(CultureInfo.InvariantCulture)
+                       : String.Empty;
         }
 
         public static String ToYearEndString(this DateTime? datetime)
         {
-            return datetime.HasValue ?
-                        (new DateTime(datetime.Value.Year, 12, 31, 23, 59, 59)).ToString(CultureInfo.InvariantCulture) :
-                        String.Empty;
+            return datetime.HasValue
+                       ? (new DateTime(datetime.Value.Year, 12, 31, 23, 59, 59)).ToString(CultureInfo.InvariantCulture)
+                       : String.Empty;
         }
-
 
         public static String ToDateEmptyString(this DateTime? datetime)
         {
-            return datetime.HasValue ?
-                        datetime.Value.ToShortDateString() :
-                        String.Empty;
+            return datetime.HasValue
+                       ? datetime.Value.ToShortDateString()
+                       : String.Empty;
         }
 
         public static String ToTimeEmptyString(this DateTime? datetime)
         {
-            return datetime.HasValue ?
-                        datetime.Value.ToShortTimeString() :
-                        String.Empty;
+            return datetime.HasValue
+                       ? datetime.Value.ToShortTimeString()
+                       : String.Empty;
         }
 
-
-        const int EveningEnds = 2;
-        const int MorningEnds = 12;
-        const int AfternoonEnds = 6;
-        static readonly DateTime Date1970 = new DateTime(1970, 1, 1);
+        private const int EveningEnds = 2;
+        private const int MorningEnds = 12;
+        private const int AfternoonEnds = 6;
+        private static readonly DateTime Date1970 = new DateTime(1970, 1, 1);
 
         ///<summary>
         ///	Return System UTC Offset
@@ -111,8 +106,7 @@
         {
             var years = dateOfRef.Year - dateOfBirth.Year;
             if (dateOfRef.Month < dateOfBirth.Month
-            || (dateOfRef.Month == dateOfBirth.Month && dateOfRef.Day < dateOfBirth.Day))
-                --years;
+                || (dateOfRef.Month == dateOfBirth.Month && dateOfRef.Day < dateOfBirth.Day)) --years;
             return years;
         }
 
@@ -156,8 +150,7 @@
         public static DateTime GetFirstDayOfMonth(this DateTime datetime, DayOfWeek dayOfWeek)
         {
             var dtFirst = datetime.GetFirstDayOfMonth();
-            while (dtFirst.DayOfWeek != dayOfWeek)
-                dtFirst = dtFirst.AddDays(1);
+            while (dtFirst.DayOfWeek != dayOfWeek) dtFirst = dtFirst.AddDays(1);
             return dtFirst;
         }
 
@@ -180,8 +173,7 @@
         public static DateTime GetLastDayOfMonth(this DateTime datetime, DayOfWeek dayOfWeek)
         {
             var dtLast = datetime.GetLastDayOfMonth();
-            while (dtLast.DayOfWeek != dayOfWeek)
-                dtLast = dtLast.AddDays(-1);
+            while (dtLast.DayOfWeek != dayOfWeek) dtLast = dtLast.AddDays(-1);
             return dtLast;
         }
 
@@ -238,7 +230,6 @@
             return datetime.SetTime(hours, minutes, seconds, 0);
         }
 
-
         /// <summary>
         /// 	Converts a DateTime into a DateTimeOffset using the specified time zone.
         /// </summary>
@@ -249,8 +240,7 @@
         {
             localTimeZone = (localTimeZone ?? TimeZoneInfo.Local);
 
-            if (localDateTime.Kind != DateTimeKind.Unspecified)
-                localDateTime = new DateTime(localDateTime.Ticks, DateTimeKind.Unspecified);
+            if (localDateTime.Kind != DateTimeKind.Unspecified) localDateTime = new DateTime(localDateTime.Ticks, DateTimeKind.Unspecified);
 
             return TimeZoneInfo.ConvertTimeToUtc(localDateTime, localTimeZone);
         }
@@ -265,7 +255,6 @@
             return localDateTime.ToDateTimeOffset(default(TimeZoneInfo));
         }
 
-
         /// <summary>
         /// 	Gets the first day of the week using the specified culture.
         /// </summary>
@@ -275,8 +264,7 @@
         public static DateTime GetFirstDayOfWeek(this DateTime datetime, CultureInfo cultureInfo)
         {
             var firstDayOfWeek = (cultureInfo ?? CultureInfo.CurrentCulture).DateTimeFormat.FirstDayOfWeek;
-            while (datetime.DayOfWeek != firstDayOfWeek)
-                datetime = datetime.AddDays(-1);
+            while (datetime.DayOfWeek != firstDayOfWeek) datetime = datetime.AddDays(-1);
             return datetime;
         }
 
@@ -317,7 +305,6 @@
             return datetime.GetLastDayOfWeek(ExtensionMethodSetting.DefaultCulture);
         }
 
-
         /// <summary>
         /// 	Gets the next occurence of the specified weekday within the current week using the specified culture.
         /// </summary>
@@ -335,7 +322,6 @@
             var firstDayOfWeek = datetime.GetFirstDayOfWeek(cultureInfo);
             return firstDayOfWeek.GetNextWeekday(weekday);
         }
-
 
         /// <summary>
         /// 	Gets the next occurence of the specified weekday within the current week using the current culture.
@@ -356,7 +342,6 @@
             return datetime.GetWeeksWeekday(weekday, ExtensionMethodSetting.DefaultCulture);
         }
 
-
         /// <summary>
         /// 	Gets the next occurence of the specified weekday.
         /// </summary>
@@ -370,8 +355,7 @@
         /// </example>
         public static DateTime GetNextWeekday(this DateTime datetime, DayOfWeek weekday)
         {
-            while (datetime.DayOfWeek != weekday)
-                datetime = datetime.AddDays(1);
+            while (datetime.DayOfWeek != weekday) datetime = datetime.AddDays(1);
             return datetime;
         }
 
@@ -388,8 +372,7 @@
         /// </example>
         public static DateTime GetPreviousWeekday(this DateTime datetime, DayOfWeek weekday)
         {
-            while (datetime.DayOfWeek != weekday)
-                datetime = datetime.AddDays(-1);
+            while (datetime.DayOfWeek != weekday) datetime = datetime.AddDays(-1);
             return datetime;
         }
 
@@ -464,9 +447,8 @@
         /// <returns>The enw date value</returns>
         public static DateTime AddWeeks(this DateTime datetime, int value)
         {
-            return datetime.AddDays(value * 7);
+            return datetime.AddDays(value*7);
         }
-
 
         ///<summary>
         ///	Get the number of days between two dates.
@@ -504,7 +486,6 @@
         //{
         //    return GetDays(year, ExtensionMethodSetting.DefaultCulture);
         //}
-
 
         ///<summary>
         ///	Get the number of days within that date year. Allows user to specify culture
@@ -545,10 +526,8 @@
         public static string GetPeriodOfDay(this DateTime datetime)
         {
             var hour = datetime.Hour;
-            if (hour < EveningEnds)
-                return "evening";
-            if (hour < MorningEnds)
-                return "morning";
+            if (hour < EveningEnds) return "evening";
+            if (hour < MorningEnds) return "morning";
             return hour < AfternoonEnds ? "afternoon" : "evening";
         }
 
@@ -566,7 +545,8 @@
             var calendar = culture.Calendar;
             var dateTimeFormatInfo = culture.DateTimeFormat;
 
-            return calendar.GetWeekOfYear(dateTime, dateTimeFormatInfo.CalendarWeekRule, dateTimeFormatInfo.FirstDayOfWeek);
+            return calendar.GetWeekOfYear(dateTime, dateTimeFormatInfo.CalendarWeekRule,
+                                          dateTimeFormatInfo.FirstDayOfWeek);
         }
 
         /// <summary>
@@ -592,21 +572,21 @@
         {
             var year = datetime.Year;
 
-            var a = year % 19;
-            var b = year / 100;
-            var c = year % 100;
-            var d = b / 4;
-            var e = b % 4;
-            var f = (b + 8) / 25;
-            var g = (b - f + 1) / 3;
-            var h = (19 * a + b - d - g + 15) % 30;
-            var i = c / 4;
-            var k = c % 4;
-            var l = (32 + 2 * e + 2 * i - h - k) % 7;
-            var m = (a + 11 * h + 22 * l) / 451;
+            var a = year%19;
+            var b = year/100;
+            var c = year%100;
+            var d = b/4;
+            var e = b%4;
+            var f = (b + 8)/25;
+            var g = (b - f + 1)/3;
+            var h = (19*a + b - d - g + 15)%30;
+            var i = c/4;
+            var k = c%4;
+            var l = (32 + 2*e + 2*i - h - k)%7;
+            var m = (a + 11*h + 22*l)/451;
 
-            var month = (h + l - 7 * m + 114) / 31;
-            var day = ((h + l - 7 * m + 114) % 31) + 1;
+            var month = (h + l - 7*m + 114)/31;
+            var day = ((h + l - 7*m + 114)%31) + 1;
 
             var dtEasterSunday = new DateTime(year, month, day);
 
@@ -671,15 +651,11 @@
         public static string ToFriendlyDateString(this DateTime datetime, CultureInfo culture)
         {
             var sb = new StringBuilder();
-            if (datetime.Date == DateTime.Today)
-                sb.Append("Today");
-            else if (datetime.Date == DateTime.Today.AddDays(-1))
-                sb.Append("Yesterday");
-            else if (datetime.Date > DateTime.Today.AddDays(-6))
-                // *** Show the Day of the week
+            if (datetime.Date == DateTime.Today) sb.Append("Today");
+            else if (datetime.Date == DateTime.Today.AddDays(-1)) sb.Append("Yesterday");
+            else if (datetime.Date > DateTime.Today.AddDays(-6)) // *** Show the Day of the week
                 sb.Append(datetime.ToString("dddd").ToString(culture));
-            else
-                sb.Append(datetime.ToString("MMMM dd, yyyy").ToString(culture));
+            else sb.Append(datetime.ToString("MMMM dd, yyyy").ToString(culture));
 
             //append the time portion to the output
             sb.Append(" at ").Append(datetime.ToString("t").ToLower());
@@ -740,6 +716,5 @@
         {
             return !datetime.IsWeekend();
         }
-
     }
 }

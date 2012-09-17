@@ -28,11 +28,11 @@
         /// <param name = "action">The action.</param>
         public static void Times(this Int32 value, Action<Int32> action)
         {
-            for (var i = 0; i < value; ++i)
-                action(i);
+            for (var i = 0; i < value; ++i) action(i);
             // NOTE: Is it possible to reuse LongExtensions for this call?
             // --value.AsInt64().Times(action as Action<Int64>);
         }
+
         #endregion
 
         #region Validate
@@ -56,7 +56,6 @@
         {
             return value.AsInt64().IsOdd();
         }
-
 
         /// <summary>Checks whether the value is in range or returns the default value</summary>
         /// <param name="value">The Value</param>
@@ -122,6 +121,7 @@
         }
 
         #region To Ordinal
+
         /// <summary>
         /// Converts the value to ordinal String. (English)
         /// </summary>
@@ -142,7 +142,7 @@
         {
             return value.AsInt64().ToOrdinal(format);
         }
-        
+
         #endregion
 
         #endregion
@@ -214,7 +214,6 @@
 
         #endregion
 
-        
         /// <summary>
         /// Returns the integer as Int64.
         /// </summary>
@@ -251,9 +250,7 @@
         /// <returns></returns>
         public static Int64 Factorial(this Int32 value)
         {
-              return value.AsInt64().Factorial();
+            return value.AsInt64().Factorial();
         }
-
-
     }
 }

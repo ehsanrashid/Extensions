@@ -30,8 +30,7 @@
         public static void Times(this Int64 value, Action<Int64> action)
         {
             if (value <= 0) return;
-            for (Int64 i = 0; i < value; ++i)
-                action(i);
+            for (Int64 i = 0; i < value; ++i) action(i);
         }
 
         #endregion
@@ -45,7 +44,7 @@
         /// <returns>true or false</returns>
         public static bool IsEven(this Int64 value)
         {
-            return (value % 2 == 0);
+            return (value%2 == 0);
         }
 
         /// <summary>
@@ -55,7 +54,7 @@
         /// <returns>true or false</returns>
         public static bool IsOdd(this Int64 value)
         {
-            return (value % 2 != 0);
+            return (value%2 != 0);
         }
 
         /// <summary>Checks whether the value is in range or returns the default value</summary>
@@ -76,7 +75,7 @@
         {
             return (value >= minValue && value <= maxValue);
         }
-        
+
         /// <summary>
         /// A prime number (or a prime) is a natural number that has exactly two distinct natural number divisors: 1 and itself.
         /// </summary>
@@ -85,8 +84,7 @@
         public static bool IsPrime(this Int64 value)
         {
             if ((value & 1) == 0) return (value == 2);
-            for (Int64 i = 3; (i * i) <= value; i += 2)
-                if ((value % i) == 0) return false;
+            for (Int64 i = 3; (i*i) <= value; i += 2) if ((value%i) == 0) return false;
             return (value != 1);
         }
 
@@ -124,26 +122,26 @@
         public static String ToOrdinal(this Int64 value)
         {
             var suffix = "th";
-            switch (value % 100)
+            switch (value%100)
             {
-            case 11:
-            case 12:
-            case 13:
-                break;
-            default:
-                switch (value % 10)
-                {
-                case 1:
-                    suffix = "st";
+                case 11:
+                case 12:
+                case 13:
                     break;
-                case 2:
-                    suffix = "nd";
+                default:
+                    switch (value%10)
+                    {
+                        case 1:
+                            suffix = "st";
+                            break;
+                        case 2:
+                            suffix = "nd";
+                            break;
+                        case 3:
+                            suffix = "rd";
+                            break;
+                    }
                     break;
-                case 3:
-                    suffix = "rd";
-                    break;
-                }
-                break;
             }
 
             return String.Format("{0}{1}", value, suffix);
@@ -161,9 +159,11 @@
         }
 
         #endregion
+
         #endregion
 
         #region TimeSpan
+
         /// <summary>
         /// Gets a TimeSpan from a Int64 number of days.
         /// </summary>
@@ -226,7 +226,6 @@
 
         #endregion
 
-
         /// <summary>
         /// 
         /// </summary>
@@ -239,9 +238,7 @@
             if (value == 2) return 2;
             if (value == 3) return 6;
 
-            return value * Factorial(value - 1);
+            return value*Factorial(value - 1);
         }
-
-
     }
 }

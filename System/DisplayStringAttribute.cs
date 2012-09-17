@@ -43,6 +43,7 @@ namespace System
         public static readonly DisplayStringAttribute Default = new DisplayStringAttribute();
 
         private readonly String _displayString;
+
         /// <summary>
         /// The value of this attribute
         /// </summary>
@@ -55,7 +56,7 @@ namespace System
         /// Initializes a new instance of the class <c>DisplayStringAttribute</c> with default value (empty String)
         /// </summary>
         public DisplayStringAttribute()
-            : this(String.Empty) { }
+            : this(String.Empty) {}
 
         /// <summary>
         /// Initializes a new instance of the class <c>DisplayStringAttribute</c> with specified value

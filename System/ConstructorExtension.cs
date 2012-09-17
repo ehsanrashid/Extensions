@@ -34,8 +34,7 @@ namespace System
                     var objValue = property.GetValue(data, default(Object[]));
                     if (default(Object) == objValue) continue;
                     // If the Object value is already of the property type
-                    if (objValue.GetType() == propertyType)
-                        // Set the Object value to the source
+                    if (objValue.GetType() == propertyType) // Set the Object value to the source
                         property.SetValue(self, objValue, default(Object[]));
                     else
                     {
@@ -46,8 +45,7 @@ namespace System
                         // Check that the converted data is of the same type as the property type
                         if (default(Object) == convertedValue) continue;
                         // If it is, then set the converted data to the source Object.
-                        if (convertedValue.GetType() == propertyType)
-                            property.SetValue(self, convertedValue, default(Object[]));
+                        if (convertedValue.GetType() == propertyType) property.SetValue(self, convertedValue, default(Object[]));
                     }
                 }
                 catch (Exception exp)
@@ -205,8 +203,7 @@ namespace System
                 var unaryExpression = lambda.Body as UnaryExpression;
                 if (null != unaryExpression) memberExpression = (MemberExpression) unaryExpression.Operand;
             }
-            else
-                memberExpression = (MemberExpression) lambda.Body;
+            else memberExpression = (MemberExpression) lambda.Body;
             return (null != memberExpression)
                        ? memberExpression.Member as PropertyInfo
                        : default(PropertyInfo);

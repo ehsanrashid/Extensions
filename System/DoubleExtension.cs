@@ -14,7 +14,7 @@
         {
             return value.InRange(minValue, maxValue) ? value : defaultValue;
         }
-        
+
         /// <summary>Checks whether the value is in range</summary>
         /// <param name="value">The Value</param>
         /// <param name="minValue">The minimum value</param>
@@ -97,6 +97,5 @@
         //}
 
         #endregion
-
     }
 }

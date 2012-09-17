@@ -1,6 +1,5 @@
 ﻿namespace System
 {
-
     using Collections;
     using Collections.Generic;
     using ComponentModel;
@@ -92,7 +91,7 @@
         /// </returns>
         public static bool IsOfType<T>(this Object obj)
         {
-            return obj.IsOfType(typeof(T));
+            return obj.IsOfType(typeof (T));
         }
 
         /// <summary>
@@ -111,8 +110,7 @@
                 if (objType == type) return true;
                 if ((objType == objType.BaseType) || (default(Type) == objType.BaseType)) return false;
                 objType = objType.BaseType;
-            }
-            while (true);
+            } while (true);
         }
 
         /// <summary>
@@ -125,7 +123,7 @@
         /// </returns>
         public static bool IsOfTypeOrInherits<T>(this Object obj)
         {
-            return obj.IsOfTypeOrInherits(typeof(T));
+            return obj.IsOfTypeOrInherits(typeof (T));
         }
 
         #endregion Check Type
@@ -158,9 +156,8 @@
         /// <returns>returns the Object as casted type. If null the default type is returned.</returns>
         public static T Cast<T>(this Object obj, T defaultValue)
         {
-            if (default(Object) == obj)
-                return defaultValue;
-            return (T) Convert.ChangeType(obj, typeof(T));
+            if (default(Object) == obj) return defaultValue;
+            return (T) Convert.ChangeType(obj, typeof (T));
         }
 
         /// <summary>
@@ -172,7 +169,7 @@
         public static T Cast<T>(this Object obj)
         {
             if (default(Object) == obj) throw new NullReferenceException();
-            return (T) Convert.ChangeType(obj, typeof(T));
+            return (T) Convert.ChangeType(obj, typeof (T));
         }
 
         /// <summary>
@@ -185,8 +182,7 @@
         /// </returns>
         public static T CastAs<T>(this Object obj) where T : class, new()
         {
-            if (default(Object) != obj && (obj is T))
-                return obj as T;
+            if (default(Object) != obj && (obj is T)) return obj as T;
             return default(T);
         }
 
@@ -200,8 +196,7 @@
         /// </returns>
         public static T CastTo<T>(this Object obj)
         {
-            if (default(Object) != obj && (obj is T))
-                return (T) obj;
+            if (default(Object) != obj && (obj is T)) return (T) obj;
             return default(T);
         }
 
@@ -224,20 +219,23 @@
             // either of the two types...
             const BindingFlags pubStatBinding = BindingFlags.Public | BindingFlags.Static;
             var originType = obj.GetType();
-            var names = new[] { "op_Implicit", "op_Explicit" };
+            var names = new[] {"op_Implicit", "op_Explicit"};
 
             var castMethod =
-                    typeTarget.GetMethods(pubStatBinding).Union(originType.GetMethods(pubStatBinding))
-                        .FirstOrDefault(
-                            (item) => item.ReturnType == typeTarget
-                                && item.GetParameters().Length == 1
-                                && item.GetParameters()[0].ParameterType.IsAssignableFrom(originType)
-                                && names.Contains(item.Name));
+                typeTarget.GetMethods(pubStatBinding).Union(originType.GetMethods(pubStatBinding))
+                    .FirstOrDefault(
+                        (item) => item.ReturnType == typeTarget
+                                  && item.GetParameters().Length == 1
+                                  && item.GetParameters()[0].ParameterType.IsAssignableFrom(originType)
+                                  && names.Contains(item.Name));
 
             if (default(MethodInfo) == castMethod)
-                throw new InvalidOperationException(String.Format("No matching cast operator found from {0} to {1}.", originType.Name, typeTarget.Name));
+            {
+                throw new InvalidOperationException(String.Format("No matching cast operator found from {0} to {1}.",
+                                                                  originType.Name, typeTarget.Name));
+            }
 
-            return castMethod.Invoke(default(Object), new[] { obj });
+            return castMethod.Invoke(default(Object), new[] {obj});
         }
 
         #endregion Cast
@@ -256,15 +254,13 @@
         {
             if (default(Object) != obj)
             {
-                var targetType = typeof(T);
+                var targetType = typeof (T);
 
                 var converter = TypeDescriptor.GetConverter(obj);
-                if (converter.CanConvertTo(targetType))
-                    return true;
+                if (converter.CanConvertTo(targetType)) return true;
 
                 converter = TypeDescriptor.GetConverter(targetType);
-                if (converter.CanConvertFrom(obj.GetType()))
-                    return true;
+                if (converter.CanConvertFrom(obj.GetType())) return true;
             }
             return false;
         }
@@ -313,17 +309,15 @@
         {
             if (default(Object) != obj)
             {
-                var targetType = typeof(T);
+                var targetType = typeof (T);
 
                 if (obj.GetType() == targetType) return (T) obj;
 
                 var converter = TypeDescriptor.GetConverter(obj);
-                if (converter.CanConvertTo(targetType))
-                    return (T) converter.ConvertTo(obj, targetType);
+                if (converter.CanConvertTo(targetType)) return (T) converter.ConvertTo(obj, targetType);
 
                 converter = TypeDescriptor.GetConverter(targetType);
-                if (converter.CanConvertFrom(obj.GetType()))
-                    return (T) converter.ConvertFrom(obj);
+                if (converter.CanConvertFrom(obj.GetType())) return (T) converter.ConvertFrom(obj);
             }
             return defaultValue;
         }
@@ -396,7 +390,7 @@
         /// </returns>
         public static bool IsAssignableTo<T>(this Object obj)
         {
-            return obj.IsAssignableTo(typeof(T));
+            return obj.IsAssignableTo(typeof (T));
         }
 
         #endregion Assignable To
@@ -450,8 +444,7 @@
             var type = obj.GetType();
             var method = type.GetMethod(methodName, parameters.Select(o => o.GetType()).ToArray());
 
-            if (default(MethodInfo) == method)
-                throw new ArgumentException(String.Format("Method '{0}' not found.", methodName), methodName);
+            if (default(MethodInfo) == method) throw new ArgumentException(String.Format("Method '{0}' not found.", methodName), methodName);
 
             var value = method.Invoke(obj, parameters);
             return (value is T) ? (T) value : default(T);
@@ -485,8 +478,7 @@
             var type = obj.GetType();
             var propertyInfo = type.GetProperty(propertyName);
 
-            if (default(PropertyInfo) == propertyInfo)
-                throw new ArgumentException(String.Format("Property '{0}' not found.", propertyName), propertyName);
+            if (default(PropertyInfo) == propertyInfo) throw new ArgumentException(String.Format("Property '{0}' not found.", propertyName), propertyName);
 
             var value = propertyInfo.GetValue(obj, default(Object[]));
 
@@ -549,10 +541,10 @@
             var type = obj.GetType();
             var propertyInfo = type.GetProperty(propertyName);
 
-            if (default(PropertyInfo) == propertyInfo)
-                throw new ArgumentException(String.Format("Property '{0}' not found.", propertyName), propertyName);
+            if (default(PropertyInfo) == propertyInfo) throw new ArgumentException(String.Format("Property '{0}' not found.", propertyName), propertyName);
             if (!propertyInfo.CanWrite)
-                throw new ArgumentException(String.Format("Property '{0}' does not allow writes.", propertyName), propertyName);
+                throw new ArgumentException(String.Format("Property '{0}' does not allow writes.", propertyName),
+                                            propertyName);
             propertyInfo.SetValue(obj, value, default(Object[]));
         }
 
@@ -569,7 +561,9 @@
         /// <returns>The found attributes</returns>
         public static IEnumerable<T> GetAttributes<T>(this Object obj, bool includeInherited) where T : Attribute
         {
-            return ((obj as Type) ?? obj.GetType()).GetCustomAttributes(typeof(T), includeInherited).OfType<T>().Select(attribute => attribute);
+            return
+                ((obj as Type) ?? obj.GetType()).GetCustomAttributes(typeof (T), includeInherited).OfType<T>().Select(
+                    attribute => attribute);
         }
 
         /// <summary>
@@ -593,7 +587,7 @@
         public static T GetAttribute<T>(this Object obj, bool includeInherited) where T : Attribute
         {
             var type = (obj as Type ?? obj.GetType());
-            var attributes = type.GetCustomAttributes(typeof(T), includeInherited);
+            var attributes = type.GetCustomAttributes(typeof (T), includeInherited);
             return attributes.FirstOrDefault() as T;
         }
 
@@ -674,13 +668,8 @@
         {
             foreach (var xElement in xContainer.Elements().OrderBy(o => o.Name.ToString()))
             {
-                if (xElement.HasElements)
-                {
-                    foreach (var val in ToStringDumpInternal(xElement))
-                        yield return "{" + String.Format("{0}={1}", xElement.Name, val) + "}";
-                }
-                else
-                    yield return "{" + String.Format("{0}={1}", xElement.Name, xElement.Value) + "}";
+                if (xElement.HasElements) foreach (var val in ToStringDumpInternal(xElement)) yield return "{" + String.Format("{0}={1}", xElement.Name, val) + "}";
+                else yield return "{" + String.Format("{0}={1}", xElement.Name, xElement.Value) + "}";
             }
         }
 
@@ -691,9 +680,15 @@
         /// <param name = "flags">BindingFlags to use for reflection</param>
         /// <param name = "maxArrayElements">Number of elements to show for IEnumerables</param>
         /// <returns></returns>
-        public static String ToStringDump(this Object obj, BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, int maxArrayElements = 5)
+        public static String ToStringDump(this Object obj,
+                                          BindingFlags flags =
+                                              BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
+                                          int maxArrayElements = 5)
         {
-            return ToStringDumpInternal(obj.ToXElement(flags, maxArrayElements)).Aggregate(new StringBuilder(), (sb, elem) => sb.Append(elem)).ToString();
+            return
+                ToStringDumpInternal(obj.ToXElement(flags, maxArrayElements)).Aggregate(new StringBuilder(),
+                                                                                        (sb, elem) => sb.Append(elem)).
+                    ToString();
         }
 
         #endregion String Dump
@@ -707,7 +702,10 @@
         /// <param name = "flags">BindingFlags to use for reflection</param>
         /// <param name = "maxArrayElements">Number of elements to show for IEnumerables</param>
         /// <returns></returns>
-        public static XElement ToXElement(this Object obj, BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, int maxArrayElements = 5)
+        public static XElement ToXElement(this Object obj,
+                                          BindingFlags flags =
+                                              BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
+                                          int maxArrayElements = 5)
         {
             try
             {
@@ -720,7 +718,8 @@
         }
 
         // TODO:: Please document these methods
-        public static XElement ToXElementInternal(Object obj, ICollection<Object> visited, BindingFlags flags, int maxArrayElements)
+        public static XElement ToXElementInternal(Object obj, ICollection<Object> visited, BindingFlags flags,
+                                                  int maxArrayElements)
         {
             if (default(Object) == obj) return new XElement("null");
             if (visited.Contains(obj)) return new XElement("Cyclic Reference");
@@ -742,9 +741,10 @@
                 foreach (var elem in obj as IEnumerable)
                 {
                     var subtype = elem.GetType();
-                    xelem.Add(NeedRecursion(elem, subtype) ? ToXElementInternal(elem, visited, flags, maxArrayElements) : new XElement(CleanName(subtype.Name, subtype.IsArray), elem));
-                    if (i++ >= maxArrayElements)
-                        break;
+                    xelem.Add(NeedRecursion(elem, subtype)
+                                  ? ToXElementInternal(elem, visited, flags, maxArrayElements)
+                                  : new XElement(CleanName(subtype.Name, subtype.IsArray), elem));
+                    if (i++ >= maxArrayElements) break;
                 }
                 return xelem;
             }
@@ -753,23 +753,30 @@
             {
                 var value = GetValue(obj, propertyInfo);
                 xelem.Add(NeedRecursion(value, propertyInfo.PropertyType)
-                                ? new XElement(CleanName(propertyInfo.Name, propertyInfo.PropertyType.IsArray), ToXElementInternal(value, visited, flags, maxArrayElements))
-                                : new XElement(CleanName(propertyInfo.Name, propertyInfo.PropertyType.IsArray), String.Empty + value));
+                              ? new XElement(CleanName(propertyInfo.Name, propertyInfo.PropertyType.IsArray),
+                                             ToXElementInternal(value, visited, flags, maxArrayElements))
+                              : new XElement(CleanName(propertyInfo.Name, propertyInfo.PropertyType.IsArray),
+                                             String.Empty + value));
             }
 
             foreach (var fieldInfo in type.GetFields())
             {
                 var value = fieldInfo.GetValue(obj);
                 xelem.Add(NeedRecursion(value, fieldInfo.FieldType)
-                                ? new XElement(CleanName(fieldInfo.Name, fieldInfo.FieldType.IsArray), ToXElementInternal(value, visited, flags, maxArrayElements))
-                                : new XElement(CleanName(fieldInfo.Name, fieldInfo.FieldType.IsArray), String.Empty + value));
+                              ? new XElement(CleanName(fieldInfo.Name, fieldInfo.FieldType.IsArray),
+                                             ToXElementInternal(value, visited, flags, maxArrayElements))
+                              : new XElement(CleanName(fieldInfo.Name, fieldInfo.FieldType.IsArray),
+                                             String.Empty + value));
             }
             return xelem;
         }
 
         public static bool NeedRecursion(Object obj, Type type)
         {
-            return default(Object) != obj && (!type.IsPrimitive && !(obj is String || obj is DateTime || obj is DateTimeOffset || obj is TimeSpan || obj is Delegate || obj is Enum || obj is Decimal || obj is Guid));
+            return default(Object) != obj &&
+                   (!type.IsPrimitive &&
+                    !(obj is String || obj is DateTime || obj is DateTimeOffset || obj is TimeSpan || obj is Delegate ||
+                      obj is Enum || obj is Decimal || obj is Guid));
         }
 
         public static Object GetValue(Object obj, PropertyInfo propertyInfo)
@@ -783,7 +790,7 @@
             {
                 try
                 {
-                    value = propertyInfo.GetValue(obj, new Object[] { 0 });
+                    value = propertyInfo.GetValue(obj, new Object[] {0});
                 }
                 catch
                 {
@@ -797,11 +804,9 @@
         {
             var sb = new StringBuilder();
 
-            foreach (var c in name.Where(c => Char.IsLetterOrDigit(c) && c != '`').Select(c => c))
-                sb.Append(c);
+            foreach (var c in name.Where(c => Char.IsLetterOrDigit(c) && c != '`').Select(c => c)) sb.Append(c);
 
-            if (isArray)
-                sb.Append("Array");
+            if (isArray) sb.Append("Array");
             return sb.ToString();
         }
 
@@ -820,18 +825,14 @@
         {
             // Get and check the Object types
             var type = source.GetType();
-            if (target.GetType() != type)
-            {
-                throw new ArgumentException("The source type must be the same as the target");
-            }
+            if (target.GetType() != type) throw new ArgumentException("The source type must be the same as the target");
 
             // Build a clean list of property names to ignore
             var lstIgnore = new List<String>();
             //foreach (var item in arrPropIgnore)
             //    if (item.IsNotEmpty() && !lstIgnore.Contains(item))
             //        lstIgnore.Add(item);
-            foreach (var item in arrPropIgnore.Where((item) => item.IsNotNullOrEmpty() && !lstIgnore.Contains(item)))
-                lstIgnore.Add(item);
+            foreach (var item in arrPropIgnore.Where((item) => item.IsNotNullOrEmpty() && !lstIgnore.Contains(item))) lstIgnore.Add(item);
 
             // Copy the properties
             foreach (var property in type.GetProperties())
@@ -852,7 +853,7 @@
         /// <param name="arrPropIgnore">A single property name to ignore</param>
         public static void CopyPropertiesFrom(this Object target, Object source, String arrPropIgnore)
         {
-            CopyPropertiesFrom(target, source, new[] { arrPropIgnore });
+            CopyPropertiesFrom(target, source, new[] {arrPropIgnore});
         }
 
         /// <summary>
@@ -986,9 +987,13 @@
         /// <param name = "flags">BindingFlags to use for reflection</param>
         /// <param name = "maxArrayElements">Number of elements to show for IEnumerables</param>
         /// <returns></returns>
-        public static String ToHtmlTable(this Object obj, BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, int maxArrayElements = 5)
+        public static String ToHtmlTable(this Object obj,
+                                         BindingFlags flags =
+                                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
+                                         int maxArrayElements = 5)
         {
-            return ToHtmlTableInternal(obj.ToXElement(flags, maxArrayElements), 0).Aggregate(String.Empty, (str, el) => str + el);
+            return ToHtmlTableInternal(obj.ToXElement(flags, maxArrayElements), 0).Aggregate(String.Empty,
+                                                                                             (str, el) => str + el);
         }
 
         public static IEnumerable<String> ToHtmlTableInternal(XContainer xContainer, int padding)
@@ -1000,12 +1005,16 @@
                 if (xElement.HasElements)
                 {
                     yield return FormatHtmlLine(String.Format("<tr><td>{0}</td><td>", xElement.Name), padding + 1);
-                    foreach (var elem in ToHtmlTableInternal(xElement, padding + 2))
-                        yield return elem;
+                    foreach (var elem in ToHtmlTableInternal(xElement, padding + 2)) yield return elem;
                     yield return FormatHtmlLine("</td></tr>", padding + 1);
                 }
                 else
-                    yield return FormatHtmlLine(String.Format("<tr><td>{0}</td><td>{1}</td></tr>", xElement.Name, HttpUtility.HtmlEncode(xElement.Value)), padding + 1);
+                {
+                    yield return
+                        FormatHtmlLine(
+                            String.Format("<tr><td>{0}</td><td>{1}</td></tr>", xElement.Name,
+                                          HttpUtility.HtmlEncode(xElement.Value)), padding + 1);
+                }
             }
             yield return FormatHtmlLine("</table>", padding);
         }
@@ -1030,8 +1039,7 @@
             var formatSpec = new Regex(@"{(?<name>\S+?)(:(?<format>.*?))?}");
 
             var matches = formatSpec.Matches(format);
-            if (matches.Count == 0)
-                return format;
+            if (matches.Count == 0) return format;
 
             var sb = new StringBuilder();
 
@@ -1046,14 +1054,15 @@
                 var propFormat = match.Groups["format"].Value;
 
                 var propertyInfo = type.GetProperty(propName);
-                if (default(PropertyInfo) == propertyInfo) throw new FormatException(String.Format(CultureInfo.CurrentUICulture, "Unknown property {0}.", propName));
+                if (default(PropertyInfo) == propertyInfo)
+                    throw new FormatException(String.Format(CultureInfo.CurrentUICulture, "Unknown property {0}.",
+                                                            propName));
 
                 values[i] = propertyInfo.GetValue(obj, default(Object[]));
                 sb.Append(format.Substring(start, match.Index - start));
                 sb.Append("{");
                 sb.Append(i.ToString(CultureInfo.InvariantCulture));
-                if (!String.IsNullOrEmpty(propFormat))
-                    sb.AppendFormat(":{0}", propFormat);
+                if (!String.IsNullOrEmpty(propFormat)) sb.AppendFormat(":{0}", propFormat);
                 sb.Append("}");
 
                 start = match.Index + match.Length;
@@ -1070,8 +1079,7 @@
             {
                 serializer.Serialize(writer, obj);
                 var dataSet = new DataSet();
-                using (var reader = new StringReader(writer.ToString()))
-                    dataSet.ReadXml(reader);
+                using (var reader = new StringReader(writer.ToString())) dataSet.ReadXml(reader);
                 return dataSet;
             }
         }

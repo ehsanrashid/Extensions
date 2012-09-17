@@ -39,11 +39,9 @@
             return boolean ? 1 : 0;
         }
 
-
         //public static String ToString(this Boolean value)
         //{
         //    return value ? "True" : "False";
         //}
-        
     }
 }
