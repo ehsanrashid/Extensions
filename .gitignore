@@ -8,4 +8,5 @@ obj
 
 # mstest test results
 TestResults
-/_ReSharper.Extensions
+
+_ReSharper.Extensions
