@@ -120,10 +120,10 @@
         #region NotNull
         /// <summary>
         ///   If target is null reference, returns notNullValue.
-        ///   Othervise returns target.
+        ///   Othervise returns self.
         /// </summary>
-        /// <typeparam name="T"> Type of target. </typeparam>
-        /// <param name="self"> Target which is maybe null. Can be null. </param>
+        /// <typeparam name="T"> Type of self. </typeparam>
+        /// <param name="self"> Self which is maybe null. Can be null. </param>
         /// <param name="notNullValue"> Value used instead of null. </param>
         /// <example>
         ///   const int DEFAULT_NUMBER = 123;
@@ -136,7 +136,7 @@
         /// </example>
         public static T NotNull<T>(this T self, T notNullValue)
         {
-            return ReferenceEquals(self, null) ? notNullValue : self;
+            return ReferenceEquals(null, self) ? notNullValue : self;
         }
 
         /// <summary>
@@ -155,7 +155,7 @@
         /// </example>
         public static T NotNull<T>(this T self, Func<T> notNullValueProvider)
         {
-            return ReferenceEquals(self, null) ? notNullValueProvider() : self;
+            return ReferenceEquals(null, self) ? notNullValueProvider() : self;
         }
         #endregion
 
@@ -206,7 +206,7 @@
         /// <returns> The copied Object. </returns>
         public static T Clone<T>(this T self)
         {
-            if (!typeof (T).IsSerializable)
+            if (!typeof(T).IsSerializable)
                 throw new ArgumentException("The type must be serializable.", "self");
             // Don't serialize a null Object, simply return the default for that Object
             if (ReferenceEquals(self, null)) return default(T);
@@ -230,7 +230,7 @@
         {
             if (value.IsNullOrEmpty()) return String.Empty;
             if (separator.IsNull()) separator = String.Empty;
-            Converter<T, String> converter = (obj) => obj.ToString();
+            var converter = new Converter<T, string>((obj) => obj.ToString());
             return String.Join(separator, Array.ConvertAll(value, converter));
         }
 
@@ -258,7 +258,7 @@
 
 
         #region Serialize Deserialize
-        
+
         public static Byte[] Serialize<T>(this T self) where T : class
         {
             using (var memStream = new MemoryStream())
@@ -284,7 +284,7 @@
                 return binFormatter.Deserialize(memStream) as T;
             }
         }
-        
+
         #endregion
     }
 }
