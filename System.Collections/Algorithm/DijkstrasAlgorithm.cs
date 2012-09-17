@@ -9,6 +9,7 @@ namespace System.Collections.Algorithm
     public static class DijkstrasAlgorithm<T>
     {
         #region Public Methods
+
         /// <summary>
         ///   Finds the shortest paths to all other vertices from the specified source vertex.
         /// </summary>
@@ -18,12 +19,11 @@ namespace System.Collections.Algorithm
         public static Graph<T> FindShortestPaths(Graph<T> weightedGraph, Vertex<T> fromVertex)
         {
             #region Parameter Checks
-            if (weightedGraph == null)
-                throw new ArgumentNullException("weightedGraph");
-            if (fromVertex == null)
-                throw new ArgumentNullException("fromVertex");
-            if (!weightedGraph.ContainsVertex(fromVertex))
-                throw new ArgumentException(Properties.Resources.VertexCouldNotBeFound);
+
+            if (weightedGraph == null) throw new ArgumentNullException("weightedGraph");
+            if (fromVertex == null) throw new ArgumentNullException("fromVertex");
+            if (!weightedGraph.ContainsVertex(fromVertex)) throw new ArgumentException(Properties.Resources.VertexCouldNotBeFound);
+
             #endregion
 
             var heap =
@@ -32,9 +32,7 @@ namespace System.Collections.Algorithm
                     new AssociationKeyComparer<double, Vertex<T>>());
             var vertexStatus = new Dictionary<Vertex<T>, VertexInfo<T>>();
             // Initialise the vertex distances to 
-            using (var verticeEnumerator = weightedGraph.Vertices)
-                while (verticeEnumerator.MoveNext())
-                    vertexStatus.Add(verticeEnumerator.Current, new VertexInfo<T>(double.MaxValue, null, false));
+            using (var verticeEnumerator = weightedGraph.Vertices) while (verticeEnumerator.MoveNext()) vertexStatus.Add(verticeEnumerator.Current, new VertexInfo<T>(double.MaxValue, null, false));
             vertexStatus[fromVertex].Distance = 0;
             // Add the source vertex to the heap - we'll be branching out from it.		
             heap.Add(new Association<double, Vertex<T>>(0, fromVertex));
@@ -85,13 +83,16 @@ namespace System.Collections.Algorithm
                 var info = enumerator.Current.Value;
                 // Check if an edge has been included to this vertex
                 if ((info.EdgeFollowed != null) && (enumerator.Current.Key != fromVertex))
+                {
                     newGraph.AddEdge(
                         vertexMap[info.EdgeFollowed.GetPartnerVertex(enumerator.Current.Key)],
                         vertexMap[enumerator.Current.Key],
                         info.EdgeFollowed.Weight);
+                }
             }
             return newGraph;
         }
+
         #endregion
     }
 }
