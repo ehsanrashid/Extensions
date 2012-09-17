@@ -23,8 +23,7 @@ namespace System.IO
         public static FileInfo[] GetFiles(this DirectoryInfo directory, params String[] patterns)
         {
             var files = new List<FileInfo>();
-            foreach (var pattern in patterns)
-                files.AddRange(directory.GetFiles(pattern));
+            foreach (var pattern in patterns) files.AddRange(directory.GetFiles(pattern));
             return files.ToArray();
         }
 
@@ -45,8 +44,7 @@ namespace System.IO
             //    if (predicate(file))
             //        return file;
             //}
-            foreach (var file in directory.GetFiles().Where(predicate))
-                return file;
+            foreach (var file in directory.GetFiles().Where(predicate)) return file;
             //foreach (var subDirectory in directory.GetDirectories())
             //{
             //    var foundFile = subDirectory.FindFileRecursive(predicate);
@@ -152,10 +150,8 @@ namespace System.IO
         public static void CopyTo(this DirectoryInfo dirSource, DirectoryInfo dirTarget)
         {
             if (!dirTarget.Exists) dirTarget.Create();
-            foreach (var childDirectory in dirSource.GetDirectories())
-                CopyTo(childDirectory, Path.Combine(dirTarget.FullName, childDirectory.Name));
-            foreach (var file in dirSource.GetFiles())
-                file.CopyTo(Path.Combine(dirTarget.FullName, file.Name));
+            foreach (var childDirectory in dirSource.GetDirectories()) CopyTo(childDirectory, Path.Combine(dirTarget.FullName, childDirectory.Name));
+            foreach (var file in dirSource.GetFiles()) file.CopyTo(Path.Combine(dirTarget.FullName, file.Name));
         }
     }
 }

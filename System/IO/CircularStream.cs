@@ -1,11 +1,10 @@
 ﻿namespace System.IO
 {
     using Collections.Generic;
-    /*
+
     public class CircularStream : Stream
     {
-        /*
-        private readonly CircularBuffer<byte> _buffer;
+        readonly CircularBuffer<byte> _buffer;
 
         public CircularStream(int bufferCapacity)
         {
@@ -44,50 +43,22 @@
             get { return true; }
         }
 
-        public byte[] GetBuffer()
-        {
-            return _buffer.GetBuffer();
-        }
+        public byte[] GetBuffer() { return _buffer.GetBuffer(); }
 
-        public byte[] ToArray()
-        {
-            return _buffer.ToArray();
-        }
+        public byte[] ToArray() { return _buffer.ToArray(); }
 
-        public override void Flush()
-        {
-        }
+        public override void Flush() { }
 
-        public override void Write(byte[] buffer, int offset, int count)
-        {
-            _buffer.Put(buffer, offset, count);
-        }
+        public override void Write(byte[] buffer, int offset, int count) { _buffer.Put(buffer, offset, count); }
 
-        public override void WriteByte(byte value)
-        {
-            _buffer.Put(value);
-        }
+        public override void WriteByte(byte value) { _buffer.Put(value); }
 
-        public override int Read(byte[] buffer, int offset, int count)
-        {
-            return _buffer.Get(buffer, offset, count);
-        }
+        public override int Read(byte[] buffer, int offset, int count) { return _buffer.Get(buffer, offset, count); }
 
-        public override int ReadByte()
-        {
-            return _buffer.Get();
-        }
+        public override int ReadByte() { return _buffer.Get(); }
 
-        public override long Seek(long offset, SeekOrigin origin)
-        {
-            throw new NotImplementedException();
-        }
+        public override long Seek(long offset, SeekOrigin origin) { throw new NotImplementedException(); }
 
-        public override void SetLength(long value)
-        {
-            throw new NotImplementedException();
-        }
-       
+        public override void SetLength(long value) { throw new NotImplementedException(); }
     }
-    */
 }

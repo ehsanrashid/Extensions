@@ -12,10 +12,7 @@
         /// <returns>
         /// 	<c>true</c> if the specified date is today; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsToday(this DateTimeOffset datetimeOff)
-        {
-            return datetimeOff.Date.IsToday();
-        }
+        public static bool IsToday(this DateTimeOffset datetimeOff) { return datetimeOff.Date.IsToday(); }
 
         /// <summary>
         /// 	Sets the time on the specified DateTime value using the specified time zone.
@@ -40,10 +37,7 @@
         /// <returns>
         /// 	The DateTimeOffset including the new time value
         /// </returns>
-        public static DateTimeOffset SetTime(this DateTimeOffset datetimeOff, TimeSpan timespan)
-        {
-            return datetimeOff.SetTime(timespan, default(TimeZoneInfo));
-        }
+        public static DateTimeOffset SetTime(this DateTimeOffset datetimeOff, TimeSpan timespan) { return datetimeOff.SetTime(timespan, default(TimeZoneInfo)); }
 
         /// <summary>
         /// 	Sets the time on the specified DateTimeOffset value using the local system time zone.
@@ -53,10 +47,7 @@
         /// <param name = "minutes">The minutes to be set.</param>
         /// <param name = "seconds">The seconds to be set.</param>
         /// <returns>The DateTimeOffset including the new time value</returns>
-        public static DateTimeOffset SetTime(this DateTimeOffset datetimeOff, int hours, int minutes, int seconds)
-        {
-            return datetimeOff.SetTime(new TimeSpan(hours, minutes, seconds));
-        }
+        public static DateTimeOffset SetTime(this DateTimeOffset datetimeOff, int hours, int minutes, int seconds) { return datetimeOff.SetTime(new TimeSpan(hours, minutes, seconds)); }
 
         /// <summary>
         /// 	Converts a DateTimeOffset into a DateTime using the specified time zone.
@@ -64,19 +55,13 @@
         /// <param name = "dateTimeUtc">The base DateTimeOffset.</param>
         /// <param name = "localTimeZone">The time zone to be used for conversion.</param>
         /// <returns>The converted DateTime</returns>
-        public static DateTime ToLocalDateTime(this DateTimeOffset dateTimeUtc, TimeZoneInfo localTimeZone)
-        {
-            return TimeZoneInfo.ConvertTime(dateTimeUtc, (localTimeZone ?? TimeZoneInfo.Local)).DateTime;
-        }
+        public static DateTime ToLocalDateTime(this DateTimeOffset dateTimeUtc, TimeZoneInfo localTimeZone) { return TimeZoneInfo.ConvertTime(dateTimeUtc, (localTimeZone ?? TimeZoneInfo.Local)).DateTime; }
 
         /// <summary>
         /// 	Converts a DateTimeOffset into a DateTime using the local system time zone.
         /// </summary>
         /// <param name = "dateTimeUtc">The base DateTimeOffset.</param>
         /// <returns>The converted DateTime</returns>
-        public static DateTime ToLocalDateTime(this DateTimeOffset dateTimeUtc)
-        {
-            return dateTimeUtc.ToLocalDateTime(default(TimeZoneInfo));
-        }
+        public static DateTime ToLocalDateTime(this DateTimeOffset dateTimeUtc) { return dateTimeUtc.ToLocalDateTime(default(TimeZoneInfo)); }
     }
 }

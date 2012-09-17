@@ -16,10 +16,7 @@ namespace System.IO
         ///   <code>var arrFileInfo = directory.GetFiles("*.txt", "*.xml");
         ///     arrFileInfo.Delete()</code>
         /// </example>
-        public static void Delete(this FileInfo[] arrFileInfo)
-        {
-            arrFileInfo.Delete(true);
-        }
+        public static void Delete(this FileInfo[] arrFileInfo) { arrFileInfo.Delete(true); }
 
         /// <summary>
         ///   Deletes several arrFileInfo at once and optionally consolidates any exceptions.
@@ -49,9 +46,7 @@ namespace System.IO
                         "Error while deleting one or several arrFileInfo, see InnerExceptions array for details.",
                         exceptions);
             }
-            else
-                foreach (var file in arrFileInfo)
-                    file.Delete();
+            else foreach (var file in arrFileInfo) file.Delete();
         }
 
         /// <summary>
@@ -64,10 +59,7 @@ namespace System.IO
         ///   <code>var arrFileInfo = directory.GetFiles("*.txt", "*.xml");
         ///     var copiedFiles = arrFileInfo.CopyTo(@"c:\temp\");</code>
         /// </example>
-        public static FileInfo[] CopyTo(this FileInfo[] arrFileInfo, String targetPath)
-        {
-            return arrFileInfo.CopyTo(targetPath, true);
-        }
+        public static FileInfo[] CopyTo(this FileInfo[] arrFileInfo, String targetPath) { return arrFileInfo.CopyTo(targetPath, true); }
 
         /// <summary>
         ///   Copies several arrFileInfo to a new folder at once and optionally consolidates any exceptions.
@@ -94,12 +86,10 @@ namespace System.IO
                 {
                     if (consolidateExceptions)
                     {
-                        if (exceptions == null)
-                            exceptions = new List<Exception>();
+                        if (exceptions == null) exceptions = new List<Exception>();
                         exceptions.Add(e);
                     }
-                    else
-                        throw;
+                    else throw;
                 }
             if ((exceptions != null) && (exceptions.Count > 0))
                 throw new CombinedException(
@@ -147,12 +137,10 @@ namespace System.IO
                 {
                     if (consolidateExceptions)
                     {
-                        if (exceptions == null)
-                            exceptions = new List<Exception>();
+                        if (exceptions == null) exceptions = new List<Exception>();
                         exceptions.Add(e);
                     }
-                    else
-                        throw;
+                    else throw;
                 }
             if ((exceptions != null) && (exceptions.Count > 0))
                 throw new CombinedException(
@@ -173,8 +161,7 @@ namespace System.IO
         /// </example>
         public static FileInfo[] SetAttributes(this FileInfo[] arrFileInfo, FileAttributes attributes)
         {
-            foreach (var file in arrFileInfo)
-                file.Attributes = attributes;
+            foreach (var file in arrFileInfo) file.Attributes = attributes;
             return arrFileInfo;
         }
 
@@ -190,8 +177,7 @@ namespace System.IO
         /// </example>
         public static FileInfo[] SetAttributesAdditive(this FileInfo[] arrFileInfo, FileAttributes attributes)
         {
-            foreach (var file in arrFileInfo)
-                file.Attributes = (file.Attributes | attributes);
+            foreach (var file in arrFileInfo) file.Attributes = (file.Attributes | attributes);
             return arrFileInfo;
         }
 

@@ -30,10 +30,7 @@
         /// </summary>
         /// <param name="stream"> The stream. </param>
         /// <returns> The stream reader </returns>
-        public static StreamReader GetReader(this Stream stream)
-        {
-            return stream.GetReader(null);
-        }
+        public static StreamReader GetReader(this Stream stream) { return stream.GetReader(null); }
 
         /// <summary>
         ///   Opens a StreamWriter using the specified encoding.
@@ -52,10 +49,7 @@
         /// </summary>
         /// <param name="stream"> The stream. </param>
         /// <returns> The stream writer </returns>
-        public static StreamWriter GetWriter(this Stream stream)
-        {
-            return stream.GetWriter(null);
-        }
+        public static StreamWriter GetWriter(this Stream stream) { return stream.GetWriter(null); }
 
         /// <summary>
         ///   Reads all text from the stream using a specified encoding.
@@ -66,8 +60,7 @@
         public static string ReadToEnd(this Stream stream, Encoding encoding)
         {
             if (!stream.CanRead) throw new InvalidOperationException("Stream does not support reading.");
-            using (TextReader reader = stream.GetReader(encoding))
-                return reader.ReadToEnd();
+            using (TextReader reader = stream.GetReader(encoding)) return reader.ReadToEnd();
         }
 
         /// <summary>
@@ -75,10 +68,7 @@
         /// </summary>
         /// <param name="stream"> The stream. </param>
         /// <returns> The result string. </returns>
-        public static string ReadToEnd(this Stream stream)
-        {
-            return stream.ReadToEnd(null);
-        }
+        public static string ReadToEnd(this Stream stream) { return stream.ReadToEnd(null); }
 
         /// <summary>
         ///   Sets the stream cursor to the beginning of the stream.
@@ -117,8 +107,7 @@
             if (!targetStream.CanWrite) throw new InvalidOperationException("Target stream does not support writing.");
             var buffer = new byte[bufferSize];
             int bytesRead;
-            while ((bytesRead = stream.Read(buffer, 0, bufferSize)) > 0)
-                targetStream.Write(buffer, 0, bytesRead);
+            while ((bytesRead = stream.Read(buffer, 0, bufferSize)) > 0) targetStream.Write(buffer, 0, bytesRead);
             return stream;
         }
 
@@ -128,10 +117,7 @@
         /// <param name="stream"> The source stream. </param>
         /// <param name="targetStream"> The target stream. </param>
         /// <returns> The source stream. </returns>
-        public static Stream CopyTo_(this Stream stream, Stream targetStream)
-        {
-            return stream.CopyTo_(targetStream, 4096);
-        }
+        public static Stream CopyTo_(this Stream stream, Stream targetStream) { return stream.CopyTo_(targetStream, 4096); }
 
         /// <summary>
         ///   Copies any stream into a local MemoryStream
@@ -153,11 +139,7 @@
         /// <remarks>
         ///   Thanks to EsbenCarlsen  for providing an update to this method.
         /// </remarks>
-        public static byte[] ReadAllBytes(this Stream stream)
-        {
-            using (var memoryStream = stream.CopyToMemory())
-                return memoryStream.ToArray();
-        }
+        public static byte[] ReadAllBytes(this Stream stream) { using (var memoryStream = stream.CopyToMemory()) return memoryStream.ToArray(); }
 
         /// <summary>
         ///   Reads a fixed number of bytes.
@@ -183,10 +165,7 @@
         /// </summary>
         /// <param name="stream"> The stream. </param>
         /// <param name="bytes"> The byte array / buffer. </param>
-        public static void Write(this Stream stream, byte[] bytes)
-        {
-            stream.Write(bytes, 0, bytes.Length);
-        }
+        public static void Write(this Stream stream, byte[] bytes) { stream.Write(bytes, 0, bytes.Length); }
 
         // ----------------------------------------
 
@@ -231,12 +210,9 @@
                         var part = parts[i];
                         // If on last element, send if it ended in the seperator. Otherwise buffer last part.
                         if (i == parts.Length - 1)
-                            if (lastIsDelim)
-                                sub.OnNext(part);
-                            else
-                                buffer = part;
-                        else
-                            sub.OnNext(part);
+                            if (lastIsDelim) sub.OnNext(part);
+                            else buffer = part;
+                        else sub.OnNext(part);
                     }
                 },
                 (exp) => sub.OnError(exp),
@@ -254,7 +230,7 @@
         // After reading completes, the Observable will signal OnComplete.
         public static IObservable<byte[]> ObservableStreamAsync(this Stream stream, int bufferSize)
         {
-            if (stream == null) throw new ArgumentNullException("stream");
+            if (null == stream) throw new ArgumentNullException("stream");
             var sub = new Subject<byte[]>();
             ReadHelper(stream, bufferSize, sub);
             Console.WriteLine("Kicked first read.");
@@ -290,8 +266,7 @@
                                 // Post result before next read to prevent any overlap.
                                 ReadHelper(stream, bufferSize, sub);
                             }
-                            else
-                                sub.OnCompleted();
+                            else sub.OnCompleted();
                             //Console.WriteLine("File closed.");
                         }
                         catch (Exception exp)

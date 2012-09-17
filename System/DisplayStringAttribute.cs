@@ -31,9 +31,6 @@ namespace System
     ///         }
     ///     </code>
     /// </example>
-    /// <remarks>
-    /// 	Contributed by nagits, http://about.me/AlekseyNagovitsyn
-    /// </remarks>
     [AttributeUsage(AttributeTargets.Field)]
     public class DisplayStringAttribute : Attribute
     {
@@ -42,49 +39,35 @@ namespace System
         /// </summary>
         public static readonly DisplayStringAttribute Default = new DisplayStringAttribute();
 
-        private readonly String _displayString;
-
         /// <summary>
         /// The value of this attribute
         /// </summary>
-        public String DisplayString
-        {
-            get { return _displayString; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the class <c>DisplayStringAttribute</c> with default value (empty String)
-        /// </summary>
-        public DisplayStringAttribute()
-            : this(String.Empty) {}
+        public string DisplayString { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the class <c>DisplayStringAttribute</c> with specified value
         /// </summary>
         /// <param name="displayString">The value of this attribute</param>
-        public DisplayStringAttribute(String displayString)
-        {
-            _displayString = displayString;
-        }
+        public DisplayStringAttribute(String displayString) { DisplayString = displayString; }
+
+        /// <summary>
+        /// Initializes a new instance of the class <c>DisplayStringAttribute</c> with default value (empty String)
+        /// </summary>
+        public DisplayStringAttribute()
+            : this(String.Empty) { }
 
         public override bool Equals(Object obj)
         {
             if (obj is DisplayStringAttribute)
             {
-                DisplayStringAttribute dispString = obj as DisplayStringAttribute;
-                return _displayString.Equals(dispString._displayString);
+                var dispString = obj as DisplayStringAttribute;
+                return DisplayString.Equals(dispString.DisplayString);
             }
             return false;
         }
 
-        public override int GetHashCode()
-        {
-            return _displayString.GetHashCode();
-        }
+        public override int GetHashCode() { return DisplayString.GetHashCode(); }
 
-        public override bool IsDefaultAttribute()
-        {
-            return Equals(Default);
-        }
+        public override bool IsDefaultAttribute() { return Equals(Default); }
     }
 }

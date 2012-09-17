@@ -313,8 +313,7 @@ namespace System
         /// <returns> </returns>
         public static Complex Sqrt(double real)
         {
-            if (real >= 0) return new Complex(Math.Sqrt(real));
-            else return new Complex(0, Math.Sqrt(-real));
+            return real >= 0 ? new Complex(Math.Sqrt(real)) : new Complex(0, Math.Sqrt(-real));
         }
 
         /// <summary>
@@ -353,10 +352,11 @@ namespace System
         /// <returns> </returns>
         public static double Arg(Complex complex)
         {
-            if (complex.Real < 0)
-                if (complex.Imag < 0) return Math.Atan(complex.Imag/complex.Real) - Math.PI;
-                else return Math.PI - Math.Atan(-complex.Imag/complex.Real);
-            else return Math.Atan(complex.Imag/complex.Real);
+            return complex.Real < 0
+                       ? (complex.Imag < 0
+                              ? Math.Atan(complex.Imag/complex.Real) - Math.PI
+                              : Math.PI - Math.Atan(-complex.Imag/complex.Real))
+                       : Math.Atan(complex.Imag/complex.Real);
         }
 
         #endregion
@@ -484,10 +484,8 @@ namespace System
             if (c1.IsReal && c2.IsImag) return new Complex(0, c1.Real*c2.Imag);
             if (c1.IsImag && c2.IsReal) return new Complex(0, c1.Imag*c2.Real);
             return new Complex
-                (
-                c1.Real*c2.Real - c1.Imag*c2.Imag,
-                c1.Imag*c2.Real + c1.Real*c2.Imag
-                );
+                (c1.Real*c2.Real - c1.Imag*c2.Imag,
+                 c1.Imag*c2.Real + c1.Real*c2.Imag);
         }
 
         public static Complex operator *(Complex complex, double real) { return complex*new Complex(real); }
@@ -503,8 +501,8 @@ namespace System
         public static bool operator ==(Complex c1, Complex c2)
         {
             if (ReferenceEquals(c1, c2)) return true;
-            if (null == (object) c1 || null == (object) c2) return false;
-            return c1.Real == c2.Real && c1.Imag == c2.Imag;
+            if (ReferenceEquals(null, c1) || ReferenceEquals(null, c2)) return false;
+            return (c1.Real == c2.Real) && (c1.Imag == c2.Imag);
         }
 
         public static bool operator ==(Complex complex, double real) { return complex == new Complex(real); }

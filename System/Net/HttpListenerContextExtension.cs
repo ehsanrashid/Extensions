@@ -3,25 +3,24 @@ using System.IO.Compression;
 
 namespace System.Net
 {
-
     /// <summary>
     ///   Extension methods for HttpListenerContext
     /// </summary>
     public static class HttpListenerContextExtension
     {
-
         /// <summary>
         ///   Prepares a response-stream using compression-, caching- and buffering-settings
         /// </summary>
-        /// <param name = "context">The context</param>
-        /// <param name = "allowZip">set to true in case you want to honor the compression-http-headers</param>
-        /// <param name = "buffered">set to true in case you want a BufferedStream</param>
-        /// <param name = "allowCache">set to false in case you want to set the no-cache-http-headers</param>
-        /// <returns>the stream to write you stuff to</returns>
+        /// <param name="context"> The context </param>
+        /// <param name="allowZip"> set to true in case you want to honor the compression-http-headers </param>
+        /// <param name="buffered"> set to true in case you want a BufferedStream </param>
+        /// <param name="allowCache"> set to false in case you want to set the no-cache-http-headers </param>
+        /// <returns> the stream to write you stuff to </returns>
         /// <remarks>
         ///   Contributed by blaumeister, http://www.codeplex.com/site/users/view/blaumeiser
         /// </remarks>
-        public static Stream GetResponseStream(this HttpListenerContext context, bool allowZip = true, bool buffered = true, bool allowCache = true)
+        public static Stream GetResponseStream(this HttpListenerContext context, bool allowZip = true, bool buffered = true,
+                                               bool allowCache = true)
         {
             if (!allowCache)
             {
@@ -30,7 +29,7 @@ namespace System.Net
                 context.Response.AddHeader("Cache-Control", "no-cache");
                 context.Response.AddHeader("Pragma", "no-cache");
             }
-            
+
             var stream = context.Response.OutputStream;
 
             if (allowZip)
@@ -55,6 +54,5 @@ namespace System.Net
 
             return stream;
         }
-
     }
 }
