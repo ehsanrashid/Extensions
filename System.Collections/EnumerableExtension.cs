@@ -15,7 +15,6 @@ namespace System.Collections
 
         public static IEnumerable<T> Convert<T>(this IEnumerable seq)
         {
-            
             /*
             foreach (Object obj in seq)
             {
@@ -26,19 +25,12 @@ namespace System.Collections
             return seq.GetEnumerator() as IEnumerable<T>;
         }
 
-
         public static TCol ToTypedCollection<TCol, T>(this IEnumerable seq)
             where TCol : IList<T>, new()
         {
-            TCol collection = new TCol();
-
-            foreach (Object item in seq)
-            {
-                collection.Add((T) item);
-            }
-
+            var collection = new TCol();
+            foreach (var item in seq) collection.Add((T) item);
             return collection;
         }
-
     }
 }

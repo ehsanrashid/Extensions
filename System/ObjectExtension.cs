@@ -1062,7 +1062,7 @@
                 sb.Append(format.Substring(start, match.Index - start));
                 sb.Append("{");
                 sb.Append(i.ToString(CultureInfo.InvariantCulture));
-                if (!String.IsNullOrEmpty(propFormat)) sb.AppendFormat(":{0}", propFormat);
+                if (propFormat.IsNotNullOrEmpty()) sb.AppendFormat(":{0}", propFormat);
                 sb.Append("}");
 
                 start = match.Index + match.Length;

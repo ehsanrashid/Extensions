@@ -13,7 +13,7 @@ namespace System.Security
         /// <returns> True if the string is either null or empty. </returns>
         public static bool IsNullOrEmpty(this SecureString secureStr)
         {
-            return (default(SecureString) == secureStr) || (0 == secureStr.Length);
+            return (null == secureStr) || (0 == secureStr.Length);
         }
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace System.Security
         ///   is a null reference.</exception>
         public static SecureString ToSecureString(this IEnumerable<char> seqChar)
         {
-            if (default(IEnumerable<char>) == seqChar) throw new ArgumentNullException("seqChar");
+            if (null == seqChar) throw new ArgumentNullException("seqChar");
             var secureStr = default(SecureString);
             // -------------------------------------------
             //secureStr = new SecureString();
@@ -36,8 +36,7 @@ namespace System.Security
             unsafe
             {
                 var str = new String(seqChar.ToArray());
-                fixed (char* pChar = str)
-                    secureStr = new SecureString(pChar, str.Length);
+                fixed (char* pChar = str) secureStr = new SecureString(pChar, str.Length);
             }
             // -------------------------------------------
             secureStr.MakeReadOnly();
@@ -103,8 +102,10 @@ namespace System.Security
         {
             if (default(SecureString) == valueA && default(SecureString) == valueB) return true;
             if (default(SecureString) == valueA || default(SecureString) == valueB) return false;
+            
             if (valueA.Length != valueB.Length) return false;
-            if (valueA.Length == 0 && valueB.Length == 0) return true;
+            if (0 == valueA.Length && 0 == valueB.Length) return true;
+            
             var ptrA = Marshal.SecureStringToCoTaskMemUnicode(valueA);
             var ptrB = Marshal.SecureStringToCoTaskMemUnicode(valueB);
             try
@@ -117,8 +118,7 @@ namespace System.Security
                 {
                     byteA = Marshal.ReadByte(ptrA, index);
                     byteB = Marshal.ReadByte(ptrB, index);
-                    if (byteA != byteB)
-                        return false;
+                    if (byteA != byteB) return false;
                     index += 2;
                 }
                 return true;
@@ -139,9 +139,11 @@ namespace System.Security
         public static SecureString ToSecureString(this String str, bool makeReadOnly = true)
         {
             if (str.IsNull()) return default(SecureString);
+            
             var secureString = new SecureString();
-            foreach (var c in str)
-                secureString.AppendChar(c);
+            
+            foreach (var c in str) secureString.AppendChar(c);
+
             if (makeReadOnly) secureString.MakeReadOnly();
             return secureString;
         }
@@ -165,5 +167,6 @@ namespace System.Security
                 Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString);
             }
         }
+
     }
 }

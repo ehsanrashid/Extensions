@@ -417,7 +417,7 @@
         {
             orderExp += String.Empty;
             var parts = orderExp.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length > 0 && !String.IsNullOrWhiteSpace(parts[0]))
+            if (parts.Length > 0 && parts[0].IsNotNullOrWhiteSpace())
             {
                 var descending = false;
                 var property = parts[0];
