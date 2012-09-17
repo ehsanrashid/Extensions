@@ -32,7 +32,7 @@ namespace System.Security
         ///   is a null reference.</exception>
         public static String Encrypt(this String strPlain)
         {
-            if (default(String) == strPlain) throw new ArgumentNullException("strPlain");
+            if (strPlain.IsNull()) throw new ArgumentNullException("strPlain");
             //encrypt data
             var byteData = Encoding.Unicode.GetBytes(strPlain);
             var byteEncrypted = ProtectedData.Protect(byteData, null, Scope);

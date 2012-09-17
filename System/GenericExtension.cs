@@ -26,7 +26,7 @@
         /// </example>
         public static bool IsNull<T>(this T self) where T : class
         {
-            return ReferenceEquals(self, default(T));
+            return ReferenceEquals(default(T), self);
         }
 
         /// <summary>
@@ -169,7 +169,7 @@
         public static int CountLoopsToNull<T>(this T self, Func<T, T> function) where T : class
         {
             var num = 0;
-            while ((self = function(self)) != default(T))
+            while (default(T) != (self = function(self)))
                 ++num;
             return num;
         }
@@ -194,7 +194,7 @@
             do
             {
                 if (self is K) return (K) self;
-            } while ((self = function(self)) != default(T));
+            } while (default(T) != (self = function(self)));
             return default(K);
         }
 
@@ -244,7 +244,7 @@
                 if (padToLength)
                     slice = new T[length];
             }
-            if (slice == null) slice = new T[n];
+            if (null == slice) slice = new T[n];
             Array.Copy(source, index, slice, 0, n);
             return slice;
         }

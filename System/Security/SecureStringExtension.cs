@@ -17,6 +17,17 @@ namespace System.Security
         }
 
         /// <summary>
+        ///   Checks whether a <see cref="SecureString" /> is either null or has a <see cref="SecureString.Length" /> of 0.
+        /// </summary>
+        /// <param name="secureStr"> The secure string to be inspected. </param>
+        /// <returns> True if the string is either null or empty. </returns>
+        public static bool IsNotNullOrEmpty(this SecureString secureStr)
+        {
+            return !IsNullOrEmpty(secureStr);
+        }
+
+
+        /// <summary>
         ///   Wraps a managed string into a <see cref="SecureString" /> instance.
         /// </summary>
         /// <param name="seqChar"> A string or char sequence that should be encapsulated. </param>
@@ -102,10 +113,10 @@ namespace System.Security
         {
             if (default(SecureString) == valueA && default(SecureString) == valueB) return true;
             if (default(SecureString) == valueA || default(SecureString) == valueB) return false;
-            
+
             if (valueA.Length != valueB.Length) return false;
             if (0 == valueA.Length && 0 == valueB.Length) return true;
-            
+
             var ptrA = Marshal.SecureStringToCoTaskMemUnicode(valueA);
             var ptrB = Marshal.SecureStringToCoTaskMemUnicode(valueB);
             try
@@ -139,9 +150,9 @@ namespace System.Security
         public static SecureString ToSecureString(this String str, bool makeReadOnly = true)
         {
             if (str.IsNull()) return default(SecureString);
-            
+
             var secureString = new SecureString();
-            
+
             foreach (var c in str) secureString.AppendChar(c);
 
             if (makeReadOnly) secureString.MakeReadOnly();
