@@ -74,7 +74,7 @@
         /// <param name="action"> The Action to perform on the element of the IList </param>
         public static void ForEach<T>(this IList<T> list, Action<T> action)
         {
-            for (int index = 0, end = list.Count; index < end; ++index)
+            for (int index = 0, end = list.Count; index < end; ++index) 
                 action(list[index]);
         }
 
@@ -86,7 +86,7 @@
         /// <param name="action"> The Action to perform on the element of the IList </param>
         public static void ForEachWithIndex<T>(this IList<T> list, Action<T, int> action)
         {
-            for (int index = 0, end = list.Count; index < end; ++index)
+            for (int index = 0, end = list.Count; index < end; ++index) 
                 action(list[index], index);
         }
 
@@ -98,7 +98,7 @@
         /// <param name="action"> The Action to perform on the element of the IList </param>
         public static void ForEachWithIndex<T>(this IList<T> list, Action<IList<T>, T, int> action)
         {
-            for (int index = 0, end = list.Count; index < end; ++index)
+            for (int index = 0, end = list.Count; index < end; ++index) 
                 action(list, list[index], index);
         }
 
@@ -183,8 +183,7 @@
         /// </remarks>
         public static string Join<T>(this IList<T> list, string joinString)
         {
-            if (default(IList<T>) == list || !list.Any())
-                return String.Empty;
+            if (null == list || !list.Any()) return String.Empty;
             var result = new StringBuilder();
             var listCount = list.Count;
             var listCountMinusOne = listCount - 1;
@@ -224,29 +223,27 @@
             // For each item in the source
             list.ForEach(
                 (item) =>
-                    {
-                        // Generate the expression string from the argument.
-                        var regExp = String.Empty;
-                        if (args != null)
-                            // For each argument
-                            Array.ForEach(args,
-                                          (expression) =>
-                                              {
-                                                  // Compile the expression
-                                                  var property = expression.Compile();
-                                                  // Attach the new property to the expression string
-                                                  regExp += (string.IsNullOrEmpty(regExp) ? "(?:" : "|(?:") +
-                                                            property(item) + ")+?";
-                                              });
-                        // Get the matches
-                        var match = Regex.Matches(searchString, regExp, RegexOptions.IgnoreCase);
-                        // If there are more than one match
-                        if (match.Count > 0)
-                            // Add it to the match dictionary, including the match count.
-                            matches.Add(item, match.Count);
-                        // Get the highest max matching
-                        maxMatch = (match.Count > maxMatch) ? match.Count : maxMatch;
-                    });
+                {
+                    // Generate the expression string from the argument.
+                    var regExp = String.Empty;
+                    if (args != null) // For each argument
+                        Array.ForEach(args,
+                            (expression) =>
+                            {
+                                // Compile the expression
+                                var property = expression.Compile();
+                                // Attach the new property to the expression string
+                                regExp += (string.IsNullOrEmpty(regExp) ? "(?:" : "|(?:") +
+                                        property(item) + ")+?";
+                            });
+                    // Get the matches
+                    var match = Regex.Matches(searchString, regExp, RegexOptions.IgnoreCase);
+                    // If there are more than one match
+                    if (match.Count > 0) // Add it to the match dictionary, including the match count.
+                        matches.Add(item, match.Count);
+                    // Get the highest max matching
+                    maxMatch = (match.Count > maxMatch) ? match.Count : maxMatch;
+                });
             // Convert the match dictionary into a list
             var matchList = matches.ToList();
             // Sort the list by decending match counts
@@ -256,12 +253,12 @@
             // If the top value is set and is less than the number of matches
             var getTop = top > 0 && top < matchList.Count ? top : matchList.Count;
             // Add the maches into the result list.
-            for (var i = 0; i < getTop; ++i)
-                results.Add(matchList[i].Key);
+            for (var i = 0; i < getTop; ++i) results.Add(matchList[i].Key);
             return results;
         }
 
         #region Sort
+
         //  Sorts an IList<T> in place.
         public static void Sort<T>(this IList<T> list, Comparison<T> comparison)
         {
@@ -278,9 +275,11 @@
         //    list.Clear();
         //    list.AddRange(sorted);
         //}
+
         #endregion
 
         #region GetRandomItem
+
         /// <summary>
         ///   Get's an random item from list.
         /// </summary>
@@ -290,11 +289,9 @@
         /// <returns> A random item from list. </returns>
         public static T GetRandomItem<T>(this IList<T> list, Random random)
         {
-            if (list.Count > 0)
-                // The maxValue for the upper-bound in the Next() method is exclusive, see: http://stackoverflow.com/q/5063269/375958
+            if (list.Count > 0) // The maxValue for the upper-bound in the Next() method is exclusive, see: http://stackoverflow.com/q/5063269/375958
                 return list[random.Next(0, list.Count)];
-            else
-                throw new InvalidOperationException("Could not get item from empty list.");
+            throw new InvalidOperationException("Could not get item from empty list.");
         }
 
         /// <summary>
@@ -321,9 +318,11 @@
             var random = new Random(DateTime.Now.Millisecond);
             return list.GetRandomItem(random);
         }
+
         #endregion
 
         #region Merge
+
         /// <summary>
         ///   The merge.
         /// </summary>
@@ -373,10 +372,9 @@
             if (list1 != null && list2 != null && match != null)
             {
                 var matchFunc = match.Compile();
-                foreach (var item in list2)
+                foreach (var item in from item in list2 let key = matchFunc(item) where !list1.Exists(i => matchFunc(i).Equals(key)) select item)
                 {
-                    var key = matchFunc(item);
-                    if (!list1.Exists(i => matchFunc(i).Equals(key))) list1.Add(item);
+                    list1.Add(item);
                 }
             }
             return list1;
@@ -394,13 +392,16 @@
         /// </remarks>
         public static List<T> Merge<T>(this List<T> list1, List<T> list2)
         {
-            if (list1 != null && list2 != null)
-                foreach (var item in list2.Where(item => !list1.Contains(item))) list1.Add(item);
+            if (null != list1 && null != list2)
+                foreach (var item in list2.Where(item => !list1.Contains(item)))
+                    list1.Add(item);
             return list1;
         }
+
         #endregion
 
         #region Safe
+
         //x.SafeForEach(y) is a no-op for null x or null y
         //This is a shortcut that should probably go in a class called SafeListExtensions later
         public static void SafeForEach<T>(this List<T> list, Action<T> action)
@@ -409,6 +410,7 @@
             list = list ?? new List<T>();
             list.ForEach(action);
         }
+
         #endregion
     }
 }

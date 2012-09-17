@@ -33,9 +33,9 @@
             PageIndex = pageIndex;
             PageSize = pageSize;
             TotalCount = source.Count();
-            TotalPages = (int) Math.Ceiling(TotalCount / (double) PageSize);
+            TotalPages = (int) Math.Ceiling(TotalCount/(double) PageSize);
 
-            this.AddRange(source.Skip(PageIndex * PageSize).Take(PageSize));
+            AddRange(source.Skip(PageIndex*PageSize).Take(PageSize));
         }
 
         /// <summary>
@@ -54,5 +54,4 @@
             get { return (PageIndex + 1 < TotalPages); }
         }
     }
-
 }

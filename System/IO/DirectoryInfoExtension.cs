@@ -54,7 +54,7 @@ namespace System.IO
             //return null;
             return
                 directory.GetDirectories().Select(subDir => subDir.FindFileRecursive(predicate)).FirstOrDefault(
-                    fileInfo => fileInfo != null);
+                    fileInfo => null != fileInfo);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace System.IO
             return (files.Length > 0)
                        ? files[0]
                        : directory.GetDirectories().Select(subDirectory => subDirectory.FindFileRecursive(pattern)).
-                             FirstOrDefault(foundFile => foundFile != null);
+                             FirstOrDefault(foundFile => null != foundFile);
         }
 
         /// <summary>

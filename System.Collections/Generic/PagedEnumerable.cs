@@ -46,8 +46,7 @@ namespace System.Collections.Generic
         /// </summary>
         public IEnumerable<T> GetPage(int page)
         {
-            if (page < 0 || page > PageCount)
-                return new T[] {};
+            if (page < 0 || page > PageCount) return new T[] {};
             var offset = (page - 1)*PageSize;
             return _enumerable.Skip(offset).Take(PageSize);
         }
@@ -61,6 +60,7 @@ namespace System.Collections.Generic
         }
 
         #region IEnumerable<T> Members
+
         /// <summary>
         ///   Returns an enumerator that iterates through collection
         /// </summary>
@@ -68,9 +68,11 @@ namespace System.Collections.Generic
         {
             return _enumerable.GetEnumerator();
         }
+
         #endregion
 
         #region IEnumerable Members
+
         /// <summary>
         ///   Returns an enumerator that iterates through collection
         /// </summary>
@@ -78,6 +80,7 @@ namespace System.Collections.Generic
         {
             return GetEnumerator();
         }
+
         #endregion
     }
 }

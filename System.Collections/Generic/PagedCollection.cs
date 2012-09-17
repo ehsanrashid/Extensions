@@ -8,6 +8,7 @@
         public const int DefaultPageSize = 10;
 
         int _pageSize;
+
         /// <summary>
         ///   Gets or sets page size
         /// </summary>
@@ -40,7 +41,6 @@
             _pageSize = pageSize;
         }
 
-
         /// <summary>
         ///   Gets total page
         /// </summary>
@@ -48,7 +48,6 @@
         {
             get { return (int) Math.Ceiling((decimal) Count/PageSize); }
         }
-
 
         /// <summary>
         ///   Returns data by page number

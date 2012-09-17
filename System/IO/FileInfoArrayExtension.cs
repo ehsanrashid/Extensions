@@ -137,7 +137,7 @@ namespace System.IO
                 {
                     if (consolidateExceptions)
                     {
-                        if (exceptions == null) exceptions = new List<Exception>();
+                        if (null == exceptions) exceptions = new List<Exception>();
                         exceptions.Add(e);
                     }
                     else throw;
@@ -193,7 +193,7 @@ namespace System.IO
         /// </example>
         public static FileInfo[] ChangeExtensions(this FileInfo[] arrFileInfo, String newExtension)
         {
-            arrFileInfo.ForEach(f => f.ChangeExtension(newExtension));
+            arrFileInfo.ForEach(f => { if (null != f) f.ChangeExtension(newExtension); });
             return arrFileInfo;
         }
     }

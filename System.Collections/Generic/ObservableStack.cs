@@ -5,20 +5,16 @@ namespace System.Collections.Generic
 {
     public class ObservableStack<T> : Stack<T>, INotifyCollectionChanged, INotifyPropertyChanged
     {
-        public ObservableStack()
-        {
-        }
+        public ObservableStack() { }
 
         public ObservableStack(IEnumerable<T> collection)
         {
-            foreach (var item in collection)
-                base.Push(item);
+            foreach (var item in collection) base.Push(item);
         }
 
         public ObservableStack(List<T> list)
         {
-            foreach (var item in list)
-                base.Push(item);
+            foreach (var item in list) base.Push(item);
         }
 
         #region INotifyCollectionChanged Members
@@ -56,7 +52,6 @@ namespace System.Collections.Generic
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item));
         }
 
-
         protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
             RaiseCollectionChanged(e);
@@ -67,20 +62,16 @@ namespace System.Collections.Generic
             RaisePropertyChanged(e);
         }
 
-
         protected virtual event PropertyChangedEventHandler PropertyChanged;
 
-
-        private void RaiseCollectionChanged(NotifyCollectionChangedEventArgs e)
+        void RaiseCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            if (null != CollectionChanged)
-                CollectionChanged(this, e);
+            if (null != CollectionChanged) CollectionChanged(this, e);
         }
 
-        private void RaisePropertyChanged(PropertyChangedEventArgs e)
+        void RaisePropertyChanged(PropertyChangedEventArgs e)
         {
-            if (null != PropertyChanged)
-                PropertyChanged(this, e);
+            if (null != PropertyChanged) PropertyChanged(this, e);
         }
     }
 }

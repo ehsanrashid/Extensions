@@ -39,25 +39,21 @@ namespace System.Collections.Generic
         /// <param name="toVertex"> To vertex. </param>
         /// <param name="isDirected"> if set to <c>true</c> [is directed]. </param>
         public Edge(Vertex<T> fromVertex, Vertex<T> toVertex, bool isDirected)
-            : this(fromVertex, toVertex, 0, isDirected)
-        {
-        }
+            : this(fromVertex, toVertex, 0, isDirected) {}
 
         /// <summary>
         ///   Initializes a new instance of the <see cref="Edge&lt;T&gt;" /> class.
         /// </summary>
-        /// <param name="fromVertex"> From vertex. </param>
-        /// <param name="toVertex"> To vertex. </param>
+        /// <param name="vertex1"> From vertex. </param>
+        /// <param name="vertex2"> To vertex. </param>
         /// <param name="weight"> The weight associated with the edge. </param>
         /// <param name="isDirected"> if set to <c>true</c> [is directed]. </param>
-        public Edge(Vertex<T> fromVertex, Vertex<T> toVertex, double weight, bool isDirected)
+        public Edge(Vertex<T> vertex1, Vertex<T> vertex2, double weight, bool isDirected)
         {
-            if (fromVertex == null)
-                throw new ArgumentNullException("fromVertex");
-            if (toVertex == null)
-                throw new ArgumentNullException("toVertex");
-            FromVertex = fromVertex;
-            ToVertex = toVertex;
+            if (null == vertex1) throw new ArgumentNullException("vertex1");
+            if (null == vertex2) throw new ArgumentNullException("vertex2");
+            FromVertex = vertex1;
+            ToVertex = vertex2;
             Weight = weight;
             IsDirected = isDirected;
         }
@@ -69,12 +65,9 @@ namespace System.Collections.Generic
         /// <returns> The partner of the vertex specified in this edge relationship. </returns>
         public Vertex<T> GetPartnerVertex(Vertex<T> vertex)
         {
-            if (FromVertex == vertex)
-                return ToVertex;
-            else if (ToVertex == vertex)
-                return FromVertex;
-            else
-                throw new ArgumentException(Resources.VertexNotPartOfEdge);
+            if (FromVertex == vertex) return ToVertex;
+            if (ToVertex == vertex) return FromVertex;
+            throw new ArgumentException(Resources.VertexNotPartOfEdge);
         }
     }
 }

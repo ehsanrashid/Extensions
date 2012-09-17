@@ -12,12 +12,18 @@
         /// <summary>
         ///   Returns true if the <paramref name="enumerable" /> is null or without any items.
         /// </summary>
-        public static bool IsNullOrEmpty<T>(this IEnumerable<T> enumerable) { return (null == enumerable) || !enumerable.Any(); }
+        public static bool IsNullOrEmpty<T>(this IEnumerable<T> enumerable)
+        {
+            return (null == enumerable) || !enumerable.Any();
+        }
 
         /// <summary>
         ///   Returns true if the <paramref name="enumerable" /> is contains at least one item.
         /// </summary>
-        public static bool IsNotNullOrEmpty<T>(this IEnumerable<T> enumerable) { return !IsNullOrEmpty(enumerable); }
+        public static bool IsNotNullOrEmpty<T>(this IEnumerable<T> enumerable)
+        {
+            return !IsNullOrEmpty(enumerable);
+        }
 
         static IEnumerable<T> Where<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate)
         {
@@ -30,7 +36,10 @@
             return Enumerable.Where(enumerable, predicate);
         }
 
-        public static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T> enumerable) where T : class { return Where(enumerable, x => x.IsNotNull()); }
+        public static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T> enumerable) where T : class
+        {
+            return Where(enumerable, x => x.IsNotNull());
+        }
 
         public static String Join<T>(this IEnumerable<T> enumerable, String separator)
         {
@@ -55,7 +64,7 @@
             return (null == enumerable)
                        ? String.Empty
                        : // String.Join(separator, enumerable.Select((item) => item.ToString()));
-                   // String.Join(separator, enumerable.Select((item) => item));
+                // String.Join(separator, enumerable.Select((item) => item));
                    String.Join(separator, enumerable);
         }
 
@@ -133,7 +142,10 @@
         ///<remarks>
         ///  Contributed by Michael T, http://about.me/MichaelTran
         ///</remarks>
-        public static IEnumerable<T> Distinct<T, TKey>(this IEnumerable<T> enumerable, Func<T, TKey> expression) { return (null == enumerable) ? Enumerable.Empty<T>() : enumerable.GroupBy(expression).Select(i => i.First()); }
+        public static IEnumerable<T> Distinct<T, TKey>(this IEnumerable<T> enumerable, Func<T, TKey> expression)
+        {
+            return (null == enumerable) ? Enumerable.Empty<T>() : enumerable.GroupBy(expression).Select(i => i.First());
+        }
 
         ///<summary>
         ///  Remove matching items from a list
@@ -238,7 +250,10 @@
         /// <param name="groupings"> The enumeration of groupings from a GroupBy() clause. </param>
         /// <returns> A dictionary of groupings such that the key of the dictionary is TKey type and the value is List of TValue type. </returns>
         public static Dictionary<TKey, List<TValue>> ToDictionary<TKey, TValue>(
-            this IEnumerable<IGrouping<TKey, TValue>> groupings) { return groupings.ToDictionary(group => @group.Key, group => @group.ToList()); }
+            this IEnumerable<IGrouping<TKey, TValue>> groupings)
+        {
+            return groupings.ToDictionary(group => @group.Key, group => @group.ToList());
+        }
 
         /// <summary>
         ///   Returns whether the enumerable contains a certain amount of elements.
@@ -247,7 +262,10 @@
         /// <param name="enumerable"> The source for this extension method. </param>
         /// <param name="count"> The amount of elements the enumerable should contain. </param>
         /// <returns> True when the enumerable contains the specified amount of elements, false otherwise. </returns>
-        public static bool HasCountOf<T>(this IEnumerable<T> enumerable, int count) { return enumerable.Take(count + 1).Count() == count; }
+        public static bool HasCountOf<T>(this IEnumerable<T> enumerable, int count)
+        {
+            return enumerable.Take(count + 1).Count() == count;
+        }
 
         /// <summary>
         ///   Overload the Select to allow null as a return
@@ -282,10 +300,10 @@
         /// <returns> </returns>
         public static IEnumerable<T> ToEnumValues<T>(this IEnumerable<T> enumerable)
         {
-            var enumType = typeof (T);
+            var enumType = typeof(T);
             // Can't use generic type constraints on value types,
             // so have to do check like this
-            if (typeof (Enum) != enumType.BaseType) throw new ArgumentException("T must be of type System.Enum");
+            if (typeof(Enum) != enumType.BaseType) throw new ArgumentException("T must be of type System.Enum");
             var enumValArray = Enum.GetValues(enumType);
             var enumValList = new List<T>(enumValArray.Length);
             //enumValList.AddRange(from int val in enumValArray select (T) Enum.Parse(enumType, val.ToString(CultureInfo.InvariantCulture)));
@@ -302,7 +320,7 @@
         /// <returns> </returns>
         public static IEnumerable<String> ToEnumNames<T>(this IEnumerable<T> enumerable)
         {
-            var cls = typeof (T);
+            var cls = typeof(T);
             var enumArrayList = cls.GetInterfaces();
             //return (from objType in enumArrayList where objType.IsEnum select objType.Name).ToList();
             return (Select(enumArrayList.Where(objType => objType.IsEnum), objType => objType.Name)).ToList();
@@ -323,7 +341,10 @@
         /// <remarks>
         ///   This method is a shorthand for the frequently use pattern IEnumerable&lt;T&gt;.Select(Func).ToArray()
         /// </remarks>
-        public static T2[] ToArray<T1, T2>(this IEnumerable<T1> enumerable, Func<T1, T2> selector) { return Select(enumerable, selector).ToArray(); }
+        public static T2[] ToArray<T1, T2>(this IEnumerable<T1> enumerable, Func<T1, T2> selector)
+        {
+            return Select(enumerable, selector).ToArray();
+        }
 
         /// <summary>
         ///   Creates a List&lt;T&gt; from an IEnumerable&lt;T&gt; using the specified transform function.
@@ -340,7 +361,10 @@
         /// <remarks>
         ///   This method is a shorthand for the frequently use pattern IEnumerable&lt;T&gt;.Select(Func).ToList()
         /// </remarks>
-        public static List<T2> ToList<T1, T2>(this IEnumerable<T1> enumerable, Func<T1, T2> selector) { return enumerable.Select(selector).ToList(); }
+        public static List<T2> ToList<T1, T2>(this IEnumerable<T1> enumerable, Func<T1, T2> selector)
+        {
+            return enumerable.Select(selector).ToList();
+        }
 
         /// <summary>
         ///   Converts all items of a list and returns them as enumerable.
@@ -384,7 +408,10 @@
 
         // Convenience method on IEnumerable<T> to allow passing of a
         // Comparison<T> delegate to the OrderBy method.
-        public static IEnumerable<T> OrderBy<T>(this IEnumerable<T> enumerable, Comparison<T> comparison) { return enumerable.OrderBy((item) => item, comparison as IComparer<T>); }
+        public static IEnumerable<T> OrderBy<T>(this IEnumerable<T> enumerable, Comparison<T> comparison)
+        {
+            return enumerable.OrderBy((item) => item, comparison as IComparer<T>);
+        }
 
         public static IEnumerable<T> OrderBy<T>(this IEnumerable<T> enumerable, String orderExp)
         {
@@ -395,8 +422,8 @@
                 var descending = false;
                 var property = parts[0];
                 if (parts.Length > 1) descending = parts[1].ToLower().Contains("esc");
-                var prop = typeof (T).GetProperty(property);
-                if (default(PropertyInfo) == prop) throw new Exception("No property '" + property + "' in + " + typeof (T).Name + "'");
+                var prop = typeof(T).GetProperty(property);
+                if (default(PropertyInfo) == prop) throw new Exception("No property '" + property + "' in + " + typeof(T).Name + "'");
                 return (descending)
                            ? enumerable.OrderByDescending(x => prop.GetValue(x, null))
                            : enumerable.OrderBy(x => prop.GetValue(x, null));
@@ -417,20 +444,21 @@
             //Get the collection type
             var typeDataSource = enumerable.GetType();
             // Determine the data type of the items in the data source at runtime.
-            var typeDataItem = typeof (Object);
+            var typeDataItem = typeof(Object);
             if (typeDataSource.HasElementType) typeDataItem = typeDataSource.GetElementType();
             else if (typeDataSource.IsGenericType) typeDataItem = typeDataSource.GetGenericArguments()[0];
             // Create an instance of the GenericSorter class passing in the data item type.
-            var typeSorter = typeof (GenericSorter<>).MakeGenericType(typeDataItem);
+            var typeSorter = typeof(GenericSorter<>).MakeGenericType(typeDataItem);
             var objSorter = Activator.CreateInstance(typeSorter);
             // Now I can call the "Sort" method passing in my runtime types.
             return
-                typeSorter.GetMethod("Sort", new[] {typeDataSource, typeof (String)}).Invoke(objSorter,
-                                                                                             new Object[]
-                                                                                             {
-                                                                                                 enumerable,
-                                                                                                 sortProperty
-                                                                                             }) as
+                typeSorter.GetMethod("Sort",
+                    new[] { typeDataSource, typeof(String) }).Invoke(objSorter,
+                        new Object[]
+                        {
+                            enumerable,
+                            sortProperty
+                        }) as
                 IEnumerable<T>;
         }
 
@@ -442,14 +470,17 @@
         /// <param name="pageIndex"> The page index, starting at 0. </param>
         /// <param name="pageSize"> The max number of items to return. </param>
         /// <returns> The resulting object collection. </returns>
-        public static IEnumerable<T> Page<T>(this IEnumerable<T> enumerable, int? pageIndex, int pageSize) { return (null != enumerable) ? enumerable.Skip((pageIndex ?? 0)*pageSize).Take(pageSize) : null; }
+        public static IEnumerable<T> Page<T>(this IEnumerable<T> enumerable, int? pageIndex, int pageSize)
+        {
+            return (null != enumerable) ? enumerable.Skip((pageIndex ?? 0) * pageSize).Take(pageSize) : null;
+        }
 
         public static IEnumerable<SelectListItem> ToSelectItemList<T>(this IEnumerable<T> enumerable,
                                                                       Func<T, String> text,
                                                                       Func<T, String> value)
         {
             return Select(enumerable,
-                          item => new SelectListItem
+                          (item) => new SelectListItem
                                   {
                                       Text = text(item),
                                       Value = value(item)
@@ -565,14 +596,20 @@
         /// </summary>
         /// <param name="enumerable"> A enumerable of UInt32 values to calculate the sum of. </param>
         /// <returns> The sum of the values in the enumerable. </returns>
-        public static uint Sum(this IEnumerable<uint> enumerable) { return enumerable.Aggregate(0U, (current, number) => current + number); }
+        public static uint Sum(this IEnumerable<uint> enumerable)
+        {
+            return enumerable.Aggregate(0U, (current, number) => current + number);
+        }
 
         /// <summary>
         ///   Computes the sum of a enumerable of UInt64 values.
         /// </summary>
         /// <param name="enumerable"> A enumerable of UInt64 values to calculate the sum of. </param>
         /// <returns> The sum of the values in the enumerable. </returns>
-        public static ulong Sum(this IEnumerable<ulong> enumerable) { return enumerable.Aggregate(0UL, (current, number) => current + number); }
+        public static ulong Sum(this IEnumerable<ulong> enumerable)
+        {
+            return enumerable.Aggregate(0UL, (current, number) => current + number);
+        }
 
         /// <summary>
         ///   Computes the sum of a enumerable of nullable UInt32 values.
@@ -604,7 +641,10 @@
         /// <param name="enumerable"> A enumerable of values that are used to calculate a sum. </param>
         /// <param name="selection"> A transformation function to apply to each element. </param>
         /// <returns> The sum of the projected values. </returns>
-        public static uint Sum<T>(this IEnumerable<T> enumerable, Func<T, uint> selection) where T : class { return WhereNotNull(enumerable).Select(selection).Sum(); }
+        public static uint Sum<T>(this IEnumerable<T> enumerable, Func<T, uint> selection) where T : class
+        {
+            return WhereNotNull(enumerable).Select(selection).Sum();
+        }
 
         /// <summary>
         ///   Computes the sum of a enumerable of nullable UInt32 values that are obtained by invoking a transformation function on each element of the intput enumerable.
@@ -612,7 +652,10 @@
         /// <param name="enumerable"> A enumerable of values that are used to calculate a sum. </param>
         /// <param name="selection"> A transformation function to apply to each element. </param>
         /// <returns> The sum of the projected values. </returns>
-        public static uint? Sum<T>(this IEnumerable<T> enumerable, Func<T, uint?> selection) where T : class { return WhereNotNull(enumerable).Select(selection).Sum(); }
+        public static uint? Sum<T>(this IEnumerable<T> enumerable, Func<T, uint?> selection) where T : class
+        {
+            return WhereNotNull(enumerable).Select(selection).Sum();
+        }
 
         /// <summary>
         ///   Computes the sum of a enumerable of UInt64 values that are obtained by invoking a transformation function on each element of the intput enumerable.
@@ -620,7 +663,10 @@
         /// <param name="enumerable"> A enumerable of values that are used to calculate a sum. </param>
         /// <param name="selector"> A transformation function to apply to each element. </param>
         /// <returns> The sum of the projected values. </returns>
-        public static ulong Sum<T>(this IEnumerable<T> enumerable, Func<T, ulong> selector) where T : class { return WhereNotNull(enumerable).Select(selector).Sum(); }
+        public static ulong Sum<T>(this IEnumerable<T> enumerable, Func<T, ulong> selector) where T : class
+        {
+            return WhereNotNull(enumerable).Select(selector).Sum();
+        }
 
         /// <summary>
         ///   Computes the sum of a enumerable of nullable UInt64 values that are obtained by invoking a transformation function on each element of the intput enumerable.
@@ -628,7 +674,10 @@
         /// <param name="enumerable"> A enumerable of values that are used to calculate a sum. </param>
         /// <param name="selector"> A transformation function to apply to each element. </param>
         /// <returns> The sum of the projected values. </returns>
-        public static ulong? Sum<T>(this IEnumerable<T> enumerable, Func<T, ulong?> selector) where T : class { return WhereNotNull(enumerable).Select(selector).Sum(); }
+        public static ulong? Sum<T>(this IEnumerable<T> enumerable, Func<T, ulong?> selector) where T : class
+        {
+            return WhereNotNull(enumerable).Select(selector).Sum();
+        }
 
         #endregion
 
@@ -649,7 +698,7 @@
                     result.AddRange(list
                                         .Skip(++index)
                                         .Combinations(k - 1)
-                                        .Select(combination => (new[] {elem}).Concat(combination).ToArray()));
+                                        .Select(combination => (new[] { elem }).Concat(combination).ToArray()));
                 }
             }
             return result;
@@ -690,7 +739,7 @@
         public static void Done<T>(this IEnumerable<T> enumerable)
         {
             //return enumerable as List<T> ?? enumerable.ToList();
-            if (null != enumerable) foreach (var item in enumerable) {}
+            if (null != enumerable) foreach (var item in enumerable) { }
         }
 
         #endregion
@@ -698,9 +747,15 @@
         #region Safe Function
 
         //null.ToList() returns empty list
-        public static List<T> SafeToList<T>(this IEnumerable<T> enumerable) { return (enumerable ?? new List<T>()).ToList(); }
+        public static List<T> SafeToList<T>(this IEnumerable<T> enumerable)
+        {
+            return (enumerable ?? new List<T>()).ToList();
+        }
 
-        public static void SafeForEach<T>(this IEnumerable<T> enumerable, Action<T> action) { SafeToList(enumerable).SafeForEach(action); }
+        public static void SafeForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
+        {
+            SafeToList(enumerable).SafeForEach(action);
+        }
 
         #endregion
 

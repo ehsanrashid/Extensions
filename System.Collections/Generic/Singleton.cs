@@ -7,7 +7,9 @@ namespace System.Collections.Generic
     public static class Singleton<T> where T : new()
     {
         #region Globals
-        private static T instance = new T();
+
+        static T instance = new T();
+
         #endregion
 
         /// <summary>

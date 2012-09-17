@@ -1,9 +1,9 @@
+using System.Linq;
 
 namespace System.Collections.Generic
 {
     using Diagnostics;
     using Visitors;
-
     using Properties;
 
     /// <summary>
@@ -13,13 +13,12 @@ namespace System.Collections.Generic
     /// <typeparam name="T"> </typeparam>
     public sealed class Graph<T> : IVisitableCollection<T>
     {
-        #region Globals
-        private readonly List<Vertex<T>> graphVertices;
-        private readonly List<Edge<T>> graphEdges;
-        private readonly bool graphIsDirected;
-        #endregion
+        readonly List<Vertex<T>> graphVertices;
+        readonly List<Edge<T>> graphEdges;
+        readonly bool graphIsDirected;
 
         #region Construction
+
         /// <summary>
         ///   Initializes a new instance of the <see cref="Graph&lt;T&gt;" /> class.
         /// </summary>
@@ -30,23 +29,23 @@ namespace System.Collections.Generic
             graphVertices = new List<Vertex<T>>();
             graphEdges = new List<Edge<T>>();
         }
+
         #endregion
 
         #region IVisitableCollection<T> Members
+
         /// <summary>
         ///   Accepts the specified visitor.
         /// </summary>
         /// <param name="visitor"> The visitor. </param>
         public void Accept(IVisitor<T> visitor)
         {
-            if (visitor == null)
-                throw new ArgumentNullException("visitor");
+            if (null == visitor) throw new ArgumentNullException("visitor");
             using (var enumerator = GetEnumerator())
                 while (enumerator.MoveNext())
                 {
                     visitor.Visit(enumerator.Current);
-                    if (visitor.HasCompleted)
-                        break;
+                    if (visitor.HasCompleted) break;
                 }
         }
 
@@ -102,7 +101,7 @@ namespace System.Collections.Generic
         /// <summary>
         ///   Determines whether the <see cref="T:System.Collections.Generic.ICollection`1"></see> contains a specific value.
         /// </summary>
-        /// <param name="item"> The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"></see> . </param>
+        /// <param name="item"> The Object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"></see> . </param>
         /// <returns> true if item is found in the <see cref="T:System.Collections.Generic.ICollection`1"></see> ; otherwise, false. </returns>
         bool ICollection<T>.Contains(T item)
         {
@@ -123,22 +122,20 @@ namespace System.Collections.Generic
         ///   is greater than the available space from arrayIndex to the end of the destination array.-or-Type T cannot be cast automatically to the type of the destination array.</exception>
         public void CopyTo(T[] array, int arrayIndex)
         {
-            if (array == null)
-                throw new ArgumentNullException("array");
-            if ((array.Length - arrayIndex) < VertexCount)
-                throw new ArgumentException(Resources.NotEnoughSpaceInTargetArray);
+            if (null == array) throw new ArgumentNullException("array");
+            if ((array.Length - arrayIndex) < VertexCount) throw new ArgumentException(Resources.NotEnoughSpaceInTargetArray);
             var counter = arrayIndex;
-            for (var i = 0; i < graphVertices.Count; i++)
+            foreach (var vtx in graphVertices)
             {
-                array.SetValue(graphVertices[i].Data, counter);
-                counter++;
+                array.SetValue(vtx.Data, counter);
+                ++counter;
             }
         }
 
         /// <summary>
-        ///   Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1"></see>.
+        ///   Removes the first occurrence of a specific Object from the <see cref="T:System.Collections.Generic.ICollection`1"></see>.
         /// </summary>
-        /// <param name="item"> The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"></see> . </param>
+        /// <param name="item"> The Object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"></see> . </param>
         /// <returns> true if item was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1"></see> ; otherwise, false. This method also returns false if item is not found in the original <see
         ///    cref="T:System.Collections.Generic.ICollection`1"></see> . </returns>
         /// <exception cref="T:System.NotSupportedException">The
@@ -155,8 +152,7 @@ namespace System.Collections.Generic
         /// <returns> A <see cref="T:System.Collections.Generic.IEnumerator`1"></see> that can be used to iterate through the collection. </returns>
         public IEnumerator<T> GetEnumerator()
         {
-            for (var i = 0; i < graphVertices.Count; i++)
-                yield return graphVertices[i].Data;
+            return Enumerable.Select(graphVertices, vtx => vtx.Data).GetEnumerator();
         }
 
         /// <summary>
@@ -169,25 +165,26 @@ namespace System.Collections.Generic
         }
 
         /// <summary>
-        ///   Compares the current instance with another object of the same type.
+        ///   Compares the current instance with another Object of the same type.
         /// </summary>
-        /// <param name="obj"> An object to compare with this instance. </param>
+        /// <param name="obj"> An Object to compare with this instance. </param>
         /// <returns> A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has these meanings: Value Meaning Less than zero This instance is less than obj. Zero This instance is equal to obj. Greater than zero This instance is greater than obj. </returns>
         /// <exception cref="T:System.ArgumentException">obj is not the same type as this instance.</exception>
-        public int CompareTo(object obj)
+        public int CompareTo(Object obj)
         {
-            if (obj == null)
-                throw new ArgumentNullException("obj");
+            if (null == obj) throw new ArgumentNullException("obj");
             if (obj.GetType() == GetType())
             {
                 var graph = obj as Graph<T>;
                 return VertexCount.CompareTo(graph.VertexCount);
             }
-            else return GetType().FullName.CompareTo(obj.GetType().FullName);
+            return String.Compare(GetType().FullName, obj.GetType().FullName, StringComparison.Ordinal);
         }
+
         #endregion
 
         #region Public Members
+
         /// <summary>
         ///   Performs a depth-first traversal, starting at the specified vertex.
         /// </summary>
@@ -195,10 +192,8 @@ namespace System.Collections.Generic
         /// <param name="startVertex"> The vertex to start from. </param>
         public void DepthFirstTraversal(OrderedVisitor<Vertex<T>> visitor, Vertex<T> startVertex)
         {
-            if (visitor == null)
-                throw new ArgumentNullException("visitor");
-            if (startVertex == null)
-                throw new ArgumentNullException("startVertex");
+            if (null == visitor) throw new ArgumentNullException("visitor");
+            if (null == startVertex) throw new ArgumentNullException("startVertex");
             var visitedVertices = new List<Vertex<T>>(graphVertices.Count);
             DepthFirstTraversal(visitor, startVertex, ref visitedVertices);
         }
@@ -210,27 +205,31 @@ namespace System.Collections.Generic
         /// <param name="startVertex"> The vertex to start from. </param>
         public void BreadthFirstTraversal(IVisitor<Vertex<T>> visitor, Vertex<T> startVertex)
         {
-            if (visitor == null)
-                throw new ArgumentNullException("visitor");
-            if (startVertex == null)
-                throw new ArgumentNullException("startVertex");
+            if (null == visitor) throw new ArgumentNullException("visitor");
+            if (null == startVertex) throw new ArgumentNullException("startVertex");
             var visitedVertices = new List<Vertex<T>>(graphVertices.Count);
             var q = new VisitableQueue<Vertex<T>>();
             q.Enqueue(startVertex);
             visitedVertices.Add(startVertex);
-            while (!((q.IsEmpty) || (visitor.HasCompleted)))
+            while (!(q.IsEmpty || visitor.HasCompleted))
             {
                 var vertex = q.Dequeue();
                 visitor.Visit(vertex);
                 var edges = vertex.EmanatingEdgeList;
-                for (var i = 0; i < edges.Count; i++)
+                //foreach (var e in edges)
+                //{
+                //    var vertexToVisit = e.GetPartnerVertex(vertex);
+                //    if (!visitedVertices.Contains(vertexToVisit))
+                //    {
+                //        q.Enqueue(vertexToVisit);
+                //        visitedVertices.Add(vertexToVisit);
+                //    }
+                //}
+
+                foreach (var vertexToVisit in Enumerable.Select(edges, e => e.GetPartnerVertex(vertex)).Where(vertexToVisit => !visitedVertices.Contains(vertexToVisit)))
                 {
-                    var vertexToVisit = edges[i].GetPartnerVertex(vertex);
-                    if (!visitedVertices.Contains(vertexToVisit))
-                    {
-                        q.Enqueue(vertexToVisit);
-                        visitedVertices.Add(vertexToVisit);
-                    }
+                    q.Enqueue(vertexToVisit);
+                    visitedVertices.Add(vertexToVisit);
                 }
             }
         }
@@ -242,17 +241,12 @@ namespace System.Collections.Generic
         /// <returns> A value indicating whether the vertex was found (and removed) in the graph. </returns>
         public bool RemoveVertex(Vertex<T> vertex)
         {
-            if (vertex == null)
-                throw new ArgumentNullException("vertex");
-            if (!graphVertices.Remove(vertex))
-                return false;
-            else
-            {
-                // Delete all the edges in which this vertex forms part of
-                var list = vertex.IncidentEdgeList;
-                while (list.Count > 0) RemoveEdge(list[0]);
-                return true;
-            }
+            if (vertex == null) throw new ArgumentNullException("vertex");
+            if (!graphVertices.Remove(vertex)) return false;
+            // Delete all the edges in which this vertex forms part of
+            var list = vertex.IncidentEdgeList;
+            while (list.Count > 0) RemoveEdge(list[0]);
+            return true;
         }
 
         /// <summary>
@@ -262,12 +256,19 @@ namespace System.Collections.Generic
         /// <returns> A value indicating whether a vertex with the value specified was found (and removed) in the graph. </returns>
         public bool RemoveVertex(T item)
         {
-            for (var i = 0; i < graphVertices.Count; i++)
-                if (graphVertices[i].Data.Equals(item))
-                {
-                    RemoveVertex(graphVertices[i]);
-                    return true;
-                }
+            //foreach (var vtx in graphVertices)
+            //    if (vtx.Data.Equals(item))
+            //    {
+            //        RemoveVertex(vtx);
+            //        return true;
+            //    }
+            //return false;
+
+            foreach (var vtx in graphVertices.Where(vtx => vtx.Data.Equals(item)))
+            {
+                RemoveVertex(vtx);
+                return true;
+            }
             return false;
         }
 
@@ -297,10 +298,12 @@ namespace System.Collections.Generic
         /// <returns> <c>true</c> if the specified item contains vertex; otherwise, <c>false</c> . </returns>
         public bool ContainsVertex(T item)
         {
-            for (var i = 0; i < graphVertices.Count; i++)
-                if (graphVertices[i].Data.Equals(item))
-                    return true;
-            return false;
+            //for (var i = 0; i < graphVertices.Count; i++)
+            //    if (graphVertices[i].Data.Equals(item)) 
+            //        return true;
+            //return false;
+
+            return graphVertices.Any(vtx => vtx.Data.Equals(item));
         }
 
         /// <summary>
@@ -329,8 +332,7 @@ namespace System.Collections.Generic
         public bool RemoveEdge(Edge<T> edge)
         {
             CheckEdgeNotNull(edge);
-            if (!graphEdges.Remove(edge))
-                return false;
+            if (!graphEdges.Remove(edge)) return false;
             edge.FromVertex.RemoveEdge(edge);
             edge.ToVertex.RemoveEdge(edge);
             return true;
@@ -339,32 +341,28 @@ namespace System.Collections.Generic
         /// <summary>
         ///   Removes the edge specified from the graph.
         /// </summary>
-        /// <param name="from"> The from vertex. </param>
-        /// <param name="to"> The to vertex. </param>
+        /// <param name="vtx1"> The from vertex. </param>
+        /// <param name="vtx2"> The to vertex. </param>
         /// <returns> A value indicating whether the edge between the two vertices supplied was found (and removed) from the graph. </returns>
-        public bool RemoveEdge(Vertex<T> from, Vertex<T> to)
+        public bool RemoveEdge(Vertex<T> vtx1, Vertex<T> vtx2)
         {
-            if (from == null)
-                throw new ArgumentNullException("from");
-            if (to == null)
-                throw new ArgumentNullException("to");
+            if (null == vtx1) throw new ArgumentNullException("vtx1");
+            if (null == vtx2) throw new ArgumentNullException("vtx2");
             if (graphIsDirected)
             {
-                for (var i = 0; i < graphEdges.Count; i++)
-                    if ((graphEdges[i].FromVertex == from) && (graphEdges[i].ToVertex == to))
-                    {
-                        RemoveEdge(graphEdges[i]);
-                        return true;
-                    }
+                foreach (var e in graphEdges.Where(e => (e.FromVertex == vtx1) && (e.ToVertex == vtx2)))
+                {
+                    RemoveEdge(e);
+                    return true;
+                }
             }
             else
-                for (var i = 0; i < graphEdges.Count; i++)
-                    if (((graphEdges[i].FromVertex == from) && (graphEdges[i].ToVertex == to)) ||
-                        ((graphEdges[i].FromVertex == to) && (graphEdges[i].ToVertex == from)))
-                    {
-                        RemoveEdge(graphEdges[i]);
-                        return true;
-                    }
+                foreach (var e in graphEdges.Where(e => ((e.FromVertex == vtx1) && (e.ToVertex == vtx2)) ||
+                                                         ((e.FromVertex == vtx2) && (e.ToVertex == vtx1))))
+                {
+                    RemoveEdge(e);
+                    return true;
+                }
             return false;
         }
 
@@ -375,12 +373,9 @@ namespace System.Collections.Generic
         public void AddEdge(Edge<T> edge)
         {
             CheckEdgeNotNull(edge);
-            if (edge.IsDirected != graphIsDirected)
-                throw new ArgumentException(Resources.MismatchedEdgeType);
-            if ((!graphVertices.Contains(edge.FromVertex)) || (!graphVertices.Contains(edge.ToVertex)))
-                throw new ArgumentException(Resources.VertexCouldNotBeFound);
-            if (edge.FromVertex.HasEmanatingEdgeTo(edge.ToVertex))
-                throw new ArgumentException(Resources.EdgeAllreadyExists);
+            if (edge.IsDirected != graphIsDirected) throw new ArgumentException(Resources.MismatchedEdgeType);
+            if ((!graphVertices.Contains(edge.FromVertex)) || (!graphVertices.Contains(edge.ToVertex))) throw new ArgumentException(Resources.VertexCouldNotBeFound);
+            if (edge.FromVertex.HasEmanatingEdgeTo(edge.ToVertex)) throw new ArgumentException(Resources.EdgeAllreadyExists);
             graphEdges.Add(edge);
             AddEdgeToVertices(edge);
         }
@@ -391,8 +386,7 @@ namespace System.Collections.Generic
         /// <param name="vertex"> The vertex to add. </param>
         public void AddVertex(Vertex<T> vertex)
         {
-            if (graphVertices.Contains(vertex))
-                throw new ArgumentException(Resources.VertexAlreadyExists);
+            if (graphVertices.Contains(vertex)) throw new ArgumentException(Resources.VertexAlreadyExists);
             graphVertices.Add(vertex);
         }
 
@@ -459,8 +453,7 @@ namespace System.Collections.Generic
         {
             get
             {
-                if (graphVertices.Count == 0)
-                    throw new InvalidOperationException(Resources.GraphIsEmpty);
+                if (0 == graphVertices.Count) throw new InvalidOperationException(Resources.GraphIsEmpty);
                 var v = new CountingVisitor<Vertex<T>>();
                 BreadthFirstTraversal(v, graphVertices[0]);
                 return (v.Count == graphVertices.Count);
@@ -475,16 +468,13 @@ namespace System.Collections.Generic
         {
             get
             {
-                if (graphIsDirected)
-                    throw new InvalidOperationException(Resources.UndirectedGraphStrongConnectedness);
-                if (graphVertices.Count == 0)
-                    throw new InvalidOperationException(Resources.GraphIsEmpty);
+                if (graphIsDirected) throw new InvalidOperationException(Resources.UndirectedGraphStrongConnectedness);
+                if (0 == graphVertices.Count) throw new InvalidOperationException(Resources.GraphIsEmpty);
                 var v = new CountingVisitor<Vertex<T>>();
-                for (var i = 0; i < graphVertices.Count; i++)
+                foreach (var vtx in graphVertices)
                 {
                     BreadthFirstTraversal(v, graphVertices[0]);
-                    if (v.Count != graphVertices.Count)
-                        return false;
+                    if (v.Count != graphVertices.Count) return false;
                     v.ResetCount();
                 }
                 return true;
@@ -499,35 +489,23 @@ namespace System.Collections.Generic
         /// <returns> <c>true</c> if the vertex with the specified from value has an edge to a vertex with the specified to value; otherwise, <c>false</c> . </returns>
         public bool ContainsEdge(T fromValue, T toValue)
         {
-            if (graphIsDirected)
-            {
-                for (var i = 0; i < graphEdges.Count; i++)
-                    if ((graphEdges[i].FromVertex.Data.Equals(fromValue) &&
-                         (graphEdges[i].ToVertex.Data.Equals(toValue))))
-                        return true;
-            }
-            else
-                for (var i = 0; i < graphEdges.Count; i++)
-                    if (((graphEdges[i].FromVertex.Data.Equals(fromValue) &&
-                          (graphEdges[i].ToVertex.Data.Equals(toValue)))) ||
-                        ((graphEdges[i].FromVertex.Data.Equals(toValue) &&
-                          (graphEdges[i].ToVertex.Data.Equals(fromValue)))))
-                        return true;
-            return false;
+            return graphIsDirected
+                       ? graphEdges.Any(e => (e.FromVertex.Data.Equals(fromValue) && (e.ToVertex.Data.Equals(toValue))))
+                       : graphEdges.Any(
+                           e =>
+                           ((e.FromVertex.Data.Equals(fromValue) && (e.ToVertex.Data.Equals(toValue)))) ||
+                           ((e.FromVertex.Data.Equals(toValue) && (e.ToVertex.Data.Equals(fromValue)))));
         }
 
         /// <summary>
         ///   Determines whether the specified vertex has a edge to the to vertex.
         /// </summary>
-        /// <param name="from"> The from vertex. </param>
-        /// <param name="to"> The to vertex. </param>
+        /// <param name="vtx1"> The from vertex. </param>
+        /// <param name="vtx2"> The to vertex. </param>
         /// <returns> <c>true</c> if the specified from vertex has an edge to the to vertex; otherwise, <c>false</c> . </returns>
-        public bool ContainsEdge(Vertex<T> from, Vertex<T> to)
+        public bool ContainsEdge(Vertex<T> vtx1, Vertex<T> vtx2)
         {
-            if (graphIsDirected)
-                return from.HasEmanatingEdgeTo(to);
-            else
-                return from.HasIncidentEdgeWith(to);
+            return graphIsDirected ? vtx1.HasEmanatingEdgeTo(vtx2) : vtx1.HasIncidentEdgeWith(vtx2);
         }
 
         /// <summary>
@@ -550,30 +528,29 @@ namespace System.Collections.Generic
         {
             return from.GetEmanatingEdgeTo(to);
         }
+
         #endregion
 
         #region Private Members
+
         /// <summary>
         ///   Performs a depth-first traversal.
         /// </summary>
         /// <param name="visitor"> The visitor. </param>
         /// <param name="startVertex"> The start vertex. </param>
         /// <param name="visitedVertices"> The visited vertices. </param>
-        private void DepthFirstTraversal(OrderedVisitor<Vertex<T>> visitor, Vertex<T> startVertex,
-                                         ref List<Vertex<T>> visitedVertices)
+        static void DepthFirstTraversal(OrderedVisitor<Vertex<T>> visitor, Vertex<T> startVertex,
+                                 ref List<Vertex<T>> visitedVertices)
         {
-            if (visitor.HasCompleted)
-                return;
+            if (visitor.HasCompleted) return;
             // Add the vertex to the "visited" list
             visitedVertices.Add(startVertex);
             // Visit the vertex in pre-order
             visitor.VisitPreOrder(startVertex);
             // Get the list of emanating edges from the vertex
             var edges = startVertex.EmanatingEdgeList;
-            for (var i = 0; i < edges.Count; i++)
+            foreach (var vertexToVisit in Enumerable.Select(edges, e => e.GetPartnerVertex(startVertex)))
             {
-                // Get the partner vertex of the start vertex
-                var vertexToVisit = edges[i].GetPartnerVertex(startVertex);
                 // If the vertex hasn't been visited before, do a depth-first
                 // traversal starting at that vertex
                 if (!visitedVertices.Contains(vertexToVisit))
@@ -587,12 +564,14 @@ namespace System.Collections.Generic
         ///   Adds the edge to the vertices in the edge.
         /// </summary>
         /// <param name="edge"> The edge to add. </param>
-        private void AddEdgeToVertices(Edge<T> edge)
+        static void AddEdgeToVertices(Edge<T> edge)
         {
             #region Asserts
-            Debug.Assert(edge != null);
-            Debug.Assert(edge.FromVertex != null);
-            Debug.Assert(edge.ToVertex != null);
+
+            Debug.Assert(null != edge);
+            Debug.Assert(null != edge.FromVertex);
+            Debug.Assert(null != edge.ToVertex);
+
             #endregion
 
             edge.FromVertex.AddEdge(edge);
@@ -603,22 +582,25 @@ namespace System.Collections.Generic
         ///   Checks that the edge is not null.
         /// </summary>
         /// <param name="edge"> The edge to check. </param>
-        private void CheckEdgeNotNull(Edge<T> edge)
+        static void CheckEdgeNotNull(Edge<T> edge)
         {
-            if (edge == null)
-                throw new ArgumentNullException("edge");
+            if (null == edge) throw new ArgumentNullException("edge");
 
             #region Asserts
+
             // Since the edge constructor doesn't allow null vertices,
             // is shouldn't be necessary to check for those here.
             // Rather, substitute the exceptions with Asserts.
-            Debug.Assert(edge.FromVertex != null);
-            Debug.Assert(edge.ToVertex != null);
+            Debug.Assert(null != edge.FromVertex);
+            Debug.Assert(null != edge.ToVertex);
+
             #endregion
         }
+
         #endregion
 
         #region ICollection<T> Members
+
         /// <summary>
         ///   Gets a value indicating whether this instance is read only.
         /// </summary>
@@ -627,9 +609,11 @@ namespace System.Collections.Generic
         {
             get { return false; }
         }
+
         #endregion
 
         #region IEnumerable Members
+
         /// <summary>
         ///   Gets the enumerator.
         /// </summary>
@@ -638,6 +622,7 @@ namespace System.Collections.Generic
         {
             return GetEnumerator();
         }
+
         #endregion
     }
 }

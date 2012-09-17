@@ -4,42 +4,43 @@
     using Properties;
 
     /// <summary>
+    ///   Specifies the Priority Queue type (min or max).
+    /// </summary>
+    public enum PriorityQueueType
+    {
+        /// <summary>
+        ///   Specify a Max Priority Queue.
+        /// </summary>
+        MinPriorityQueue = 0,
+
+        /// <summary>
+        ///   Specify a Min Priority Queue.
+        /// </summary>
+        MaxPriorityQueue = 1
+    }
+
+    /// <summary>
     /// An inplementation of a Priority Queue (can be min or max).
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public sealed class PriorityQueue<T> : IVisitableCollection<T>, IQueue<T>
     {
-        /// <summary>
-        ///   Specifies the Priority Queue type (min or max).
-        /// </summary>
-        public enum PriorityQueueType
-        {
-            /// <summary>
-            ///   Specify a Max Priority Queue.
-            /// </summary>
-            MinPriorityQueue = 0,
-
-            /// <summary>
-            ///   Specify a Min Priority Queue.
-            /// </summary>
-            MaxPriorityQueue = 1
-        }
-
         #region Globals
-        private readonly Heap<Association<int, T>> heap;
+
+        readonly Heap<Association<int, T>> heap;
+
         #endregion
 
         #region Construction
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PriorityQueue&lt;T&gt;"/> class.
         /// </summary>
         /// <param name="queueType">Type of the queue.</param>
         public PriorityQueue(PriorityQueueType queueType)
         {
-            if (queueType == PriorityQueueType.MaxPriorityQueue)
-                heap = new Heap<Association<int, T>>(HeapType.MaxHeap, new AssociationKeyComparer<int, T>());
-            else
-                heap = new Heap<Association<int, T>>(HeapType.MinHeap, new AssociationKeyComparer<int, T>());
+            if (queueType == PriorityQueueType.MaxPriorityQueue) heap = new Heap<Association<int, T>>(HeapType.MaxHeap, new AssociationKeyComparer<int, T>());
+            else heap = new Heap<Association<int, T>>(HeapType.MinHeap, new AssociationKeyComparer<int, T>());
         }
 
         /// <summary>
@@ -49,14 +50,14 @@
         /// <param name="capacity">The initial capacity of the Priority Queue.</param>
         public PriorityQueue(PriorityQueueType queueType, int capacity)
         {
-            if (queueType == PriorityQueueType.MaxPriorityQueue)
-                heap = new Heap<Association<int, T>>(HeapType.MaxHeap, capacity, new AssociationKeyComparer<int, T>());
-            else
-                heap = new Heap<Association<int, T>>(HeapType.MaxHeap, capacity, new AssociationKeyComparer<int, T>());
+            if (queueType == PriorityQueueType.MaxPriorityQueue) heap = new Heap<Association<int, T>>(HeapType.MaxHeap, capacity, new AssociationKeyComparer<int, T>());
+            else heap = new Heap<Association<int, T>>(HeapType.MaxHeap, capacity, new AssociationKeyComparer<int, T>());
         }
+
         #endregion
 
         #region IQueue<T> Members
+
         /// <summary>
         /// Enqueues the specified item.
         /// </summary>
@@ -85,9 +86,11 @@
             CheckListNotEmpty();
             return heap.Root.Value;
         }
+
         #endregion
 
         #region IVisitableCollection<T> Members
+
         /// <summary>
         /// Gets a value indicating whether this instance is of a fixed size.
         /// </summary>
@@ -139,9 +142,7 @@
         public bool Contains(T item)
         {
             IList<Association<int, T>> list = heap.List;
-            for (int i = 1; i < heap.Count + 1; i++)
-                if (list[i].Value.Equals(item))
-                    return true;
+            for (var i = 1; i < heap.Count + 1; i++) if (list[i].Value.Equals(item)) return true;
             return false;
         }
 
@@ -155,13 +156,10 @@
         /// <exception cref="T:System.ArgumentException">array is multidimensional.-or-arrayIndex is equal to or greater than the length of array.-or-The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1"></see> is greater than the available space from arrayIndex to the end of the destination array.-or-Type T cannot be cast automatically to the type of the destination array.</exception>
         public void CopyTo(T[] array, int arrayIndex)
         {
-            if (array == null)
-                throw new ArgumentNullException("array");
-            if ((array.Length - arrayIndex) < Count)
-                throw new ArgumentException(Resources.NotEnoughSpaceInTargetArray);
+            if (array == null) throw new ArgumentNullException("array");
+            if ((array.Length - arrayIndex) < Count) throw new ArgumentException(Resources.NotEnoughSpaceInTargetArray);
             IList<Association<int, T>> list = heap.List;
-            for (int i = 1; i < list.Count; i++)
-                array.SetValue(list[i].Value, arrayIndex++);
+            for (var i = 1; i < list.Count; i++) array.SetValue(list[i].Value, arrayIndex++);
         }
 
         /// <summary>
@@ -195,9 +193,8 @@
         /// </returns>
         public IEnumerator<T> GetEnumerator()
         {
-            IEnumerator<Association<int, T>> enumerator = heap.GetEnumerator();
-            while (enumerator.MoveNext())
-                yield return enumerator.Current.Value;
+            var enumerator = heap.GetEnumerator();
+            while (enumerator.MoveNext()) yield return enumerator.Current.Value;
         }
 
         /// <summary>
@@ -218,15 +215,13 @@
         /// <exception cref="T:System.ArgumentException">obj is not the same type as this instance. </exception>
         public int CompareTo(object obj)
         {
-            if (obj == null)
-                throw new ArgumentNullException("obj");
+            if (obj == null) throw new ArgumentNullException("obj");
             if (obj.GetType() == GetType())
             {
                 var q = obj as PriorityQueue<T>;
                 return Count.CompareTo(q.Count);
             }
-            else
-                return GetType().FullName.CompareTo(obj.GetType().FullName);
+            else return GetType().FullName.CompareTo(obj.GetType().FullName);
         }
 
         /// <summary>
@@ -248,6 +243,7 @@
         {
             return GetEnumerator();
         }
+
         #endregion
 
         /// <summary>
@@ -267,14 +263,12 @@
         /// <param name="visitor">The visitor.</param>
         public void Accept(IVisitor<T> visitor)
         {
-            if (visitor == null)
-                throw new ArgumentNullException("visitor");
-            IList<Association<int, T>> list = heap.List;
-            for (int i = 1; i < list.Count; i++)
+            if (null == visitor) throw new ArgumentNullException("visitor");
+            var list = heap.List;
+            for (var i = 1; i < list.Count; i++)
             {
                 visitor.Visit(list[i].Value);
-                if (visitor.HasCompleted)
-                    break;
+                if (visitor.HasCompleted) break;
             }
         }
 
@@ -305,9 +299,8 @@
         /// <param name="by">The number that gets added to the priority of each item.</param>
         public void IncreaseItemPriority(int by)
         {
-            IList<Association<int, T>> list = heap.List;
-            for (int i = 1; i < list.Count; i++)
-                list[i].Key += by;
+            var list = heap.List;
+            for (var i = 1; i < list.Count; i++) list[i].Key += by;
         }
 
         /// <summary>
@@ -316,18 +309,16 @@
         /// <param name="by">The number that gets subtracted to the priority of each item.</param>
         public void DecreaseItemPriority(int by)
         {
-            IList<Association<int, T>> list = heap.List;
-            for (int i = 1; i < list.Count; i++)
-                list[i].Key -= by;
+            var list = heap.List;
+            for (var i = 1; i < list.Count; i++) list[i].Key -= by;
         }
 
         /// <summary>
         /// Checks if the list is not empty, and if it is, throw an exception.
         /// </summary>
-        private void CheckListNotEmpty()
+        void CheckListNotEmpty()
         {
-            if (heap.Count == 0)
-                throw new InvalidOperationException("The Priority Queue is empty.");
+            if (0 == heap.Count) throw new InvalidOperationException("The Priority Queue is empty.");
         }
     }
 
@@ -433,6 +424,7 @@
     */
 
     #region Old
+
     /*
     /// <summary>
     /// Provides a queue where the element with the lowest value is always at the front of the queue.
@@ -1210,5 +1202,6 @@
         }
     }
     */
+
     #endregion
 }

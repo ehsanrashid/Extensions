@@ -15,36 +15,28 @@ namespace System.Collections.Generic
         /// <summary>
         ///   Initializes a new instance of the <see cref="HashList&lt;TKey, TValue&gt;" /> class.
         /// </summary>
-        public HashList()
-        {
-        }
+        public HashList() { }
 
         /// <summary>
         ///   Initializes a new instance of the <see cref="HashList&lt;TKey, TValue&gt;" /> class.
         /// </summary>
         /// <param name="dictionary"> The dictionary. </param>
         public HashList(IDictionary<TKey, IList<TValue>> dictionary)
-            : base(dictionary)
-        {
-        }
+            : base(dictionary) { }
 
         /// <summary>
         ///   Initializes a new instance of the <see cref="HashList&lt;TKey, TValue&gt;" /> class.
         /// </summary>
         /// <param name="comparer"> The comparer. </param>
         public HashList(IEqualityComparer<TKey> comparer)
-            : base(comparer)
-        {
-        }
+            : base(comparer) { }
 
         /// <summary>
         ///   Initializes a new instance of the <see cref="HashList&lt;TKey, TValue&gt;" /> class.
         /// </summary>
         /// <param name="capacity"> The capacity. </param>
         public HashList(int capacity)
-            : base(capacity)
-        {
-        }
+            : base(capacity) { }
 
         /// <summary>
         ///   Initializes a new instance of the <see cref="HashList&lt;TKey, TValue&gt;" /> class.
@@ -52,9 +44,7 @@ namespace System.Collections.Generic
         /// <param name="capacity"> The capacity. </param>
         /// <param name="comparer"> The comparer. </param>
         public HashList(int capacity, IEqualityComparer<TKey> comparer)
-            : base(capacity, comparer)
-        {
-        }
+            : base(capacity, comparer) { }
 
         /// <summary>
         ///   Initializes a new instance of the <see cref="HashList&lt;TKey, TValue&gt;" /> class.
@@ -64,11 +54,10 @@ namespace System.Collections.Generic
         /// <param name="context"> A <see cref="T:System.Runtime.Serialization.StreamingContext"></see> structure containing the source and destination of the serialized stream associated with the <see
         ///    cref="T:System.Collections.Generic.Dictionary`2"></see> . </param>
         HashList(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
+            : base(info, context) { }
 
         #region Public Members
+
         /// <summary>
         ///   Gets the count of values in this HashList.
         /// </summary>
@@ -78,10 +67,7 @@ namespace System.Collections.Generic
             get
             {
                 var count = 0;
-                using (var enumerator = GetEnumerator())
-                    while (enumerator.MoveNext())
-                        if (enumerator.Current.Value != null)
-                            count += enumerator.Current.Value.Count;
+                using (var enumerator = GetEnumerator()) while (enumerator.MoveNext()) if (enumerator.Current.Value != null) count += enumerator.Current.Value.Count;
                 return count;
             }
         }
@@ -106,10 +92,7 @@ namespace System.Collections.Generic
             // It appears that a reference is kept to the enumerator and the enumeration only happens
             // after the enumerator has been disposed - some interesting behaviour follows.  To do : Investigate IL.
             var enumerator = GetEnumerator();
-            while (enumerator.MoveNext())
-                if (enumerator.Current.Value != null)
-                    foreach (var val in enumerator.Current.Value)
-                        yield return val;
+            while (enumerator.MoveNext()) if (enumerator.Current.Value != null) foreach (var val in enumerator.Current.Value) yield return val;
         }
 
         /// <summary>
@@ -215,6 +198,8 @@ namespace System.Collections.Generic
             var values = this[key];
             return (null != values) && values.Remove(item);
         }
+
         #endregion
+
     }
 }
