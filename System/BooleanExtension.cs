@@ -19,10 +19,7 @@
         /// </summary>
         /// <param name="boolean"></param>
         /// <returns>String</returns>
-        public static String ToYesNoString(this Boolean boolean)
-        {
-            return boolean ? "Yes" : "No";
-        }
+        public static String ToYesNoString(this Boolean boolean) { return boolean ? "Yes" : "No"; }
 
         /// <summary>
         /// Converts the value in number format {1 , 0}.
@@ -34,10 +31,7 @@
         /// 		int result= default(bool).ToBinaryTypeNumber()
         /// 	</code>
         /// </example>
-        public static int ToBinaryTypeNumber(this Boolean boolean)
-        {
-            return boolean ? 1 : 0;
-        }
+        public static int ToBinaryTypeNumber(this Boolean boolean) { return boolean ? 1 : 0; }
 
         //public static String ToString(this Boolean value)
         //{

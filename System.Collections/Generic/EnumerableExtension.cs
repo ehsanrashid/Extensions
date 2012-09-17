@@ -36,7 +36,7 @@
             return Enumerable.Where(enumerable, predicate);
         }
 
-        public static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T> enumerable)
+        public static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T> enumerable) where T : class
         {
             return Where(enumerable, x => x.IsNotNull());
         }
@@ -650,7 +650,7 @@
         /// <param name="enumerable"> A enumerable of values that are used to calculate a sum. </param>
         /// <param name="selection"> A transformation function to apply to each element. </param>
         /// <returns> The sum of the projected values. </returns>
-        public static uint Sum<T>(this IEnumerable<T> enumerable, Func<T, uint> selection)
+        public static uint Sum<T>(this IEnumerable<T> enumerable, Func<T, uint> selection) where T : class
         {
             return WhereNotNull(enumerable).Select(selection).Sum();
         }
@@ -661,7 +661,7 @@
         /// <param name="enumerable"> A enumerable of values that are used to calculate a sum. </param>
         /// <param name="selection"> A transformation function to apply to each element. </param>
         /// <returns> The sum of the projected values. </returns>
-        public static uint? Sum<T>(this IEnumerable<T> enumerable, Func<T, uint?> selection)
+        public static uint? Sum<T>(this IEnumerable<T> enumerable, Func<T, uint?> selection) where T : class
         {
             return WhereNotNull(enumerable).Select(selection).Sum();
         }
@@ -672,7 +672,7 @@
         /// <param name="enumerable"> A enumerable of values that are used to calculate a sum. </param>
         /// <param name="selector"> A transformation function to apply to each element. </param>
         /// <returns> The sum of the projected values. </returns>
-        public static ulong Sum<T>(this IEnumerable<T> enumerable, Func<T, ulong> selector)
+        public static ulong Sum<T>(this IEnumerable<T> enumerable, Func<T, ulong> selector) where T : class
         {
             return WhereNotNull(enumerable).Select(selector).Sum();
         }
@@ -683,7 +683,7 @@
         /// <param name="enumerable"> A enumerable of values that are used to calculate a sum. </param>
         /// <param name="selector"> A transformation function to apply to each element. </param>
         /// <returns> The sum of the projected values. </returns>
-        public static ulong? Sum<T>(this IEnumerable<T> enumerable, Func<T, ulong?> selector)
+        public static ulong? Sum<T>(this IEnumerable<T> enumerable, Func<T, ulong?> selector) where T : class
         {
             return WhereNotNull(enumerable).Select(selector).Sum();
         }

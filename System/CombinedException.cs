@@ -20,10 +20,7 @@
         /// <param name = "message">The message.</param>
         /// <param name = "innerExceptions">The inner exceptions.</param>
         public CombinedException(String message, params Exception[] innerExceptions)
-            : base(message)
-        {
-            InnerExceptions = innerExceptions;
-        }
+            : base(message) { InnerExceptions = innerExceptions; }
 
         /// <summary>
         /// Combines the specified exceptions.
@@ -33,8 +30,7 @@
         /// <returns></returns>
         public static Exception Combine(String message, params Exception[] innerExceptions)
         {
-            if (innerExceptions.Length == 1) return innerExceptions[0];
-            return new CombinedException(message, innerExceptions);
+            return innerExceptions.Length == 1 ? innerExceptions[0] : new CombinedException(message, innerExceptions);
         }
 
         /// <summary>
@@ -43,9 +39,6 @@
         /// <param name="message">The message.</param>
         /// <param name="innerExceptions">The inner exceptions.</param>
         /// <returns></returns>
-        public static Exception Combine(String message, IEnumerable<Exception> innerExceptions)
-        {
-            return Combine(message, innerExceptions.ToArray());
-        }
+        public static Exception Combine(String message, IEnumerable<Exception> innerExceptions) { return Combine(message, innerExceptions.ToArray()); }
     }
 }

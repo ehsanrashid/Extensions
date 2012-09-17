@@ -10,10 +10,7 @@
         ///</summary>
         ///<param name="array"> </param>
         ///<returns> </returns>
-        public static bool IsNullOrEmpty(this Array array)
-        {
-            return default(Array) != array && array.Length <= 0;
-        }
+        public static bool IsNullOrEmpty(this Array array) { return default(Array) != array && (array.Length <= 0); }
 
         /// <summary>
         ///   Tests if the array is empty.
@@ -45,10 +42,7 @@
         ///<param name="array"> </param>
         ///<param name="index"> </param>
         ///<returns> </returns>
-        public static bool WithinIndex(this Array array, int index)
-        {
-            return default(Array) != array && (0 <= index && index < array.Length);
-        }
+        public static bool WithinIndex(this Array array, int index) { return default(Array) != array && (0 <= index && index < array.Length); }
 
         /// <summary>
         ///   To clear the contents of the array.
@@ -102,7 +96,9 @@
         /// </example>
         public static T[] ClearAll<T>(this T[] array)
         {
-            if (default(T[]) != array) for (var i = array.GetLowerBound(0); i <= array.GetUpperBound(0); ++i) array[i] = default(T);
+            if (default(T[]) != array) 
+                for (var i = array.GetLowerBound(0); i <= array.GetUpperBound(0); ++i) 
+                    array[i] = default(T);
             return array;
         }
 
@@ -167,13 +163,9 @@
         {
             return String.Join(Environment.NewLine,
                                Array.ConvertAll(array2D,
-// ReSharper disable RedundantLambdaSignatureParentheses
-                                                (array1D) => String.Join(",",
-// ReSharper restore RedundantLambdaSignatureParentheses
-                                                                         Array.ConvertAll(array1D,
-// ReSharper disable RedundantLambdaSignatureParentheses
-                                                                                          (item) => item.ToString()))));
-// ReSharper restore RedundantLambdaSignatureParentheses
+                                    (array1D) => String.Join(",",
+                                        Array.ConvertAll(array1D,
+                                            (item) => item.ToString()))));
         }
     }
 }

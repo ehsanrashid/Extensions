@@ -12,7 +12,6 @@ namespace System
     /// </summary>
     public static class ByteArrayExtension
     {
-
         public static byte[] ConcatBuf(this byte[] buf1, byte[] buf2)
         {
             if (null == buf1 || 0 == buf1.Length) return buf2;
@@ -23,9 +22,7 @@ namespace System
             return rv;
         }
 
-        public static IEnumerable<byte[]> Split(this byte[] buffer, byte seperator, bool includeSeperator)
-        {
-            return null; //Split(buffer, new byte[] {seperator}, includeSeperator);
+        public static IEnumerable<byte[]> Split(this byte[] buffer, byte seperator, bool includeSeperator) { return null; //Split(buffer, new byte[] {seperator}, includeSeperator);
         }
 
         public static IEnumerable<byte[]> Split(this byte[] buffer, int blockSize)
@@ -48,7 +45,6 @@ namespace System
             }
         }
 
-
         public static IEnumerable<byte[]> Packetize(IEnumerable<byte> stream)
         {
             var buffer = new List<byte>();
@@ -58,8 +54,7 @@ namespace System
                 buffer.Add(b);
 
                 if (b != 0x03 || index < 2 || buffer[index - 1] != 0x10
-                || (index != 2 && buffer[index - 2] == 0x10))
-                    continue;
+                    || (index != 2 && buffer[index - 2] == 0x10)) continue;
 
                 yield return buffer.ToArray();
                 buffer.Clear();
@@ -125,7 +120,7 @@ namespace System
             // Generate the key and initialization vector.
             byte[] key = null;
             byte[] iv = null;
-            byte[] salt = { 0x10, 0x20, 0x12, 0x23, 0x37, 0xA4, 0xC5, 0xA6, 0xF1, 0xF0, 0xEE, 0x21, 0x22, 0x45 };
+            byte[] salt = {0x10, 0x20, 0x12, 0x23, 0x37, 0xA4, 0xC5, 0xA6, 0xF1, 0xF0, 0xEE, 0x21, 0x22, 0x45};
             MakeKeyAndIv(password, salt, keySize, blockSize, ref key, ref iv);
             // Make the encryptor or decryptor.
             var cryptoTransform = encrypt
@@ -163,7 +158,6 @@ namespace System
             return result;
         }
 
-
         /// <summary>
         /// Use the password to generate key bytes and an initialization vector with Rfc2898DeriveBytes.
         /// </summary>
@@ -179,8 +173,8 @@ namespace System
         {
             if (password == null) throw new ArgumentNullException("password");
             var deriveBytes = new Rfc2898DeriveBytes(password, salt, 1234);
-            key = deriveBytes.GetBytes(keySize / 8);
-            iv = deriveBytes.GetBytes(blockSize / 8);
+            key = deriveBytes.GetBytes(keySize/8);
+            iv = deriveBytes.GetBytes(blockSize/8);
         }
 
         #endregion
@@ -195,20 +189,16 @@ namespace System
         {
             if (default(Byte[]) == buffer1) throw new ArgumentNullException("buffer1");
             if (default(Byte[]) == buffer2) throw new ArgumentNullException("buffer2");
-            if (buffer2.Length == 0)
-                return 0; // by definition empty sets match immediately
+            if (buffer2.Length == 0) return 0; // by definition empty sets match immediately
             var j = -1;
             var end = buffer1.Length - buffer2.Length;
             while ((j = Array.IndexOf(buffer1, buffer2[0], j + 1)) <= end && j != -1)
             {
                 var i = 1;
-                while (buffer1[j + i] == buffer2[i])
-                    if (++i == buffer2.Length)
-                        return j;
+                while (buffer1[j + i] == buffer2[i]) if (++i == buffer2.Length) return j;
             }
             return -1;
         }
-
 
         /// <summary>
         /// Converts to image.
@@ -216,9 +206,6 @@ namespace System
         /// <param name="buffer">The byte array in.</param>
         /// <returns></returns>
         /// <remarks></remarks>
-        public static Image ConvertToImage(this Byte[] buffer)
-        {
-            return Image.FromStream(new MemoryStream(buffer));
-        }
+        public static Image ConvertToImage(this Byte[] buffer) { return Image.FromStream(new MemoryStream(buffer)); }
     }
 }

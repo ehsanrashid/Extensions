@@ -4,14 +4,26 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System", "System\System.csproj", "{258F0869-8DA8-4030-991D-1CA3AA80BF2E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Collections", "System.Collections\System.Collections.csproj", "{19F0DA65-368F-4C1B-96C8-29F662F452E5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{258F0869-8DA8-4030-991D-1CA3AA80BF2E} = {258F0869-8DA8-4030-991D-1CA3AA80BF2E}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Web.Mvc", "System.Web.Mvc\System.Web.Mvc.csproj", "{63C3ED2F-65E6-4E60-9486-F5EE3BE65DC2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{258F0869-8DA8-4030-991D-1CA3AA80BF2E} = {258F0869-8DA8-4030-991D-1CA3AA80BF2E}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{3FD44E89-D8DD-4346-B74C-086BE89B4D6F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Web", "System.Web\System.Web.csproj", "{E5D1326F-4A4D-4C74-AB40-1381ADD15F3D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{258F0869-8DA8-4030-991D-1CA3AA80BF2E} = {258F0869-8DA8-4030-991D-1CA3AA80BF2E}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Windows", "System.Windows\System.Windows.csproj", "{8D5918F5-548E-4016-94AF-8C49996F79D5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{258F0869-8DA8-4030-991D-1CA3AA80BF2E} = {258F0869-8DA8-4030-991D-1CA3AA80BF2E}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

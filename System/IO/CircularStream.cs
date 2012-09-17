@@ -1,10 +1,10 @@
 ﻿namespace System.IO
 {
     using Collections.Generic;
-
+    /*
     public class CircularStream : Stream
     {
-
+        /*
         private readonly CircularBuffer<byte> _buffer;
 
         public CircularStream(int bufferCapacity)
@@ -87,6 +87,7 @@
         {
             throw new NotImplementedException();
         }
-
+       
     }
+    */
 }
