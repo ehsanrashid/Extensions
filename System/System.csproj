@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{258F0869-8DA8-4030-991D-1CA3AA80BF2E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>System</RootNamespace>
+    <AssemblyName>SystemEx</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.CollectionsEx">
+      <HintPath>..\System.Collections\bin\Debug\System.CollectionsEx.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Reactive.Core, Version=2.0.20304.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft Reactive Extensions SDK\v2.0.20304\Binaries\.NETFramework\v4.5\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft Reactive Extensions SDK\v2.0.20304\Binaries\.NETFramework\v4.5\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq, Version=2.0.20304.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft Reactive Extensions SDK\v2.0.20304\Binaries\.NETFramework\v4.5\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Algorithm\Euclid.cs" />
+    <Compile Include="Algorithm\Fibonacci.cs" />
+    <Compile Include="ArrayExtension.cs" />
+    <Compile Include="ByteArrayExtension.cs" />
+    <Compile Include="CombinedException.cs" />
+    <Compile Include="Complex.cs" />
+    <Compile Include="ComponentModel\ComponentExtension.cs" />
+    <Compile Include="ConstructorExtension.cs" />
+    <Compile Include="Culture.cs" />
+    <Compile Include="Data\DataReaderExtension.cs" />
+    <Compile Include="Data\DataRowExtension.cs" />
+    <Compile Include="Data\DataRowViewExtension.cs" />
+    <Compile Include="Data\DataSetExtension.cs" />
+    <Compile Include="Data\DbConnectionExtension.cs" />
+    <Compile Include="DateTimeOffsetExtension.cs" />
+    <Compile Include="DecimalExtension.cs" />
+    <Compile Include="DisplayStringAttribute.cs" />
+    <Compile Include="DoubleExtension.cs" />
+    <Compile Include="Drawing\BitmapExtension.cs" />
+    <Compile Include="BooleanExtension.cs" />
+    <Compile Include="Converter.cs" />
+    <Compile Include="DateTimeExtension.cs" />
+    <Compile Include="Drawing\ColorExtension.cs" />
+    <Compile Include="Drawing\IconExtension.cs" />
+    <Compile Include="Drawing\ImageExtension.cs" />
+    <Compile Include="Drawing\PointExtension.cs" />
+    <Compile Include="EnumExtension.cs" />
+    <Compile Include="EventHandlerExtension.cs" />
+    <Compile Include="ExceptionExtension.cs" />
+    <Compile Include="ExtensionMethodSetting.cs" />
+    <Compile Include="FloatExtension.cs" />
+    <Compile Include="GenericExtension.cs" />
+    <Compile Include="Helper\Cryptor.cs" />
+    <Compile Include="Helper\Reader.cs" />
+    <Compile Include="IConverter.cs" />
+    <Compile Include="Int32Extension.cs" />
+    <Compile Include="IO\CircularStream.cs" />
+    <Compile Include="IO\DirectoryInfoExtension.cs" />
+    <Compile Include="IO\FileInfoArrayExtension.cs" />
+    <Compile Include="IO\FileInfoExtension.cs" />
+    <Compile Include="Int64Extension.cs" />
+    <Compile Include="IO\StreamExtension.cs" />
+    <Compile Include="IO\TextReaderExtension.cs" />
+    <Compile Include="Matrix.cs" />
+    <Compile Include="Net\HttpListenerContextExtension.cs" />
+    <Compile Include="Net\Sockets\SocketExtension.cs" />
+    <Compile Include="Net\Sockets\TcpClientExtension.cs" />
+    <Compile Include="ObjectExtension.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DirectoryServices\AccountManagement\PrincipalExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Security\SecureStringExtension.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Security\SecurityExtension.cs" />
+    <Compile Include="StringArrayExtension.cs" />
+    <Compile Include="StringConverterExtension.cs" />
+    <Compile Include="StringExtension.cs" />
+    <Compile Include="SystemDependencies\Clock.cs" />
+    <Compile Include="SystemDependencies\SubForSystemDate.cs" />
+    <Compile Include="Text\StringBuilderWrapper.cs" />
+    <Compile Include="Text\StringBuilderExtension.cs" />
+    <Compile Include="TimeSpanExtension.cs" />
+    <Compile Include="TypeExtension.cs" />
+    <Compile Include="UriQueryString.cs" />
+    <Compile Include="ValueTypeExtension.cs" />
+    <Compile Include="Xml\XmlNodeExtension.cs" />
+    <Compile Include="Xml\XmlSerializeExtension.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

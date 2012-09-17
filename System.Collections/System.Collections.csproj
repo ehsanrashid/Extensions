@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{19F0DA65-368F-4C1B-96C8-29F662F452E5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>System.Collections</RootNamespace>
+    <AssemblyName>System.CollectionsEx</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="SystemEx">
+      <HintPath>..\System\bin\Debug\SystemEx.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Algorithm\DijkstrasAlgorithm.cs" />
+    <Compile Include="Algorithm\PrimsAlgorithm.cs" />
+    <Compile Include="Algorithm\VertexInfo.cs" />
+    <Compile Include="Generic\Association.cs" />
+    <Compile Include="Generic\Bag.cs" />
+    <Compile Include="Generic\BinarySearchTree.cs" />
+    <Compile Include="Generic\BinaryTree.cs" />
+    <Compile Include="Generic\BlockingQueue.cs" />
+    <Compile Include="Generic\CircularBuffer.cs" />
+    <Compile Include="Generic\Comparer\AssociationKeyComparer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generic\Comparer\KeyValuePairEqualityComparer.cs" />
+    <Compile Include="Generic\Comparer\NestedAssociationKeyComparer.cs" />
+    <Compile Include="Generic\Comparer\NestedAssociationValueComparer.cs" />
+    <Compile Include="Generic\Deque.cs" />
+    <Compile Include="Generic\Edge.cs" />
+    <Compile Include="Generic\GeneralTree.cs" />
+    <Compile Include="Generic\Graph.cs" />
+    <Compile Include="Generic\HashList.cs" />
+    <Compile Include="Generic\Heap.cs" />
+    <Compile Include="Generic\Interface\IMathematicalMatrix.cs" />
+    <Compile Include="Generic\Interface\IBag.cs" />
+    <Compile Include="Generic\Interface\IDeque.cs" />
+    <Compile Include="Generic\Interface\IHeap.cs" />
+    <Compile Include="Generic\Interface\IMatrix.cs" />
+    <Compile Include="Generic\Interface\ISet.cs" />
+    <Compile Include="Generic\Interface\IStack.cs" />
+    <Compile Include="Generic\Interface\ITree.cs" />
+    <Compile Include="Generic\Comparer\InvertedComparer.cs" />
+    <Compile Include="Generic\Interface\IQueue.cs" />
+    <Compile Include="Generic\Interface\IVisitable.cs" />
+    <Compile Include="Generic\Interface\IVisitableCollection.cs" />
+    <Compile Include="Generic\Interface\IVisitableDictionary.cs" />
+    <Compile Include="Generic\Interface\IVisitableList.cs" />
+    <Compile Include="Generic\ObjectMatrix.cs" />
+    <Compile Include="Generic\ObservableStack.cs" />
+    <Compile Include="Generic\PagedCollection.cs" />
+    <Compile Include="Generic\PagedEnumerable.cs" />
+    <Compile Include="Generic\PaginatedList.cs" />
+    <Compile Include="Generic\CollectionExtension.cs" />
+    <Compile Include="Generic\Comparer\ComparableExtension.cs" />
+    <Compile Include="Generic\Comparer\ComparisonComparer.cs" />
+    <Compile Include="Generic\DictionaryExtension.cs" />
+    <Compile Include="Generic\ReadOnlyPropertyList.cs" />
+    <Compile Include="Generic\RedBlackTree.cs" />
+    <Compile Include="Generic\RedBlackTreeNode.cs" />
+    <Compile Include="Generic\Singleton.cs" />
+    <Compile Include="Generic\SkipList.cs" />
+    <Compile Include="Generic\SkipListNode.cs" />
+    <Compile Include="Generic\SortedList.cs" />
+    <Compile Include="Generic\Vertex.cs" />
+    <Compile Include="Generic\Matrix.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Sorter\GenericSorter.cs" />
+    <Compile Include="Generic\Comparer\ComparerExtension.cs" />
+    <Compile Include="Generic\EnumerableExtension.cs" />
+    <Compile Include="Generic\ListExtension.cs" />
+    <Compile Include="EnumerableExtension.cs" />
+    <Compile Include="Generic\PaginatedListExtension.cs" />
+    <Compile Include="Generic\PriorityQueue.cs" />
+    <Compile Include="Generic\Tree.cs" />
+    <Compile Include="Generic\VisitableHashtable.cs" />
+    <Compile Include="Generic\VisitableLinkedList.cs" />
+    <Compile Include="Generic\VisitableList.cs" />
+    <Compile Include="Generic\VisitableQueue.cs" />
+    <Compile Include="Generic\VisitableStack.cs" />
+    <Compile Include="Linq\QueryableExtension.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sorter\ISortable.cs" />
+    <Compile Include="Sorter\ISorter.cs" />
+    <Compile Include="Sorter\Sorter.cs" />
+    <Compile Include="Sorter\SortOrder.cs" />
+    <Compile Include="Specialized\ObservableItem.cs" />
+    <Compile Include="Visitors\ComparableFindingVisitor.cs" />
+    <Compile Include="Visitors\CountingVisitor.cs" />
+    <Compile Include="Visitors\EqualityFindingVisitor.cs" />
+    <Compile Include="Visitors\IFindingVisitor.cs" />
+    <Compile Include="Visitors\InOrderVisitor.cs" />
+    <Compile Include="Visitors\IVisitor.cs" />
+    <Compile Include="Visitors\KeyTrackingVisitor.cs" />
+    <Compile Include="Visitors\OrderedVisitor.cs" />
+    <Compile Include="Visitors\PostOrderVisitor.cs" />
+    <Compile Include="Visitors\PreOrderVisitor.cs" />
+    <Compile Include="Visitors\SumVisitor.cs" />
+    <Compile Include="Visitors\TrackingVisitor.cs" />
+    <Compile Include="Visitors\ValueTrackingVisitor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
