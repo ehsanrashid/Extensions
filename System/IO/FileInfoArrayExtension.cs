@@ -28,7 +28,7 @@ namespace System.IO
                 {
                     try
                     {
-                        file.TurnOffReadOnlyFlag();
+                        file.TurnOffReadOnly();
                         file.Delete();
                     }
                     catch (Exception e)

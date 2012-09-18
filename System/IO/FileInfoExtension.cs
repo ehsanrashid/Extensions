@@ -76,7 +76,7 @@
         /// <summary> Turns off the read only flag on a file. </summary>
         /// <param name = "fileInfo"> The file. </param>
         /// <returns> Returns true if the read only flag was set. </returns>
-        public static bool TurnOffReadOnlyFlag(this FileInfo fileInfo)
+        public static bool TurnOffReadOnly(this FileInfo fileInfo)
         {
             var attribs = fileInfo.Attributes;
             if (FileAttributes.ReadOnly == (attribs & FileAttributes.ReadOnly))
@@ -91,7 +91,7 @@
         ///   Turns on the read only flag for a file.
         /// </summary>
         /// <param name = "fileInfo"> The file. </param>
-        public static bool TurnOnReadOnlyFlag(this FileInfo fileInfo)
+        public static bool TurnOnReadOnly(this FileInfo fileInfo)
         {
             var attribs = fileInfo.Attributes;
             if (FileAttributes.ReadOnly != (attribs & FileAttributes.ReadOnly))
