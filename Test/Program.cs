@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,11 +11,8 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            String s1 = "hello world";
-            String s2 = "1234.7";
-
-
-
+            //String s1 = "hello world";
+            //String s2 = "1234.7";
 
             //Console.WriteLine(s1);
 
@@ -30,10 +28,21 @@ namespace Test
 
             //var ss1 = s1.Remove(new[] {"e", "o", "d"});
             //var ss2 = s1.Remove(new[] { 'e', 'o', 'd' });
-            
+
             //var s = s1.ToSecureString();
             //Console.WriteLine(ss1);
             //Console.WriteLine(ss2);
+
+            var name = @"D:\test.txt";
+            FileInfo file = new FileInfo(name);
+
+            DirectoryInfo dir = new DirectoryInfo(@"D:\temp");
+            dir.Delete();
+
+            //file.TurnOnReadOnlyFlag();
+            ///file.SetAttributes(FileAttributes.Temporary| FileAttributes.Normal);
+            //file.RenameWithoutExtension("test2");
+
             Console.Read();
 
         }

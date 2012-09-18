@@ -42,8 +42,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="SystemEx">
-      <HintPath>..\System\bin\Debug\SystemEx.dll</HintPath>
+    <Reference Include="SystemEx, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\System\bin\SystemEx.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

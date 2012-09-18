@@ -9,17 +9,17 @@
         ///   Renames a file.
         /// </summary>
         /// <param name="fileInfo"> The file. </param>
-        /// <param name="newName"> The new name. </param>
+        /// <param name="newName_ext"> The new name. </param>
         /// <returns> The renamed file </returns>
         /// <example>
         ///   <code>var file = new FileInfo(@"c:\test.txt");
         ///     file.Rename("test2.txt");</code>
         /// </example>
-        public static FileInfo Rename(this FileInfo fileInfo, String newName)
+        public static FileInfo Rename(this FileInfo fileInfo, String newName_ext)
         {
             if (default(FileInfo) != fileInfo)
             {
-                var pathFile = Path.Combine(Path.GetDirectoryName(fileInfo.FullName), newName);
+                var pathFile = Path.Combine(Path.GetDirectoryName(fileInfo.FullName), newName_ext);
                 fileInfo.MoveTo(pathFile);
             }
             return fileInfo;
@@ -35,10 +35,13 @@
         ///   <code>var file = new FileInfo(@"c:\test.txt");
         ///     file.RenameFileWithoutExtension("test3");</code>
         /// </example>
-        public static FileInfo RenameFileWithoutExtension(this FileInfo fileInfo, String newName)
+        public static FileInfo RenameWithoutExtension(this FileInfo fileInfo, String newName)
         {
-            var fileName = String.Concat(newName, fileInfo.Extension);
-            fileInfo.Rename(fileName);
+            if (default(FileInfo) != fileInfo)
+            {
+                var newFileName = String.Concat(newName, fileInfo.Extension);
+                fileInfo.Rename(newFileName);
+            }
             return fileInfo;
         }
 
@@ -46,18 +49,61 @@
         ///   Changes the files extension.
         /// </summary>
         /// <param name="fileInfo"> The file. </param>
-        /// <param name="newExtension"> The new extension. </param>
+        /// <param name="newExt"> The new extension. </param>
         /// <returns> The renamed file </returns>
         /// <example>
         ///   <code>var file = new FileInfo(@"c:\test.txt");
         ///     file.ChangeExtension("xml");</code>
         /// </example>
-        public static FileInfo ChangeExtension(this FileInfo fileInfo, String newExtension)
+        public static FileInfo ChangeExtension(this FileInfo fileInfo, String newExt)
         {
-            newExtension = newExtension.EnsureStartsWith(".");
-            var fileName = String.Concat(Path.GetFileNameWithoutExtension(fileInfo.FullName), newExtension);
-            fileInfo.Rename(fileName);
+            if (default(FileInfo) != fileInfo)
+            {
+                newExt = newExt.EnsureStartsWith(".");
+                var newFileName = String.Concat(Path.GetFileNameWithoutExtension(fileInfo.FullName), newExt);
+                fileInfo.Rename(newFileName);
+            }
             return fileInfo;
         }
+
+
+        public static void SetAttributes(this FileInfo fileInfo, FileAttributes attribs)
+        {
+            if (default(FileInfo) != fileInfo) File.SetAttributes(fileInfo.FullName, attribs);
+        }
+
+
+        /// <summary> Turns off the read only flag on a file. </summary>
+        /// <param name = "fileInfo"> The file. </param>
+        /// <returns> Returns true if the read only flag was set. </returns>
+        public static bool TurnOffReadOnlyFlag(this FileInfo fileInfo)
+        {
+            var attribs = fileInfo.Attributes;
+            if (FileAttributes.ReadOnly == (attribs & FileAttributes.ReadOnly))
+            {
+                File.SetAttributes(fileInfo.FullName, attribs & ~FileAttributes.ReadOnly);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        ///   Turns on the read only flag for a file.
+        /// </summary>
+        /// <param name = "fileInfo"> The file. </param>
+        public static bool TurnOnReadOnlyFlag(this FileInfo fileInfo)
+        {
+            var attribs = fileInfo.Attributes;
+            if (FileAttributes.ReadOnly != (attribs & FileAttributes.ReadOnly))
+            {
+                File.SetAttributes(fileInfo.FullName, attribs | FileAttributes.ReadOnly);
+                return true;
+            }
+            return false;
+        }
+
+
+
+
     }
 }
