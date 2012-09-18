@@ -7,6 +7,12 @@ namespace System.IO
     /// </summary>
     public static class TextReaderExtension
     {
+        public static bool TryReadLine(this TextReader reader, out string line)
+        {
+            line = reader.ReadLine();
+            return null != line;
+        }
+
         /// <summary>
         ///   The method provides an iterator through all lines of the text reader.
         /// </summary>
@@ -24,13 +30,22 @@ namespace System.IO
         /// </remarks>
         public static IEnumerable<String> ReadLines(this TextReader reader)
         {
-            if (default(TextReader) != reader)
+            //if (default(TextReader) != reader)
+            //{
+            //    String line;
+            //    while (default(String) != (line = reader.ReadLine())) yield return line;
+            //}
+            //else yield return default(String);
+
+            if (null != reader)
             {
                 String line;
-                while (default(String) != (line = reader.ReadLine())) yield return line;
+                while (reader.TryReadLine(out line)) 
+                    yield return line;
             }
-            else yield return default(String);
         }
+
+
 
         /// <summary>
         ///   The method executes the passed delegate /lambda expression) for all lines of the text reader.
@@ -48,9 +63,12 @@ namespace System.IO
         public static void ForEachReadLines(this TextReader reader, Action<String> action)
         {
             if (default(TextReader) != reader
-                && default(Action<String>) != action) //foreach (var line in reader.ReadLines())
+             && default(Action<String>) != action)
+            {
+                //foreach (var line in reader.ReadLines())
                 //    action(line);
                 reader.ReadLines().ForEach(action);
+            }
         }
     }
 }
