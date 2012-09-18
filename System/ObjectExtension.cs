@@ -1,5 +1,6 @@
 ﻿namespace System
 {
+    using System.Xml;
     using Collections;
     using Collections.Generic;
     using ComponentModel;
@@ -91,7 +92,7 @@
         /// </returns>
         public static bool IsOfType<T>(this Object obj)
         {
-            return obj.IsOfType(typeof (T));
+            return obj.IsOfType(typeof(T));
         }
 
         /// <summary>
@@ -123,7 +124,7 @@
         /// </returns>
         public static bool IsOfTypeOrInherits<T>(this Object obj)
         {
-            return obj.IsOfTypeOrInherits(typeof (T));
+            return obj.IsOfTypeOrInherits(typeof(T));
         }
 
         #endregion Check Type
@@ -157,7 +158,7 @@
         public static T Cast<T>(this Object obj, T defaultValue)
         {
             if (default(Object) == obj) return defaultValue;
-            return (T) Convert.ChangeType(obj, typeof (T));
+            return (T) Convert.ChangeType(obj, typeof(T));
         }
 
         /// <summary>
@@ -169,7 +170,7 @@
         public static T Cast<T>(this Object obj)
         {
             if (default(Object) == obj) throw new NullReferenceException();
-            return (T) Convert.ChangeType(obj, typeof (T));
+            return (T) Convert.ChangeType(obj, typeof(T));
         }
 
         /// <summary>
@@ -219,7 +220,7 @@
             // either of the two types...
             const BindingFlags pubStatBinding = BindingFlags.Public | BindingFlags.Static;
             var originType = obj.GetType();
-            var names = new[] {"op_Implicit", "op_Explicit"};
+            var names = new[] { "op_Implicit", "op_Explicit" };
 
             var castMethod =
                 typeTarget.GetMethods(pubStatBinding).Union(originType.GetMethods(pubStatBinding))
@@ -235,7 +236,7 @@
                                                                   originType.Name, typeTarget.Name));
             }
 
-            return castMethod.Invoke(default(Object), new[] {obj});
+            return castMethod.Invoke(default(Object), new[] { obj });
         }
 
         #endregion Cast
@@ -254,7 +255,7 @@
         {
             if (default(Object) != obj)
             {
-                var targetType = typeof (T);
+                var targetType = typeof(T);
 
                 var converter = TypeDescriptor.GetConverter(obj);
                 if (converter.CanConvertTo(targetType)) return true;
@@ -309,7 +310,7 @@
         {
             if (default(Object) != obj)
             {
-                var targetType = typeof (T);
+                var targetType = typeof(T);
 
                 if (obj.GetType() == targetType) return (T) obj;
 
@@ -390,7 +391,7 @@
         /// </returns>
         public static bool IsAssignableTo<T>(this Object obj)
         {
-            return obj.IsAssignableTo(typeof (T));
+            return obj.IsAssignableTo(typeof(T));
         }
 
         #endregion Assignable To
@@ -562,7 +563,7 @@
         public static IEnumerable<T> GetAttributes<T>(this Object obj, bool includeInherited) where T : Attribute
         {
             return
-                ((obj as Type) ?? obj.GetType()).GetCustomAttributes(typeof (T), includeInherited).OfType<T>().Select(
+                ((obj as Type) ?? obj.GetType()).GetCustomAttributes(typeof(T), includeInherited).OfType<T>().Select(
                     attribute => attribute);
         }
 
@@ -587,7 +588,7 @@
         public static T GetAttribute<T>(this Object obj, bool includeInherited) where T : Attribute
         {
             var type = (obj as Type ?? obj.GetType());
-            var attributes = type.GetCustomAttributes(typeof (T), includeInherited);
+            var attributes = type.GetCustomAttributes(typeof(T), includeInherited);
             return attributes.FirstOrDefault() as T;
         }
 
@@ -790,7 +791,7 @@
             {
                 try
                 {
-                    value = propertyInfo.GetValue(obj, new Object[] {0});
+                    value = propertyInfo.GetValue(obj, new Object[] { 0 });
                 }
                 catch
                 {
@@ -853,7 +854,7 @@
         /// <param name="arrPropIgnore">A single property name to ignore</param>
         public static void CopyPropertiesFrom(this Object target, Object source, String arrPropIgnore)
         {
-            CopyPropertiesFrom(target, source, new[] {arrPropIgnore});
+            CopyPropertiesFrom(target, source, new[] { arrPropIgnore });
         }
 
         /// <summary>
@@ -924,11 +925,13 @@
         public static String ToXml(this Object obj, Encoding encoding)
         {
             if (default(Object) == obj) throw new ArgumentException("The Object cannot be null.");
-            if (default(Encoding) == encoding) throw new Exception("You must specify an encoder to use for serialization.");
+            if (null == encoding) throw new Exception("You must specify an encoder to use for serialization.");
             using (var stream = new MemoryStream())
+            using (var xmlWriter = new XmlTextWriter(stream, encoding))
             {
                 var serializer = new XmlSerializer(obj.GetType());
-                serializer.Serialize(stream, obj);
+                //serializer.Serialize(stream, obj);
+                serializer.Serialize(xmlWriter, obj);
                 stream.Position = 0;
                 return encoding.GetString(stream.ToArray());
             }

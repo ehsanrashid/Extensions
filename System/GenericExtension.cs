@@ -1,4 +1,7 @@
-﻿namespace System
+﻿using System.Text;
+using System.Xml.Serialization;
+
+namespace System
 {
     using Collections.Generic;
     using IO;
@@ -283,6 +286,16 @@
                 memStream.Seek(0, SeekOrigin.Begin);
                 return binFormatter.Deserialize(memStream) as T;
             }
+        }
+
+        public static String XmlSerializeToString<T>(this T self)
+        {
+            var sb = new StringBuilder();
+            using (var writer = new StringWriter(sb))
+            {
+                (new XmlSerializer(self.GetType())).Serialize(writer, self);
+            }
+            return sb.ToString();
         }
 
         #endregion

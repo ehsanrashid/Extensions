@@ -37,5 +37,14 @@
         {
             return value.IsEmpty() ? null : (T?) value;
         }
+
+
+        public static bool IsBetween<T>(this T value, T low, T high)
+        where T : IComparable<T>
+        {
+            return 0 <= value.CompareTo(low) && value.CompareTo(high) <= 0;
+        }
+
+
     }
 }
