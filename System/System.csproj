@@ -64,6 +64,7 @@
     <Compile Include="Algorithm\Euclid.cs" />
     <Compile Include="Algorithm\Fibonacci.cs" />
     <Compile Include="ArrayExtension.cs" />
+    <Compile Include="ArrayMatrix.cs" />
     <Compile Include="ByteArrayExtension.cs" />
     <Compile Include="CombinedException.cs" />
     <Compile Include="Complex.cs" />
