@@ -1,12 +1,33 @@
 # Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
 bin
 obj
+[Dd]ebug/
+[Rr]elease/
+
+*_i.c
+*_p.c
+*.ilk
+*.meta
+*.obj
+*.pch
+*.pdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.vspscc
+.builds
+
 *.suo
 *.user
-
-
+*.sln.docstates
 
 # mstest test results
 TestResults
 
-_ReSharper.Extensions
+_ReSharper.ParsingTables
+
