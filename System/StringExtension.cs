@@ -382,6 +382,17 @@
             return Regex.Replace(str, @"[^\d]", String.Empty);
         }
 
+        public static Int32 ToNumberValueOnly(this String str)
+        {
+            var match = Regex.Match(str, @"\d+");
+            return Convert.ToInt32(match.Value);
+        }
+
+        public static String ToNumberOnly(this String str)
+        {
+            return Regex.Replace(str, @"[^\d]", String.Empty);
+        }
+
         #endregion
 
         #region Manupulate
