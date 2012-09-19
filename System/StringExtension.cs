@@ -263,7 +263,7 @@
             {
                 return Convert.ToInt16(str);
             }
-            catch {}
+            catch { }
             return default(Int16?);
         }
 
@@ -274,7 +274,7 @@
             {
                 return Convert.ToInt32(str);
             }
-            catch {}
+            catch { }
             return default(Int32?);
         }
 
@@ -285,7 +285,7 @@
             {
                 return Convert.ToInt64(str);
             }
-            catch {}
+            catch { }
             return default(Int64?);
         }
 
@@ -296,7 +296,7 @@
             {
                 return Convert.ToDouble(str);
             }
-            catch {}
+            catch { }
             return default(Double?);
         }
 
@@ -307,7 +307,7 @@
             {
                 return Convert.ToDecimal(str);
             }
-            catch {}
+            catch { }
             return default(Decimal?);
         }
 
@@ -318,7 +318,7 @@
             {
                 return Convert.ToDateTime(str).Date;
             }
-            catch {}
+            catch { }
             return default(DateTime?);
         }
 
@@ -329,7 +329,7 @@
             {
                 return Convert.ToDateTime(str).TimeOfDay;
             }
-            catch {}
+            catch { }
             return default(TimeSpan?);
         }
 
@@ -340,7 +340,7 @@
             {
                 return Convert.ToBoolean(str);
             }
-            catch {}
+            catch { }
             return false;
         }
 
@@ -351,7 +351,7 @@
             {
                 return Convert.ToInt32(str);
             }
-            catch {}
+            catch { }
             return -1;
         }
 
@@ -362,13 +362,24 @@
             {
                 return Convert.ToInt32(str);
             }
-            catch {}
+            catch { }
             return 0;
         }
 
         public static T ToEnum<T>(this String str)
         {
-            return IsNullOrWhiteSpace(str) ? default(T) : (T) Enum.Parse(typeof (T), str);
+            return IsNullOrWhiteSpace(str) ? default(T) : (T) Enum.Parse(typeof(T), str);
+        }
+
+        public static Int32 ToInt32Any(this String str)
+        {
+            var match = Regex.Match(str, @"\d+");
+            return Convert.ToInt32(match.Value);
+        }
+
+        public static String ToNumberOnly(this String str)
+        {
+            return Regex.Replace(str, @"[^\d]", String.Empty);
         }
 
         #endregion
@@ -443,11 +454,7 @@
         public static String Left(this String str, int count)
         {
             if (IsNullOrEmpty(str)) return str;
-            if (count >= str.Length)
-            {
-                throw new ArgumentOutOfRangeException("count", count,
-                                                      "count must be less than length of String");
-            }
+            if (count >= str.Length) throw new ArgumentOutOfRangeException("count", count, "count must be less than length of String");
             return
                 //str.Substring(0, count);
                 str.Remove(count);
@@ -850,7 +857,7 @@
                        ? str
                        : (diff < 0)
                              ? str.Substring(0, width)
-                             : str.PadLeft(width - diff/2, padChar).PadRight(width, padChar);
+                             : str.PadLeft(width - diff / 2, padChar).PadRight(width, padChar);
         }
 
         /// <summary>
@@ -863,7 +870,7 @@
         {
             str.ExceptionIfNull("str");
             if (str.Length == 1) return new String(str[0], repeatCount);
-            var sb = new StringBuilder(repeatCount*str.Length);
+            var sb = new StringBuilder(repeatCount * str.Length);
             //while (repeatCount-- > 0) sb.Append(str);
             //-----------------------------------------
             repeatCount.Times(() => sb.Append(str));
@@ -1254,7 +1261,7 @@
             {
                 switch (parts.Length)
                 {
-                        // Found a value (for the last parameter found (space separator))
+                    // Found a value (for the last parameter found (space separator))
                     case 1:
                         if (parameter.IsNotNullOrEmpty())
                         {
@@ -1267,13 +1274,13 @@
                         }
                         // else Error: no parameter waiting for a value (skipped)
                         break;
-                        // Found just a parameter
+                    // Found just a parameter
                     case 2:
                         // The last parameter is still waiting. With no value, set it to true.
                         if (parameter.IsNotNullOrEmpty()) if (!parameters.ContainsKey(parameter)) parameters.Add(parameter, "true");
                         parameter = parts[1];
                         break;
-                        // Parameter with enclosed value
+                    // Parameter with enclosed value
                     case 3:
                         // The last parameter is still waiting. With no value, set it to true.
                         if (parameter.IsNotNullOrEmpty()) if (!parameters.ContainsKey(parameter)) parameters.Add(parameter, "true");
@@ -1313,18 +1320,18 @@
         public static String[] Explode(this String str, int size)
         {
             // Number of segments exploded to except last.
-            var count = str.Length/size;
+            var count = str.Length / size;
             // Determine if we need to store a final segment.
             // ... Sometimes we have a partial segment.
-            var final = (size*count) < str.Length;
+            var final = (size * count) < str.Length;
             // Allocate the array to return.
             // ... The size varies depending on if there is a final fragment.
             var result = final ? new String[count + 1] : new String[count];
             // Loop through each index and take a substring.
             // ... The starting index is computed with multiplication.
-            for (var i = 0; i < count; i++) result[i] = str.Substring((i*size), size);
+            for (var i = 0; i < count; i++) result[i] = str.Substring((i * size), size);
             // Sometimes we need to set the final String fragment.
-            if (final) result[result.Length - 1] = str.Substring(count*size);
+            if (final) result[result.Length - 1] = str.Substring(count * size);
             return result;
         }
 
@@ -1343,7 +1350,7 @@
 
         public static T As<T>(this String str)
         {
-            return (T) TypeDescriptor.GetConverter(typeof (T)).ConvertFromString(str);
+            return (T) TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(str);
         }
 
         #region ExtractArguments extension
@@ -1374,7 +1381,7 @@
             Whole,
         }
 
-        private static readonly String[] _ReservedRegexOperators = new[] {@"\", "^", "$", "*", "+", "?", ".", "(", ")"};
+        private static readonly String[] _ReservedRegexOperators = new[] { @"\", "^", "$", "*", "+", "?", ".", "(", ")" };
 
         private static String GetRegexPattern(String template, ComparsionTemplateOptions compareTemplateOptions)
         {
@@ -1503,7 +1510,7 @@
             {
                 return value.ToGuid();
             }
-            catch {}
+            catch { }
             return defaultValue;
         }
 
@@ -1729,7 +1736,7 @@
         public static T ParseStringToEnum<T>(this String str, bool ignorecase = default(bool))
             where T : struct
         {
-            return str.IsItemInEnum<T>()() ? default(T) : (T) Enum.Parse(typeof (T), str, default(bool));
+            return str.IsItemInEnum<T>()() ? default(T) : (T) Enum.Parse(typeof(T), str, default(bool));
         }
 
         /// <summary>
@@ -1741,7 +1748,7 @@
         public static Func<bool> IsItemInEnum<T>(this String str)
             where T : struct
         {
-            return () => (str.IsNotNullOrEmpty() || !Enum.IsDefined(typeof (T), str));
+            return () => (str.IsNotNullOrEmpty() || !Enum.IsDefined(typeof(T), str));
         }
 
         #endregion
@@ -1799,9 +1806,9 @@
         public static byte[] HexStringToBytes(this String str)
         {
             str = str.Replace(" ", String.Empty);
-            var maxBytes = str.Length/2 - 1;
+            var maxBytes = str.Length / 2 - 1;
             var bytes = new byte[maxBytes + 1];
-            for (var i = 0; i <= maxBytes; ++i) bytes[i] = byte.Parse(str.Substring(2*i, 2), NumberStyles.AllowHexSpecifier);
+            for (var i = 0; i <= maxBytes; ++i) bytes[i] = byte.Parse(str.Substring(2 * i, 2), NumberStyles.AllowHexSpecifier);
             return bytes;
         }
 
@@ -1854,9 +1861,8 @@
                                                             RegexOptions options = RegexOptions.None)
         {
             //foreach (Match match in GetMatches(str, regexPattern, options))
-            //{
             //    if (match.Success) yield return match.Value;
-            //}
+            
             return (GetMatches(str, regexPattern, options) as IEnumerable<Match>)
                 .Where(match => match.Success)
                 .Select(match => match.Value);
@@ -1969,7 +1975,7 @@
             // Generate the key and initialization vector.
             byte[] key = null;
             byte[] iv = null;
-            var salt = new Byte[] {0x10, 0x20, 0x12, 0x23, 0x37, 0xA4, 0xC5, 0xA6, 0xF1, 0xF0, 0xEE, 0x21, 0x22, 0x45};
+            var salt = new Byte[] { 0x10, 0x20, 0x12, 0x23, 0x37, 0xA4, 0xC5, 0xA6, 0xF1, 0xF0, 0xEE, 0x21, 0x22, 0x45 };
             MakeKeyAndIV(password, salt, keySize, blockSize, ref key, ref iv);
             // Make the encryptor or decryptor.
             var cryptoTransform = encrypt
@@ -2023,8 +2029,8 @@
         {
             using (var rfcDerive = new Rfc2898DeriveBytes(password, salt, 1234))
             {
-                key = rfcDerive.GetBytes(sizeKey/8);
-                initVector = rfcDerive.GetBytes(sizeBlock/8);
+                key = rfcDerive.GetBytes(sizeKey / 8);
+                initVector = rfcDerive.GetBytes(sizeBlock / 8);
             }
         }
 

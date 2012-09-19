@@ -1,7 +1,7 @@
-﻿using System.Web.Mvc;
-
-namespace System.Web.Routing
+﻿namespace System.Web.Routing
 {
+    using Mvc;
+
     public static class RouteCollectionExtension
     {
         ///<summary>

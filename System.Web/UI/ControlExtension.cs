@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-
-namespace System.Web.UI
+﻿namespace System.Web.UI
 {
+    using Collections.Generic;
+    using Linq;
+
     /// <summary>
     ///   Extensions for ASP.NET Controls
     /// </summary>

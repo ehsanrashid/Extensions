@@ -1,8 +1,5 @@
-﻿using System;
-using System.Xml.Serialization;
-using System.Collections.Generic;
+﻿using System.Xml.Serialization;
 using System.IO;
-using System.Text;
 
 namespace System.Xml
 {
@@ -22,7 +19,7 @@ namespace System.Xml
             try
             {
                 var stream = new MemoryStream();
-                XmlSerializer serializer = new XmlSerializer(typeof(T));
+                var serializer = new XmlSerializer(typeof(T));
                 serializer.Serialize(stream, instance);
                 return true;
             }
@@ -56,7 +53,7 @@ namespace System.Xml
             try
             {
                 var reader = XmlReader.Create(stream);
-                XmlSerializer serializer = new XmlSerializer(typeof(T));
+                var serializer = new XmlSerializer(typeof(T));
                 return serializer.CanDeserialize(reader);
             }
             catch (Exception)

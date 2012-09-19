@@ -133,6 +133,10 @@
     <Compile Include="TypeExtension.cs" />
     <Compile Include="UriQueryString.cs" />
     <Compile Include="ValueTypeExtension.cs" />
+    <Compile Include="Xml\Linq\XDocumentExtension.cs" />
+    <Compile Include="Xml\Linq\XElementExtension.cs" />
+    <Compile Include="Xml\XmlDocumentExtension.cs" />
+    <Compile Include="Xml\XmlElementExtension.cs" />
     <Compile Include="Xml\XmlNodeExtension.cs" />
     <Compile Include="Xml\XmlSerializeExtension.cs" />
   </ItemGroup>

@@ -1,7 +1,6 @@
-﻿using System.IO;
-
-namespace System.Web.Mvc
+﻿namespace System.Web.Mvc
 {
+    using IO;
 
     public static class ViewExtension
     {

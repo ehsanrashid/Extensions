@@ -1,9 +1,9 @@
-﻿using System.Text;
-using System.Linq;
-using System.Web.Routing;
-
-namespace System.Web.Mvc
+﻿namespace System.Web.Mvc
 {
+    using Text;
+    using Linq;
+    using Routing;
+
     ///<summary>
     /// A bunch of HTML helper extensions
     ///</summary>

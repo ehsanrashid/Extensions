@@ -1,9 +1,9 @@
-﻿using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-
-namespace System.Windows
+﻿namespace System.Windows
 {
+    using Controls;
+    using Media;
+    using Media.Imaging;
+
     /// <summary>
     ///   Extension methods for the System.Windows.UIElement class
     /// </summary>

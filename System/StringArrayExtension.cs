@@ -1,6 +1,6 @@
 ﻿namespace System
 {
-    using System.Text;
+    using Text;
 
     /// <summary>
     /// 	Extension methods for String[]

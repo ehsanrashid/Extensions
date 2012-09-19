@@ -1,8 +1,8 @@
-﻿using System.Windows.Controls;
-using System.Windows.Interop;
-
-namespace System.Windows
+﻿namespace System.Windows
 {
+    using Controls;
+    using Interop;
+
     public static class WindowExtension
     {
         /// <summary>

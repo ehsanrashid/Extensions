@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Windows.Media;
-
-namespace System.Windows
+﻿namespace System.Windows
 {
+    using Collections.Generic;
+    using Media;
+
+
     public static class DependencyObjectExtension
     {
         /// <summary>

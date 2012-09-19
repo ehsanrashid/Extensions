@@ -1,8 +1,9 @@
-﻿using System.Linq;
-using System.Windows.Controls;
-
-namespace System.Windows
+﻿namespace System.Windows
 {
+    using Linq;
+    using Controls;
+
+
     public static class FrameworkElementExtension
     {
 

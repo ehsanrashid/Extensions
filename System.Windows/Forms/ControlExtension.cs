@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace System.Windows.Forms
+﻿namespace System.Windows.Forms
 {
+    using Collections.Generic;
+
     /// <summary>
     ///   Extension methods for System.Windows.Forms.Control.
     /// </summary>

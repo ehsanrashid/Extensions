@@ -1,9 +1,8 @@
-﻿using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-
-namespace System.Windows.Media.Imaging
+﻿namespace System.Windows.Media.Imaging
 {
+    using System.Drawing;
+    using System.Drawing.Imaging;
+    using IO;
 
     /// <summary>
     ///   Extension methods for the System.Windows.Media.Imaging.BitmapSource class

@@ -1,6 +1,6 @@
 ﻿namespace System
 {
-    using System.Xml;
+
     using Collections;
     using Collections.Generic;
     using ComponentModel;
@@ -13,6 +13,7 @@
     using Text;
     using Text.RegularExpressions;
     using Web;
+    using Xml;
     using Xml.Linq;
     using Xml.Serialization;
 
@@ -1086,5 +1087,39 @@
                 return dataSet;
             }
         }
+
+
+
+        public static IEnumerable<T> Recurse<T>
+            (
+                this T root,
+                Func<T, IEnumerable<T>> findChildren
+            )
+            where T : class
+        {
+            // SAME CODE AS ABOVE IN A MORE VERBOSE FASHION
+            //foreach (var node in findChildren(root))
+            //{
+            //    foreach (var child in Recurse(node, findChildren))
+            //    {
+            //        if (child == null)
+            //            yield break;
+
+            //        yield return child;
+            //    }
+            //}
+
+            yield return root;
+
+            foreach (var child in
+                findChildren(root)
+                    .SelectMany(node => Recurse(node, findChildren))
+                    .TakeWhile(child => child != null))
+            {
+                yield return child;
+            }
+        }
+
+
     }
 }
