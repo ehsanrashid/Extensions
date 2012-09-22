@@ -13,6 +13,8 @@
     using Xml;
     using Xml.Linq;
     using Xml.XPath;
+    using Data.Entity.Design.PluralizationServices;
+
 
     /// <summary>
     ///   Extension methods for the String data type
@@ -372,17 +374,6 @@
         }
 
         public static Int32 ToInt32Any(this String str)
-        {
-            var match = Regex.Match(str, @"\d+");
-            return Convert.ToInt32(match.Value);
-        }
-
-        public static String ToNumberOnly(this String str)
-        {
-            return Regex.Replace(str, @"[^\d]", String.Empty);
-        }
-
-        public static Int32 ToNumberValueOnly(this String str)
         {
             var match = Regex.Match(str, @"\d+");
             return Convert.ToInt32(match.Value);
@@ -1013,6 +1004,20 @@
             // -s suffix rule
             return singular + "s";
         }
+
+        /// <summary>
+        /// Returns the plural form of the specified word.
+        /// </summary>
+        /// <param name="singular">The singular string value</param>
+        /// <param name="count">How many of the specified word there are. A count equal to 1 will not pluralize the specified word.</param>
+        /// <param name="cultureInfo">Provide a culture info to pluralize (default to en-US)</param>
+        /// <returns>A string that is the plural form of the input parameter.</returns>
+        public static string ToPlural(this String singular, int count = 0, CultureInfo cultureInfo = null)
+        {
+            return count == 1 ? singular : PluralizationService.CreateService(cultureInfo ?? new CultureInfo("en-US")).Pluralize(singular);
+        }
+
+        
 
         #region Chop
 
