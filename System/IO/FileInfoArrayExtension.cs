@@ -23,6 +23,7 @@ namespace System.IO
         {
             if (consolidateExceptions)
             {
+                /*
                 var exceptions = new List<Exception>();
                 foreach (var file in arrFileInfo)
                 {
@@ -41,6 +42,24 @@ namespace System.IO
                     throw CombinedException.Combine(
                         "Error while deleting one or several arrFileInfo, see InnerExceptions array for details.",
                         exceptions);
+                }
+                */
+                var multiExp = new MultiException();
+                foreach (var file in arrFileInfo)
+                {
+                    try
+                    {
+                        file.TurnOffReadOnly();
+                        file.Delete();
+                    }
+                    catch (Exception exp)
+                    {
+                        multiExp.Add(exp);
+                    }
+                }
+                if (multiExp.Any())
+                {
+                    throw multiExp;
                 }
             }
             else
@@ -63,8 +82,10 @@ namespace System.IO
         public static FileInfo[] CopyTo(this FileInfo[] arrFileInfo, String targetPath, bool consolidateExceptions = true)
         {
             var copiedfiles = new List<FileInfo>();
+            
             List<Exception> exceptions = null;
             foreach (var file in arrFileInfo)
+            {
                 try
                 {
                     var fileName = Path.Combine(targetPath, file.Name);
@@ -74,15 +95,19 @@ namespace System.IO
                 {
                     if (consolidateExceptions)
                     {
-                        if (exceptions == null) exceptions = new List<Exception>();
+                        if (null == exceptions) exceptions = new List<Exception>();
                         exceptions.Add(e);
                     }
                     else throw;
                 }
+            }
+            /*
             if ((exceptions != null) && (exceptions.Count > 0))
                 throw new CombinedException(
                     "Error while copying one or several arrFileInfo, see InnerExceptions array for details.",
                     exceptions.ToArray());
+            */
+
             return copiedfiles.ToArray();
         }
 
@@ -103,6 +128,7 @@ namespace System.IO
         {
             List<Exception> exceptions = null;
             foreach (var file in arrFileInfo)
+            {
                 try
                 {
                     var fileName = Path.Combine(targetPath, file.Name);
@@ -117,10 +143,13 @@ namespace System.IO
                     }
                     else throw;
                 }
+            }
+            /*
             if ((exceptions != null) && (exceptions.Count > 0))
                 throw new CombinedException(
                     "Error while moving one or several arrFileInfo, see InnerExceptions array for details.",
                     exceptions.ToArray());
+            */
             return arrFileInfo;
         }
 

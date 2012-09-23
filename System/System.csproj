@@ -67,7 +67,6 @@
     <Compile Include="ArrayExtension.cs" />
     <Compile Include="ByteArrayExtension.cs" />
     <Compile Include="CancelEventArgs.cs" />
-    <Compile Include="CombinedException.cs" />
     <Compile Include="Complex.cs" />
     <Compile Include="ComponentModel\ComponentExtension.cs" />
     <Compile Include="ConstructorExtension.cs" />
@@ -109,6 +108,7 @@
     <Compile Include="IO\StreamExtension.cs" />
     <Compile Include="IO\TextReaderExtension.cs" />
     <Compile Include="Matrix.cs" />
+    <Compile Include="MultiException.cs" />
     <Compile Include="Net\HttpListenerContextExtension.cs" />
     <Compile Include="Net\Sockets\SocketExtension.cs" />
     <Compile Include="Net\Sockets\TcpClientExtension.cs" />

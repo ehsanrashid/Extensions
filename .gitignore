@@ -31,3 +31,4 @@ TestResults
 
 _ReSharper.Extensions
 
+/System/CombinedException.cs
