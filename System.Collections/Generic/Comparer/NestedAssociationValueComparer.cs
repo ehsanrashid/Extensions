@@ -15,7 +15,7 @@ namespace System.Collections.Generic
         /// <param name="comparer"> The nested comparer to use. </param>
         public NestedAssociationValueComparer(IComparer<TValue> comparer)
         {
-            if (comparer == null) throw new ArgumentNullException("comparer");
+            if (null == comparer) throw new ArgumentNullException("comparer");
             nestedComparer = comparer;
         }
 

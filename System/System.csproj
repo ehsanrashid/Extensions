@@ -133,6 +133,13 @@
     <Compile Include="SystemDependencies\SubForSystemDate.cs" />
     <Compile Include="Text\StringBuilderWrapper.cs" />
     <Compile Include="Text\StringBuilderExtension.cs" />
+    <Compile Include="Threading\Thread.cs" />
+    <Compile Include="Threading\ThreadHandler.cs" />
+    <Compile Include="Threading\ThreadHandlerEventArgs.cs" />
+    <Compile Include="Threading\ThreadHandlerExceptionArgs.cs" />
+    <Compile Include="Threading\ThreadManager.cs" />
+    <Compile Include="Threading\WorkItem.cs" />
+    <Compile Include="Threading\WorkThread.cs" />
     <Compile Include="TimeSpanExtension.cs" />
     <Compile Include="TypeExtension.cs" />
     <Compile Include="UriQueryString.cs" />
@@ -153,6 +160,7 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

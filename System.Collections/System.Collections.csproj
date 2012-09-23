@@ -96,6 +96,8 @@
     <Compile Include="Generic\SortedList.cs" />
     <Compile Include="Generic\Vertex.cs" />
     <Compile Include="Generic\Matrix.cs" />
+    <Compile Include="ObjectModel\HistoryCollection.cs" />
+    <Compile Include="ObjectModel\SortableCollection.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
