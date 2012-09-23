@@ -66,6 +66,7 @@
     <Compile Include="Algorithm\Fibonacci.cs" />
     <Compile Include="ArrayExtension.cs" />
     <Compile Include="ByteArrayExtension.cs" />
+    <Compile Include="CancelEventArgs.cs" />
     <Compile Include="CombinedException.cs" />
     <Compile Include="Complex.cs" />
     <Compile Include="ComponentModel\ComponentExtension.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Drawing\ImageExtension.cs" />
     <Compile Include="Drawing\PointExtension.cs" />
     <Compile Include="EnumExtension.cs" />
+    <Compile Include="EventArgs.cs" />
     <Compile Include="EventHandlerExtension.cs" />
     <Compile Include="ExceptionExtension.cs" />
     <Compile Include="ExtensionMethodSetting.cs" />
@@ -97,6 +99,7 @@
     <Compile Include="Helper\Cryptor.cs" />
     <Compile Include="Helper\Reader.cs" />
     <Compile Include="IConverter.cs" />
+    <Compile Include="IEventArgs.cs" />
     <Compile Include="Int32Extension.cs" />
     <Compile Include="IO\CircularStream.cs" />
     <Compile Include="IO\DirectoryInfoExtension.cs" />
