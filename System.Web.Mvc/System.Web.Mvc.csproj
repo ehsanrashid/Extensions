@@ -31,6 +31,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.CollectionsEx, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\System.Collections\bin\System.CollectionsEx.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -44,6 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HtmlHelperExtension.cs" />
+    <Compile Include="TempDataDictionaryExtension.cs" />
+    <Compile Include="ViewDataDictionaryExtension.cs" />
     <Compile Include="ViewExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewPageExtension.cs" />

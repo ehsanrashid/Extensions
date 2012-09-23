@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Web.Mvc;
+
 namespace System.Linq
 {
     public static class QueryableExtension
@@ -6,9 +8,9 @@ namespace System.Linq
         /// <summary>
         /// Apply paging to an IQueryable.
         /// </summary>
-        /// <typeparam name="TSource">The type that the collection contains.</typeparam>
-        /// <param name="source">The data source.</param>
-        /// <param name="page">The page index, starting at 0.</param>
+        /// <typeparam name="T">The type that the collection contains.</typeparam>
+        /// <param name="query">The data source.</param>
+        /// <param name="pageIndex">The page index, starting at 0.</param>
         /// <param name="pageSize">The max number of items to return.</param>
         /// <returns>The resulting object collection.</returns>
         public static IQueryable<T> Page<T>(this IQueryable<T> query, int? pageIndex, int pageSize)
@@ -68,6 +70,11 @@ namespace System.Linq
             return new PaginatedList<T>(query, 1, 15);
         }
 
+
+        public static SelectList ToSelectList<T>(this IQueryable<T> query, string dataValueField, string dataTextField, object selectedValue)
+        {
+            return new SelectList(query, dataValueField, dataTextField, selectedValue ?? -1);
+        }
 
     }
 }

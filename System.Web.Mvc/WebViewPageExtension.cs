@@ -25,6 +25,7 @@
 
         private static String Get(WebViewPage view, String key)
         {
+            
             return view.ViewContext.Controller.ValueProvider.GetValue(key).RawValue.ToString();
         }
     }

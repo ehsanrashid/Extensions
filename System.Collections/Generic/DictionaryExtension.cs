@@ -167,5 +167,41 @@ namespace System.Collections.Generic
 
             return collection.Count == 0;
         }
+
+        /// <summary>
+        /// Appends an Item
+        /// </summary>
+        /// <param name="dictionary"></param>
+        /// <param name="key"> </param>
+        /// <param name="value"></param>
+        public static void Append(this IDictionary<String, Object> dictionary, String key, Object value)
+        {
+            List<Object> listValues;
+            if (dictionary.ContainsKey(key))
+            {
+                listValues = (List<Object>) dictionary[key];
+            }
+            else
+            {
+                listValues = new List<Object>(5);
+                dictionary[key] = listValues;
+            }
+            listValues.Add(value);
+        }
+
+        /// <summary>
+        /// Gets the List of values.
+        /// When this is called, the List of values are cleared.
+        /// </summary>
+        /// <param name="dictionary"></param>
+        /// <param name="key"> </param>
+        public static List<Object> GetValues(this IDictionary<String, Object> dictionary, String key)
+        {
+            var listValues = (List<Object>) dictionary[key];
+            if (null != listValues) return listValues;
+            dictionary.Remove(key);
+            return null;
+        }
+
     }
 }
