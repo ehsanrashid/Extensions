@@ -10,7 +10,7 @@
     {
         /// <summary>
         /// </summary>
-        private readonly Dictionary<String, String> _values = new Dictionary<String, String>();
+        private readonly Dictionary<String, String> _dictionary = new Dictionary<String, String>();
 
         /// <summary>
         ///   Adds the specified key.
@@ -19,7 +19,7 @@
         /// <param name="value"> The value. </param>
         public void Add(String key, String value)
         {
-            _values.Add(key, HttpUtility.UrlEncode(value));
+            _dictionary.Add(key, HttpUtility.UrlEncode(value));
         }
 
         /// <summary>
@@ -30,7 +30,7 @@
         public virtual String ToString(String baseUrl)
         {
             var sb = new StringBuilder();
-            foreach (var pair in _values)
+            foreach (var pair in _dictionary)
             {
                 if (sb.Length > 0) sb.Append("&");
                 sb.AppendFormat("{0}={1}", pair.Key, pair.Value);

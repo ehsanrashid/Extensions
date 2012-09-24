@@ -82,11 +82,10 @@
         /// <param name="eventHandler">The EventHandler instance use to raise the event.</param>
         /// <param name="sender">The sender object instance to pass to subscribers.</param>
         /// <param name="ent">The EventArgs (or derivative) to pass to subscribers.</param>
-        public static void RaiseEvent<TEventArgs>(this EventHandler<TEventArgs> eventHandler, object sender,
-                                                  TEventArgs ent)
+        public static void RaiseEvent<TEventArgs>(this EventHandler<TEventArgs> eventHandler, object sender, TEventArgs ent)
             where TEventArgs : EventArgs
         {
-            if (eventHandler != null) eventHandler(sender, ent);
+            if (default(EventHandler<TEventArgs>) != eventHandler) eventHandler(sender, ent);
         }
 
         /// <summary>
@@ -170,25 +169,23 @@
         /// <param name="eventHandler">The EventHandler instance use to raise the event.</param>
         /// <param name="sender">The sender object instance to pass to subscribers.</param>
         ///<param name="ent">The EventArgs (or derivative) to pass to subscribers.</param>
-        public static void RaiseEventOnUIThread<TEventArgs>(
-            this EventHandler<TEventArgs> eventHandler, object sender, TEventArgs ent)
+        public static void RaiseEventOnUIThread<TEventArgs>(this EventHandler<TEventArgs> eventHandler, object sender, TEventArgs ent)
             where TEventArgs : EventArgs
         {
-            if (eventHandler != null)
+            if (default(EventHandler<TEventArgs>) == eventHandler) return;
+
+            foreach (EventHandler<TEventArgs> singleCast in eventHandler.GetInvocationList())
             {
-                foreach (EventHandler<TEventArgs> singleCast in eventHandler.GetInvocationList())
+                var syncInvoke = singleCast.Target as ISynchronizeInvoke;
+                if (default(ISynchronizeInvoke) != syncInvoke && syncInvoke.InvokeRequired)
                 {
-                    var syncInvoke = singleCast.Target as ISynchronizeInvoke;
-                    if (syncInvoke != null && syncInvoke.InvokeRequired)
-                    {
-                        // Invoke the event on the event subscribers thread
-                        syncInvoke.Invoke(eventHandler, new[] {sender, ent});
-                    }
-                    else
-                    {
-                        // Raise the event on this thread
-                        singleCast(sender, ent);
-                    }
+                    // Invoke the event on the event subscribers thread
+                    syncInvoke.Invoke(eventHandler, new[] { sender, ent });
+                }
+                else
+                {
+                    // Raise the event on this thread
+                    singleCast(sender, ent);
                 }
             }
         }

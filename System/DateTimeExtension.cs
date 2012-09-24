@@ -83,11 +83,6 @@
                        : String.Empty;
         }
 
-        const int EveningEnds = 2;
-        const int MorningEnds = 12;
-        const int AfternoonEnds = 6;
-        static readonly DateTime Date1970 = new DateTime(1970, 1, 1);
-
         ///<summary>
         ///	Return System UTC Offset
         ///</summary>
@@ -360,6 +355,8 @@
         /// </returns>
         public static bool IsTimeEqual(this DateTime datetime, DateTime timeToCompare) { return (datetime.TimeOfDay == timeToCompare.TimeOfDay); }
 
+
+        static readonly DateTime DateTime1970 = new DateTime(1970, 1, 1);
         /// <summary>
         /// 	Get milliseconds of UNIX area. This is the milliseconds since 1/1/1970
         /// </summary>
@@ -370,7 +367,7 @@
         /// </remarks>
         public static long GetMillisecondsSince1970(this DateTime datetime)
         {
-            var timeSpan = datetime.Subtract(Date1970);
+            var timeSpan = datetime.Subtract(DateTime1970);
             return (long) timeSpan.TotalMilliseconds;
         }
 
@@ -458,6 +455,10 @@
         ///<returns>the number of days within that year</returns>
         public static int GetDays(this DateTime datetime) { return GetDays(datetime, ExtensionMethodSetting.DefaultCulture); }
 
+        const int EveningEnds = 2;
+        const int MorningEnds = 12;
+        const int AfternoonEnds = 6;
+        
         ///<summary>
         ///	Return a period "Morning", "Afternoon", or "Evening"
         ///</summary>

@@ -23,6 +23,6 @@
         /// <value>The value.</value>
         public T Value { get; protected set; }
 
-        #endregion IConverter<T> Members
+        #endregion
     }
 }

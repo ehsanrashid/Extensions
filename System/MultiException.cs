@@ -73,201 +73,10 @@ namespace System
             }
      */
 
-    /*
-    /// <summary>
-    /// MultiException is based on Exception but also implements the IList interface.
-    /// </summary>
-    public class MultiException : Exception, IList
-    {
-        public ArrayList Exceptions { get; set; }
-
-        public MultiException()
-        {
-            Exceptions = new ArrayList();
-        }
-
-        #region Properties
-
-        public Exception this[int index]
-        {
-            get { return (Exception) Exceptions[index]; }
-            set
-            {
-                if (value == default(Exception)) throw new ArgumentNullException();
-                Exceptions[index] = value;
-            }
-        }
-
-        public override string Message
-        {
-            get
-            {
-                // If no exceptions were found, return stock message
-                if (Exceptions.Count == 0)
-                {
-                    return
-                        "A MultiException was thrown but no internal exceptions were available to provide additional information.";
-                }
-                // Otherwise, build the message based on member messages
-                var sbErrorMsg = new StringBuilder();
-                for (var i = 0; i < Exceptions.Count; ++i)
-                {
-                    var exp = (Exception) Exceptions[i];
-                    sbErrorMsg.Append(exp.Message);
-                    if (i < (Exceptions.Count - 1)) sbErrorMsg.AppendLine();
-                }
-                return sbErrorMsg.ToString();
-            }
-        }
-
-        #endregion
-
-        #region Methods
-
-        #region (Hiding IList Members)
-
-        public int Add(Exception exp)
-        {
-            return Exceptions.Add(exp);
-        }
-
-        public bool Contains(Exception exp)
-        {
-            return Exceptions.Contains(exp);
-        }
-
-        public int IndexOf(Exception exp)
-        {
-            return Exceptions.IndexOf(exp);
-        }
-
-        public void Insert(int index, Exception exp)
-        {
-            Exceptions.Insert(index, exp);
-        }
-
-        public void Remove(Exception exp)
-        {
-            Exceptions.Remove(exp);
-        }
-
-        #endregion
-
-        // Throw an Exception if object is not an Exception
-        void ValidateType(object Obj)
-        {
-            if (Obj.GetType().IsSubclassOf(typeof(Exception)) == false)
-            {
-                throw new ArgumentException("Value must be of type Exception");
-            }
-        }
-
-        #endregion
-
-        #region IList Members
-
-        public bool IsFixedSize
-        {
-            get { return Exceptions.IsFixedSize; }
-        }
-
-        public bool IsReadOnly
-        {
-            get { return Exceptions.IsReadOnly; }
-        }
-
-        object IList.this[int index]
-        {
-            get { return this[index]; }
-            set
-            {
-                ValidateType(value);
-                Exceptions[index] = value;
-            }
-        }
-
-        int IList.Add(object Obj)
-        {
-            ValidateType(Obj);
-            return Exceptions.Add(Obj);
-        }
-
-        public void Clear()
-        {
-            Exceptions.Clear();
-        }
-
-        bool IList.Contains(object Obj)
-        {
-            ValidateType(Obj);
-            return Exceptions.Contains(Obj);
-        }
-
-        int IList.IndexOf(object Obj)
-        {
-            ValidateType(Obj);
-            return Exceptions.IndexOf(Obj);
-        }
-
-        void IList.Insert(int index, object Obj)
-        {
-            Exceptions.Insert(index, Obj);
-        }
-
-        void IList.Remove(object Obj)
-        {
-            Exceptions.Remove(Obj);
-        }
-
-        public void RemoveAt(int index)
-        {
-            Exceptions.RemoveAt(index);
-        }
-
-        #region ICollection Members
-
-        public int Count
-        {
-            get { return Exceptions.Count; }
-        }
-
-        // "Is Thread Safe???"
-        public bool IsSynchronized
-        {
-            get { return Exceptions.IsSynchronized; }
-        }
-
-        // return 'this' and the caller will "Synchronize" it to make it thread safe...
-        public object SyncRoot
-        {
-            get { return Exceptions.SyncRoot; }
-        }
-
-        public void CopyTo(Array array, int index)
-        {
-            Exceptions.CopyTo(array, index);
-        }
-
-        #endregion
-
-        #region IEnumerable Members
-
-        public IEnumerator GetEnumerator()
-        {
-            return Exceptions.GetEnumerator();
-        }
-
-        #endregion
-
-        #endregion
-       
-    }
-    */
-
-    using System.Collections.Generic;
+    using Collections.Generic;
 
     /// <summary>
-    /// MultiException is based on Exception but also implements the IList interface.
+    /// MultiException is based on Exception but also implements the IList<Exception/> interface.
     /// </summary>
     public class MultiException : Exception, IList<Exception>
     {
@@ -314,7 +123,6 @@ namespace System
 
         #endregion
 
-
         public void Add(Exception exp)
         {
             Exceptions.Add(exp);
@@ -335,16 +143,6 @@ namespace System
             return Exceptions.Contains(exp);
         }
 
-        public int IndexOf(Exception exp)
-        {
-            return Exceptions.IndexOf(exp);
-        }
-
-        public void Insert(int index, Exception exp)
-        {
-            Exceptions.Insert(index, exp);
-        }
-
         public bool Remove(Exception exp)
         {
             return Exceptions.Remove(exp);
@@ -363,10 +161,22 @@ namespace System
             Exceptions.Clear();
         }
 
+        #region IList<Exception> Members
+
+        public int IndexOf(Exception exp)
+        {
+            return Exceptions.IndexOf(exp);
+        }
+
+        public void Insert(int index, Exception exp)
+        {
+            Exceptions.Insert(index, exp);
+        }
+
         public void RemoveAt(int index)
         {
             Exceptions.RemoveAt(index);
-        }
+        } 
 
         #region ICollection Members
 
@@ -396,5 +206,6 @@ namespace System
 
         #endregion
 
+        #endregion
     }
 }

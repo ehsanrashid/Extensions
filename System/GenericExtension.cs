@@ -258,8 +258,6 @@ namespace System
                 yield return source.CopySlice(i, count, padToLength);
         }
 
-
-
         #region Serialize Deserialize
 
         public static Byte[] Serialize<T>(this T self) where T : class

@@ -15,9 +15,6 @@ namespace System
         /// <param name="value">Source enum</param>
         /// <param name="flag">Dumped flag</param>
         /// <returns>Result enum value</returns>
-        /// <remarks>
-        /// 	Contributed by nagits, http://about.me/AlekseyNagovitsyn
-        /// </remarks>
         public static T ClearFlag<T>(this Enum value, T flag)
         {
             return ClearFlags(value, flag);
@@ -30,9 +27,6 @@ namespace System
         /// <param name="value">Source enum</param>
         /// <param name="flags">Dumped flags</param>
         /// <returns>Result enum value</returns>
-        /// <remarks>
-        /// 	Contributed by nagits, http://about.me/AlekseyNagovitsyn
-        /// </remarks>
         public static T ClearFlags<T>(this Enum value, params T[] flags)
         {
             var result = Convert.ToUInt64(value);
@@ -51,9 +45,6 @@ namespace System
         /// <param name="value">Source enum</param>
         /// <param name="flag">Established flag</param>
         /// <returns>Result enum value</returns>
-        /// <remarks>
-        /// 	Contributed by nagits, http://about.me/AlekseyNagovitsyn
-        /// </remarks>
         public static T SetFlag<T>(this Enum value, T flag)
         {
             return SetFlags(value, flag);
@@ -66,9 +57,6 @@ namespace System
         /// <param name="value">Source enum</param>
         /// <param name="flags">Established flags</param>
         /// <returns>Result enum value</returns>
-        /// <remarks>
-        /// 	Contributed by nagits, http://about.me/AlekseyNagovitsyn
-        /// </remarks>
         public static T SetFlags<T>(this Enum value, params T[] flags)
         {
             var result = Convert.ToUInt64(value);
@@ -99,9 +87,6 @@ namespace System
         /// <param name="self">Enumeration to check</param>
         /// <param name="flags">Flags to check for</param>
         /// <returns>Result of check</returns>
-        /// <remarks>
-        /// 	Contributed by nagits, http://about.me/AlekseyNagovitsyn
-        /// </remarks>
         public static bool HasFlags<T>(this T self, params T[] flags)
             where T : struct, IComparable, IFormattable, IConvertible
         {
@@ -154,9 +139,6 @@ namespace System
         ///         }
         ///     </code>
         /// </example>
-        /// <remarks>
-        /// 	Contributed by nagits, http://about.me/AlekseyNagovitsyn
-        /// </remarks>
         public static string DisplayString(this Enum value)
         {
             var info = value.GetType().GetField(value.ToString());
