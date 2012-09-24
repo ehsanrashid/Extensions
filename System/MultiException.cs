@@ -148,18 +148,12 @@ namespace System
             return Exceptions.Remove(exp);
         }
 
-        // Throw an Exception if object is not an Exception
-        void ValidateType(Object obj)
-        {
-            if (!obj.GetType().IsSubclassOf(typeof(Exception))) throw new ArgumentException("Value must be of type Exception");
-        }
 
-        public bool IsReadOnly { get { return false; } }
-
-        public void Clear()
-        {
-            Exceptions.Clear();
-        }
+        //// Throw an Exception if object is not an Exception
+        //static void ValidateType(Object obj)
+        //{
+        //    if (!obj.GetType().IsSubclassOf(typeof(Exception))) throw new ArgumentException("Value must be of type Exception");
+        //}
 
         #region IList<Exception> Members
 
@@ -176,18 +170,22 @@ namespace System
         public void RemoveAt(int index)
         {
             Exceptions.RemoveAt(index);
-        } 
+        }
 
         #region ICollection Members
 
-        public int Count
-        {
-            get { return Exceptions.Count; }
-        }
+        public bool IsReadOnly { get { return false; } }
+
+        public int Count { get { return Exceptions.Count; } }
 
         public void CopyTo(Exception[] array, int index)
         {
             Exceptions.CopyTo(array, index);
+        }
+
+        public void Clear()
+        {
+            Exceptions.Clear();
         }
 
         #endregion

@@ -33,6 +33,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,6 +47,7 @@
     <Compile Include="Algorithm\DijkstrasAlgorithm.cs" />
     <Compile Include="Algorithm\PrimsAlgorithm.cs" />
     <Compile Include="Algorithm\VertexInfo.cs" />
+    <Compile Include="EventsCollectionBase.cs" />
     <Compile Include="Generic\Association.cs" />
     <Compile Include="Generic\Bag.cs" />
     <Compile Include="Generic\BinarySearchTree.cs" />
