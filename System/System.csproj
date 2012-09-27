@@ -42,18 +42,6 @@
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net" />
-    <Reference Include="System.Reactive.Core, Version=2.0.20304.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Microsoft Reactive Extensions SDK\v2.0.20304\Binaries\.NETFramework\v4.5\System.Reactive.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Interfaces, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Microsoft Reactive Extensions SDK\v2.0.20304\Binaries\.NETFramework\v4.5\System.Reactive.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Linq, Version=2.0.20304.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Microsoft Reactive Extensions SDK\v2.0.20304\Binaries\.NETFramework\v4.5\System.Reactive.Linq.dll</HintPath>
-    </Reference>
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -100,7 +88,6 @@
     <Compile Include="IConverter.cs" />
     <Compile Include="IEventArgs.cs" />
     <Compile Include="Int32Extension.cs" />
-    <Compile Include="IO\CircularStream.cs" />
     <Compile Include="IO\DirectoryInfoExtension.cs" />
     <Compile Include="IO\FileInfoArrayExtension.cs" />
     <Compile Include="IO\FileInfoExtension.cs" />

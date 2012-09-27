@@ -1699,9 +1699,9 @@
             //                  ? String.Concat("&#", ((int) c), ";")
             //                  : c.ToString());
             //}
-            str.ForEach((c) => sb.Append((all || entities.Contains(c))
-                                             ? String.Concat("&#", ((int) c), ";")
-                                             : c.ToString(CultureInfo.InvariantCulture)));
+            //str.ForEach((c) => sb.Append((all || entities.Contains(c))
+            //                                 ? String.Concat("&#", ((int) c), ";")
+            //                                 : c.ToString(CultureInfo.InvariantCulture)));
             return replace
                        ? sb.Replace("", "<br />").Replace("\n", "<br />").Replace(" ", "&nbsp;").ToString()
                        : sb.ToString();

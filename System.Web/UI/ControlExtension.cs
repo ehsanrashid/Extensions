@@ -117,7 +117,7 @@
             //    if (childControl is T) yield return (childControl as T);
             //}
 
-            return control.Controls.OfType<T>().Select((childControl) => (childControl as T));
+            return control.Controls.OfType<T>();//.Select((childControl) => childControl);
         }
 
         #endregion

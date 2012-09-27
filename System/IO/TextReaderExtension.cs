@@ -67,6 +67,7 @@ namespace System.IO
             {
                 //foreach (var line in reader.ReadLines())
                 //    action(line);
+                // -------------------------------
                 reader.ReadLines().ForEach(action);
             }
         }

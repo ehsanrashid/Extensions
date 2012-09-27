@@ -3,7 +3,7 @@
     using Linq;
     using Net;
     using Net.Sockets;
-    using Reactive.Subjects;
+    //using Reactive.Subjects;
     using Text;
     using Threading;
     using Threading.Tasks;
@@ -168,7 +168,7 @@
         public static void Write(this Stream stream, byte[] bytes) { stream.Write(bytes, 0, bytes.Length); }
 
         // ----------------------------------------
-
+        /*
         public static IObservable<string> LineReader(this Stream stream, int bufferSize, char seperator,
                                                      bool includeSeperator)
         {
@@ -341,5 +341,6 @@
             client.Client.Shutdown(SocketShutdown.Send);
             Console.WriteLine("Client: Client wrote message.");
         }
+        */
     }
 }
