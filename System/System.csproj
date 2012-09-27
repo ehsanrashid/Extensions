@@ -88,6 +88,9 @@
     <Compile Include="IConverter.cs" />
     <Compile Include="IEventArgs.cs" />
     <Compile Include="Int32Extension.cs" />
+    <Compile Include="IO\CircularStream.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="IO\DirectoryInfoExtension.cs" />
     <Compile Include="IO\FileInfoArrayExtension.cs" />
     <Compile Include="IO\FileInfoExtension.cs" />
