@@ -11,6 +11,7 @@
         public static Boolean SetSelectedValue(this DropDownList dropDownList, String selectedValue)
         {
             var listItem = dropDownList.Items.FindByValue(selectedValue);
+<<<<<<< HEAD
             if (null != listItem)
             {
                 listItem.Selected = true;
@@ -29,12 +30,19 @@
         {
             var listItem = dropDownList.Items.FindByText(selectedText);
             if (null != listItem)
+=======
+
+            if (default(ListItem) != listItem)
+>>>>>>> f9a42453e21b709a43f8c305a99884d0025fa9ff
             {
                 listItem.Selected = true;
                 return true;
             }
             return false;
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> f9a42453e21b709a43f8c305a99884d0025fa9ff
     }
 }
