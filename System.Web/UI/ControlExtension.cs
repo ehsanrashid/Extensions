@@ -18,7 +18,7 @@
         /// <param name = "control">The parent control / naming container to search within.</param>
         /// <param name = "id">The id of the control to be found.</param>
         /// <returns>The found control</returns>
-        public static T FindControl<T>(this Control control, string id) where T : class
+        public static T FindControl<T>(this Control control, String id) where T : class
         {
             return (control.FindControl(id) as T);
         }
@@ -49,11 +49,11 @@
         /// <param name = "control">The root parent control.</param>
         /// <param name = "id">The id of the control to be found.</param>
         /// <returns>The found control</returns>
-        public static Control FindControlRecursive(this Control control, string id)
+        public static Control FindControlRecursive(this Control control, String id)
         {
             foreach (Control child in control.Controls)
             {
-                if ((null != child.ID) && string.Equals(child.ID, id, StringComparison.InvariantCultureIgnoreCase)) return child;
+                if ((null != child.ID) && String.Equals(child.ID, id, StringComparison.InvariantCultureIgnoreCase)) return child;
 
                 var ctl = FindControlRecursive(child, id);
                 if (default(Control) != ctl) return ctl;
@@ -68,11 +68,11 @@
         /// <param name = "control">The root parent control.</param>
         /// <param name = "id">The id of the control to be found.</param>
         /// <returns>The found control</returns>
-        public static T FindControlRecursive<T>(this Control control, string id) where T : class
+        public static T FindControlRecursive<T>(this Control control, String id) where T : class
         {
             foreach (Control child in control.Controls)
             {
-                if ((child.ID != null) && string.Equals(child.ID, id, StringComparison.InvariantCultureIgnoreCase) && (child is T)) return (child as T);
+                if ((child.ID != null) && String.Equals(child.ID, id, StringComparison.InvariantCultureIgnoreCase) && (child is T)) return (child as T);
 
                 var ctl = FindControlRecursive<T>(child, id);
                 if (default(T) != ctl) return ctl;
@@ -117,7 +117,7 @@
             //    if (childControl is T) yield return (childControl as T);
             //}
 
-            return control.Controls.OfType<T>().Select((childControl) => (childControl as T));
+            return control.Controls.OfType<T>(); //.Select((childControl) => childControl);
         }
 
         #endregion
@@ -150,7 +150,7 @@
         /// </summary>
         /// <param name = "control">The root control.</param>
         /// <param name = "controlIDs">The control IDs.</param>
-        public static void SetVisibility(this Control control, params string[] controlIDs)
+        public static void SetVisibility(this Control control, params String[] controlIDs)
         {
             control.SetVisibility(true, controlIDs);
         }
@@ -161,13 +161,11 @@
         /// <param name = "control">The root control.</param>
         /// <param name = "visible">if set to <c>true</c> [visible].</param>
         /// <param name = "controlIDs">The control IDs.</param>
-        public static void SetVisibility(this Control control, bool visible, params string[] controlIDs)
+        public static void SetVisibility(this Control control, bool visible, params String[] controlIDs)
         {
-            foreach (var id in controlIDs)
+            foreach (var ctl in controlIDs.Select(control.FindControlRecursive).Where(ctl => null != ctl)) 
             {
-                var ctl = control.FindControlRecursive(id);
-                if (ctl != null)
-                    ctl.Visible = visible;
+                ctl.Visible = visible;
             }
         }
 
@@ -179,7 +177,7 @@
         /// <param name = "controls">The controls to be set visible.</param>
         public static void SetVisibility(this Control control, Predicate<Control> condition, params Control[] controls)
         {
-            Array.ForEach(controls, c => c.Visible = condition(c));
+            Array.ForEach(controls, ctl => ctl.Visible = condition(ctl));
         }
 
         /// <summary>
@@ -188,12 +186,11 @@
         /// <param name = "control">The root control.</param>
         /// <param name = "condition">The condition.</param>
         /// <param name = "controlIDs">The control IDs.</param>
-        public static void SetVisibility(this Control control, Predicate<Control> condition, params string[] controlIDs)
+        public static void SetVisibility(this Control control, Predicate<Control> condition, params String[] controlIDs)
         {
-            foreach (var id in controlIDs)
+            foreach (var ctl in controlIDs.Select(control.FindControlRecursive).Where(ctl => null != ctl)) 
             {
-                var ctl = control.FindControlRecursive(id);
-                if (ctl != null) ctl.Visible = condition(ctl);
+                ctl.Visible = condition(ctl);
             }
         }
 

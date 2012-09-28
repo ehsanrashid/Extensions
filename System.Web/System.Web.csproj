@@ -55,6 +55,7 @@
     <Compile Include="HttpSessionStateBaseExtension.cs" />
     <Compile Include="SessionState\HttpSessionStateExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\WebControls\DropDownListExtension.cs" />
     <Compile Include="UI\StateBagExtension.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

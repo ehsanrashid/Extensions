@@ -191,8 +191,7 @@ namespace System.IO
                                        List<DirectoryInfo> listDirs)
         {
             listDirs.AddRange(directory.GetDirectories().Where(predicate));
-            directory.GetDirectories()
-                .ForEach(subDir => FindSubDirectories(subDir, predicate, listDirs));
+            directory.GetDirectories().ForEach(subDir => FindSubDirectories(subDir, predicate, listDirs));
         }
 
         public static DirectoryInfo[] FindSubDirectories(this DirectoryInfo directory, String pattern)

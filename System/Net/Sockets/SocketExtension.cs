@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using System.Reactive;
-using System.Reactive.Linq;
+//using System.Reactive;
+//using System.Reactive.Linq;
 using System.Text;
 
 namespace System.Net.Sockets
@@ -19,7 +19,7 @@ namespace System.Net.Sockets
             return socket.RemoteEndPoint as IPEndPoint;
         }
 
-
+        /*
         public static IObservable<Unit> WhenConnected(this Socket socket, IPAddress address, int port)
         {
             return Observable.FromAsyncPattern<IPAddress, int>(socket.BeginConnect, socket.EndConnect)(address, port);
@@ -117,7 +117,7 @@ namespace System.Net.Sockets
                             observer.OnCompleted);
                 });
         }
-
+        */
 
         /*
         public static IObservable<byte[]> WhenDataReceived(this Socket socket, int byteCount, SocketFlags flags = SocketFlags.None)

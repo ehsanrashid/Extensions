@@ -52,16 +52,16 @@
         public const int DefaultTimeout = 5000; //msec
 
         public TimeSpan Timeout = TimeSpan.FromMilliseconds(DefaultTimeout);
-        public bool IsStoped = false;
+        public bool ExitContext = false;
 
-        readonly Object locker = new Object();
+        readonly Object _locker = new Object();
 
         #region Constructors
         public BlockingQueue(IEnumerable<T> collection, TimeSpan timeout, bool exitContext = false)
             : base(collection)
         {
             Timeout = timeout;
-            IsStoped = exitContext;
+            ExitContext = exitContext;
         }
 
         public BlockingQueue(IEnumerable<T> collection, int msecTimeout = DefaultTimeout, bool exitContext = false)
@@ -73,7 +73,7 @@
             : base(capacity)
         {
             Timeout = timeout;
-            IsStoped = exitContext;
+            ExitContext = exitContext;
         }
 
         public BlockingQueue(int capacity, int msecTimeout = DefaultTimeout, bool exitContext = false)
@@ -84,7 +84,7 @@
         public BlockingQueue(TimeSpan timeout, bool exitContext = false)
         {
             Timeout = timeout;
-            IsStoped = exitContext;
+            ExitContext = exitContext;
         }
 
         public BlockingQueue(int msecTimeout = DefaultTimeout, bool exitContext = false)
@@ -95,22 +95,23 @@
 
         public new void Enqueue(T item)
         {
-            if (null == item) throw new ArgumentNullException("item");
-            lock (locker)
+            // List is unlimited so no check for Overflow
+            //if (null == item) throw new ArgumentNullException("item");
+            lock (_locker)
             {
                 base.Enqueue(item);
-                Monitor.Pulse(locker);
+                Monitor.Pulse(_locker);
             }
         }
 
         public new T Dequeue()
         {
-            lock (locker)
+            lock (_locker)
             {
                 while (Count == 0)
                 {
-                    var isEntry = Monitor.Wait(locker, Timeout);
-                    if (IsStoped)
+                    Monitor.Wait(_locker, Timeout);
+                    if (ExitContext)
                     {
                         if (Count == 0) return default(T);
                         break;
@@ -120,11 +121,12 @@
             }
         }
 
-        public void Enqueues(IEnumerable<T> collection)
+        public void Enqueues(IEnumerable<T> enumerable)
         {
-            //foreach (var item in collection)
+            //foreach (var item in enumerable)
             //    Enqueue(item);
-            collection.ForEach(Enqueue);
+            //-------------------------------
+            enumerable.ForEach(Enqueue);
         }
 
         //public int Dequeues(int count, out IList<T> collection)
@@ -144,9 +146,9 @@
 
         public IEnumerable<T> Dequeues(int times)
         {
-            lock (locker)
+            lock (_locker)
             {
-                for (var i = 0; i < times; i++)
+                for (var i = 0; i < times; ++i)
                 {
                     if (Count == 0) break;
                     yield return base.Dequeue();
@@ -154,19 +156,13 @@
             }
         }
 
-        public IEnumerable<T> DequeueAll()
+        public IEnumerable<T> Dequeues()
         {
-            lock (locker)
+            lock (_locker)
             {
-                /*
-                var result = new T[Count];
-                CopyTo(result, 0);
-                Clear();
-                return result;
-                */
-                while (Count != 0)
-                    yield return base.Dequeue();
+                while (Count != 0) yield return base.Dequeue();
             }
         }
+
     }
 }
