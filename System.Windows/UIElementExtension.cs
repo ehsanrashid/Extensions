@@ -10,16 +10,6 @@
     public static class UIElementExtension
     {
         /// <summary>
-        ///   Renders the ui element into a bitmap frame.
-        /// </summary>
-        /// <param name = "element">The UI element.</param>
-        /// <returns>The created bitmap frame</returns>
-        public static BitmapSource RenderToBitmap(this UIElement element)
-        {
-            return element.RenderToBitmap(1);
-        }
-
-        /// <summary>
         ///   Renders the ui element into a bitmap frame using the specified scale.
         /// </summary>
         /// <param name = "element">The UI element.</param>
@@ -34,7 +24,7 @@
             var sourceBrush = new VisualBrush(element);
 
             var drawingVisual = new DrawingVisual();
-            
+
             using (DrawingContext drawingContext = drawingVisual.RenderOpen())
             {
                 drawingContext.PushTransform(new ScaleTransform(scale, scale));
@@ -43,6 +33,16 @@
             renderTarget.Render(drawingVisual);
 
             return renderTarget;
+        }
+
+        /// <summary>
+        ///   Renders the ui element into a bitmap frame.
+        /// </summary>
+        /// <param name = "element">The UI element.</param>
+        /// <returns>The created bitmap frame</returns>
+        public static BitmapSource RenderToBitmap(this UIElement element)
+        {
+            return RenderToBitmap(element, 1);
         }
 
         /// <summary>

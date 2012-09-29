@@ -230,7 +230,7 @@
         {
             get
             {
-                if (_syncRoot == null)
+                if (null == _syncRoot)
                     Interlocked.CompareExchange(ref _syncRoot, new Object(), null);
                 return _syncRoot;
             }

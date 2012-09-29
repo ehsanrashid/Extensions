@@ -6,12 +6,11 @@
         /// Selects the item in the list control that contains the specified value, if it exists.
         /// </summary>
         /// <param name="dropDownList"></param>
-        /// <param name="selectedValue">The value of the item in the list control to select</param>
+        /// <param name="valueSelect">The value of the item in the list control to select</param>
         /// <returns>Returns true if the value exists in the list control, false otherwise</returns>
-        public static Boolean SetSelectedValue(this DropDownList dropDownList, String selectedValue)
+        public static Boolean SelectValue(this DropDownList dropDownList, String valueSelect)
         {
-            var listItem = dropDownList.Items.FindByValue(selectedValue);
-<<<<<<< HEAD
+            var listItem = dropDownList.Items.FindByValue(valueSelect);
             if (null != listItem)
             {
                 listItem.Selected = true;
@@ -24,25 +23,17 @@
         /// Selects the item in the list control that contains the specified text, if it exists.
         /// </summary>
         /// <param name="dropDownList"></param>
-        /// <param name="selectedText">The text of the item in the list control to select</param>
+        /// <param name="textSelect">The text of the item in the list control to select</param>
         /// <returns>Returns true if the text exists in the list control, false otherwise</returns>
-        public static Boolean SetSelectedText(this DropDownList dropDownList, String selectedText)
+        public static Boolean SelectText(this DropDownList dropDownList, String textSelect)
         {
-            var listItem = dropDownList.Items.FindByText(selectedText);
+            var listItem = dropDownList.Items.FindByText(textSelect);
             if (null != listItem)
-=======
-
-            if (default(ListItem) != listItem)
->>>>>>> f9a42453e21b709a43f8c305a99884d0025fa9ff
             {
                 listItem.Selected = true;
                 return true;
             }
             return false;
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> f9a42453e21b709a43f8c305a99884d0025fa9ff
     }
 }

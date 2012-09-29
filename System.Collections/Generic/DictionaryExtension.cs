@@ -175,7 +175,7 @@ namespace System.Collections.Generic
         /// <param name="key"> </param>
         /// <param name="value"></param>
         public static void Append(this IDictionary<String, Object> dictionary, String key, Object value)
-        {
+        {                            //IDictionary<String, List<Object>>
             List<Object> listValues;
             if (dictionary.ContainsKey(key))
             {

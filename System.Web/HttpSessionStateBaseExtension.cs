@@ -5,6 +5,7 @@
     /// </summary>
     public static class HttpSessionStateBaseExtension
     {
+
         /// <summary>
         ///   Returns a typed value from the ASP.NET MVC session state or the provided default value
         /// </summary>
@@ -15,13 +16,13 @@
         /// <returns>The session state value.</returns>
         /// <example>
         ///   <code>
-        ///     public List&lt;string&gt; StringValues {
-        ///     get { return this.Session.Ensure&lt;List&lt;string&gt;&gt;("StringValues"); }
+        ///     public List&lt;String&gt; StringValues {
+        ///     get { return this.Session.Ensure&lt;List&lt;String&gt;&gt;("StringValues"); }
         ///     set { this.ViewState.Set("StringValues", value); }
         ///     }
         ///   </code>
         /// </example>
-        public static TValue Get<TValue>(this HttpSessionStateBase sessionState, string key, TValue defaultValue = default(TValue))
+        public static TValue GetValue<TValue>(this HttpSessionStateBase sessionState, String key, TValue defaultValue = default(TValue))
         {
             var value = sessionState[key];
             return (TValue) (value ?? defaultValue);
@@ -36,40 +37,22 @@
         /// <returns>The session state value.</returns>
         /// <example>
         ///   <code>
-        ///     public List&lt;string&gt; StringValues {
-        ///     get { return this.Session.Ensure&lt;List&lt;string&gt;&gt;("StringValues"); }
+        ///     public List&lt;String&gt; StringValues {
+        ///     get { return this.Session.Ensure&lt;List&lt;String&gt;&gt;("StringValues"); }
         ///     set { this.ViewState.Set("StringValues", value); }
         ///     }
         ///   </code>
         /// </example>
-        public static T Ensure<T>(this HttpSessionStateBase sessionState, string key) where T : class, new()
+        public static T Ensure<T>(this HttpSessionStateBase sessionState, String key) where T : class, new()
         {
-            var value = sessionState.Get<T>(key);
+            var value = sessionState.GetValue<T>(key);
             if (null == value)
             {
                 value = new T();
-                sessionState.Set(key, value);
+                sessionState[key] = value;
             }
             return value;
         }
 
-        /// <summary>
-        ///   Sets the specified value into the ASP.NET MVC session state.
-        /// </summary>
-        /// <param name = "sessionState">The session state.</param>
-        /// <param name = "key">The session state key.</param>
-        /// <param name = "value">The new session state value.</param>
-        /// <example>
-        ///   <code>
-        ///     public List&lt;string&gt; StringValues {
-        ///     get { return this.Session.Ensure&lt;List&lt;string&gt;&gt;("StringValues"); }
-        ///     set { this.ViewState.Set("StringValues", value); }
-        ///     }
-        ///   </code>
-        /// </example>
-        public static void Set(this HttpSessionStateBase sessionState, string key, object value)
-        {
-            sessionState[key] = value;
-        }
     }
 }

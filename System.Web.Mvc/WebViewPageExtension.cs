@@ -3,6 +3,11 @@
    
     public static class WebViewPageExtension
     {
+        static String Get(WebViewPage view, String key)
+        {
+            return view.ViewContext.Controller.ValueProvider.GetValue(key).RawValue.ToString();
+        }
+
         public static String GetFormActionUrl(this WebViewPage view)
         {
             return String.Format("/{0}/{1}/{2}", view.GetController(), view.GetAction(), view.GetId());
@@ -23,11 +28,7 @@
             return Get(view, "id");
         }
 
-        private static String Get(WebViewPage view, String key)
-        {
-            
-            return view.ViewContext.Controller.ValueProvider.GetValue(key).RawValue.ToString();
-        }
+        
     }
     
 }

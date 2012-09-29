@@ -27,7 +27,7 @@
                                               Object imgHtmlAttributes = null)
         {
             var urlHelper = ((Controller) htmlHelper.ViewContext.Controller).Url;
-            
+
             var url = urlHelper.Action(actionName, controllerName, routeValues);
             var tbLink = new TagBuilder("a");
             tbLink.MergeAttribute("href", url);
@@ -35,7 +35,7 @@
             var tbImg = new TagBuilder("img");
             tbImg.MergeAttribute("src", imgSrc);
             tbImg.MergeAttributes(new RouteValueDictionary(htmlAttributes), true);
-            
+
             tbLink.InnerHtml = tbImg.ToString(TagRenderMode.SelfClosing);
             tbLink.MergeAttributes(new RouteValueDictionary(htmlAttributes), true);
 
@@ -79,18 +79,19 @@
             return MvcHtmlString.Create(tbLbl.ToString());
         }
 
+
+        static readonly String[] HtmlTags = new[] { "script", "div", "p", "a", "h1", "h2", "h3", "h4", "h5", "h6", "center", "table", "form" };
+
         public static MvcHtmlString Tag(this HtmlHelper htmlHelper,
-                                        String tag = null,
-                                        String src = null, String href = null,
-                                        String type = null,
-                                        String id = null, String name = null,
-                                        String style = null, String @class = null,
-                                        String attribs = null)
+                                        String tag = null, String src = null, String href = null,
+                                        String type = null, String id = null, String name = null,
+                                        String style = null, String @class = null, String attribs = null)
         {
             var sb = new StringBuilder();
             sb.Append("<");
-            
+
             if (tag.IsNotNullOrEmpty()) tag = "div";
+            
             sb.Append(tag);
             AppendOptionalAttrib(htmlHelper, sb, "id", id, false, validateScriptableIdent: true);
             AppendOptionalAttrib(htmlHelper, sb, "name", name, false, validateScriptableIdent: true);
@@ -99,32 +100,31 @@
             AppendOptionalAttrib(htmlHelper, sb, "href", href, false, true);
             AppendOptionalAttrib(htmlHelper, sb, "style", style);
             AppendOptionalAttrib(htmlHelper, sb, "class", @class, false, validateClass: true);
-            
+
             if (attribs.IsNotNullOrEmpty()) sb.Append(" " + attribs);
             
-            if ((new[] { "script", "div", "p", "a", "h1", "h2", "h3", "h4", "h5", "h6", "center", "table", "form" }).Contains(
-                    tag.ToLower())) sb.Append("></" + tag + ">");
-            else 
+            if (HtmlTags.Contains(tag.ToLower())) 
+                sb.Append("></" + tag + ">");
+            else
                 sb.Append(" />");
             return MvcHtmlString.Create(sb.ToString());
         }
 
-        static void AppendOptionalAttrib(HtmlHelper htmlHelper, StringBuilder sb,
-                                         String attribName, String attribValue, bool? encode = null,
-                                         bool? resolveAbsUrl = null, bool? validateScriptableIdent = null,
-                                         bool? validateClass = null)
+        static void AppendOptionalAttrib(HtmlHelper htmlHelper,
+                                         StringBuilder sb, String attribName, String attribValue, bool? encode = null,
+                                         bool? resolveAbsUrl = null, bool? validateScriptableIdent = null, bool? validateClass = null)
         {
             if (attribValue.IsNullOrEmpty()) return;
             if (attribName.IsNullOrEmpty()) throw new ArgumentException("attribName is required.", "attribName");
-            
+
             var attribNameLcase = attribName.ToLower();
-            
+
             if (!resolveAbsUrl.HasValue) resolveAbsUrl = attribNameLcase == "src" || attribNameLcase == "href";
             if (!validateScriptableIdent.HasValue) validateScriptableIdent = attribNameLcase == "id" || attribNameLcase == "name";
             if (!validateClass.HasValue) validateClass = attribNameLcase == "class";
             if (!encode.HasValue) encode = !validateScriptableIdent.Value && !resolveAbsUrl.Value && !validateClass.Value;
-            sb.Append(" " + attribName + "=\"");
-            
+            sb.Append(String.Concat(" ", attribName, "=\""));
+
             if (validateScriptableIdent.Value && !IsScriptableIdValue(attribValue)) throw new FormatException("Attrib value has invalid characters: " + attribNameLcase + "=" + attribValue);
             if (validateClass.Value && !IsValidClassValue(attribValue)) throw new FormatException("Attrib value has invalid characters: " + attribNameLcase + "=" + attribValue);
             if (resolveAbsUrl.Value)

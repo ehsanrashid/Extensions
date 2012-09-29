@@ -13,13 +13,13 @@
         /// <param name="control">Current Element</param>
         public static void BringToFront(this FrameworkElement control)
         {
-            if (control == null) return;
+            if (null == control) return;
 
             var parent = control.Parent as Panel;
-            if (parent == null) return;
+            if (null == parent) return;
 
-            int maxZ = parent.Children.OfType<UIElement>()
-                .Where(x => x != control)
+            var maxZ = parent.Children.OfType<UIElement>()
+                .Where(x => !x.Equals(control))
                 .Select(Panel.GetZIndex)
                 .Max();
             Panel.SetZIndex(control, maxZ + 1);
