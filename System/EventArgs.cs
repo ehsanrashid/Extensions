@@ -10,12 +10,12 @@
         }
     }
 
-    public class EventArgs<T, U> : EventArgs, IEventArgs<T, U>
+    public class EventArgs<T1, T2> : EventArgs, IEventArgs<T1, T2>
     {
-        public T Value1 { get; private set; }
-        public U Value2 { get; private set; }
+        public T1 Value1 { get; private set; }
+        public T2 Value2 { get; private set; }
 
-        public EventArgs(T value1, U value2)
+        public EventArgs(T1 value1, T2 value2)
         {
             Value1 = value1;
             Value2 = value2;

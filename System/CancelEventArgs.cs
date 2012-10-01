@@ -23,19 +23,19 @@
         }
     }
 
-    public class CancelEventArgs<T, U> : CancelEventArgs, IEventArgs<T, U>
+    public class CancelEventArgs<T1, T2> : CancelEventArgs, IEventArgs<T1, T2>
     {
-        public T Value1 { get; private set; }
-        public U Value2 { get; private set; }
+        public T1 Value1 { get; private set; }
+        public T2 Value2 { get; private set; }
 
-        public CancelEventArgs(T value1, U value2, bool cancel)
+        public CancelEventArgs(T1 value1, T2 value2, bool cancel)
             : base(cancel)
         {
             Value1 = value1;
             Value2 = value2;
         }
 
-        public CancelEventArgs(T value1, U value2)
+        public CancelEventArgs(T1 value1, T2 value2)
         {
             Value1 = value1;
             Value2 = value2;

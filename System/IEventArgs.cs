@@ -5,9 +5,9 @@
         T Value { get; }
     }
 
-    public interface IEventArgs<out T, out U>
+    public interface IEventArgs<out T1, out T2>
     {
-        T Value1 { get; }
-        U Value2 { get; }
+        T1 Value1 { get; }
+        T2 Value2 { get; }
     }
 }
