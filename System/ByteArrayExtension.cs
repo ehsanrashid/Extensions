@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Windows.Media.Imaging;
 
 namespace System
 {
@@ -16,19 +17,23 @@ namespace System
         {
             if (null == buf1 || 0 == buf1.Length) return buf2;
             if (null == buf2 || 0 == buf2.Length) return buf1;
-            var rv = new byte[buf1.Length + buf2.Length];
-            Buffer.BlockCopy(buf1, 0, rv, 0, buf1.Length);
-            Buffer.BlockCopy(buf2, 0, rv, buf1.Length, buf2.Length);
-            return rv;
+            var buffer = new byte[buf1.Length + buf2.Length];
+            Buffer.BlockCopy(buf1, 0, buffer, 0, buf1.Length);
+            Buffer.BlockCopy(buf2, 0, buffer, buf1.Length, buf2.Length);
+            return buffer;
         }
 
-        public static IEnumerable<byte[]> Split(this byte[] buffer, byte seperator, bool includeSeperator) { return null; //Split(buffer, new byte[] {seperator}, includeSeperator);
-        }
+        //public static IEnumerable<byte[]> Split(this byte[] buffer, byte seperator, bool includeSeperator)
+        //{
+        //    return Split(buffer, new byte[] { seperator }, includeSeperator);
+        //}
 
         public static IEnumerable<byte[]> Split(this byte[] buffer, int blockSize)
         {
             if (blockSize < 1) throw new ArgumentOutOfRangeException("blockSize");
+            
             if (null == buffer) yield break;
+            
             if (buffer.Length <= blockSize) yield return buffer;
             else
             {
@@ -36,10 +41,10 @@ namespace System
                 var pos = 0;
                 while (pos < buffer.Length)
                 {
-                    var len = Math.Min(blockSize, buffer.Length - pos);
-                    var part = new byte[len];
-                    Array.Copy(buffer, pos, part, 0, len);
-                    pos += len;
+                    var length = Math.Min(blockSize, buffer.Length - pos);
+                    var part = new byte[length];
+                    Array.Copy(buffer, pos, part, 0, length);
+                    pos += length;
                     yield return part;
                 }
             }
@@ -120,7 +125,7 @@ namespace System
             // Generate the key and initialization vector.
             byte[] key = null;
             byte[] iv = null;
-            byte[] salt = {0x10, 0x20, 0x12, 0x23, 0x37, 0xA4, 0xC5, 0xA6, 0xF1, 0xF0, 0xEE, 0x21, 0x22, 0x45};
+            byte[] salt = { 0x10, 0x20, 0x12, 0x23, 0x37, 0xA4, 0xC5, 0xA6, 0xF1, 0xF0, 0xEE, 0x21, 0x22, 0x45 };
             MakeKeyAndIv(password, salt, keySize, blockSize, ref key, ref iv);
             // Make the encryptor or decryptor.
             var cryptoTransform = encrypt
@@ -173,8 +178,8 @@ namespace System
         {
             if (password == null) throw new ArgumentNullException("password");
             var deriveBytes = new Rfc2898DeriveBytes(password, salt, 1234);
-            key = deriveBytes.GetBytes(keySize/8);
-            iv = deriveBytes.GetBytes(blockSize/8);
+            key = deriveBytes.GetBytes(keySize / 8);
+            iv = deriveBytes.GetBytes(blockSize / 8);
         }
 
         #endregion
@@ -189,6 +194,7 @@ namespace System
         {
             if (default(Byte[]) == buffer1) throw new ArgumentNullException("buffer1");
             if (default(Byte[]) == buffer2) throw new ArgumentNullException("buffer2");
+            
             if (buffer2.Length == 0) return 0; // by definition empty sets match immediately
             var j = -1;
             var end = buffer1.Length - buffer2.Length;
@@ -207,5 +213,28 @@ namespace System
         /// <returns></returns>
         /// <remarks></remarks>
         public static Image ConvertToImage(this Byte[] buffer) { return Image.FromStream(new MemoryStream(buffer)); }
+
+        public static BitmapImage ToBitmapImage(this Byte[] byteArray)
+        {
+            var bitmapImage = new BitmapImage();
+            bitmapImage.BeginInit();
+            using (var stream = new MemoryStream(byteArray))
+            {
+                bitmapImage.StreamSource = stream;
+            }
+            bitmapImage.EndInit();
+            return bitmapImage;
+        }
+
+        public static BitmapSource ToBitmapSource(this Byte[] byteArray)
+        {
+            using (var stream = new MemoryStream(byteArray))
+            {
+                var decoder = new PngBitmapDecoder(stream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
+                var bitmapSource = decoder.Frames[0];
+                return bitmapSource;
+            }
+        }
+
     }
 }

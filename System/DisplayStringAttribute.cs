@@ -61,7 +61,7 @@ namespace System
             if (obj is DisplayStringAttribute)
             {
                 var dispString = obj as DisplayStringAttribute;
-                return DisplayString.Equals(dispString.DisplayString);
+                return DisplayString == dispString.DisplayString;
             }
             return false;
         }
