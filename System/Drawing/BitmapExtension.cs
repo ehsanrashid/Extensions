@@ -41,7 +41,7 @@ namespace System.Drawing
         /// </example>
         public static Bitmap ScaleToSize(this Bitmap bitmap, Size size)
         {
-            return bitmap.ScaleToSize(size.Width, size.Height);
+            return ScaleToSize(bitmap, size.Width, size.Height);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace System.Drawing
         /// </remarks>
         public static Bitmap ScaleProportional(this Bitmap bitmap, Size size)
         {
-            return bitmap.ScaleProportional(size.Width, size.Height);
+            return ScaleProportional(bitmap, size.Width, size.Height);
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace System.Drawing
         /// </example>
         public static Bitmap ScaleToSizeProportional(this Bitmap bitmap, Color backgroundColor, Size size)
         {
-            return bitmap.ScaleToSizeProportional(backgroundColor, size.Width, size.Height);
+            return ScaleToSizeProportional(bitmap, backgroundColor, size.Width, size.Height);
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace System.Drawing
         /// </example>
         public static Bitmap ScaleToSizeProportional(this Bitmap bitmap, int width, int height)
         {
-            return bitmap.ScaleToSizeProportional(Color.White, width, height);
+            return ScaleToSizeProportional(bitmap, Color.White, width, height);
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace System.Drawing
         /// </example>
         public static Bitmap ScaleToSizeProportional(this Bitmap bitmap, Size size)
         {
-            return bitmap.ScaleToSizeProportional(size.Width, size.Height);
+            return ScaleToSizeProportional(bitmap, size.Width, size.Height);
         }
     }
 }

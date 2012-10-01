@@ -24,5 +24,6 @@
         {
             return String.Format("({0, 2},{1, 2})", p.X, p.Y);
         }
+
     }
 }

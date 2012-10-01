@@ -1,12 +1,7 @@
 ﻿namespace System.IO
 {
-    using Linq;
-    using Net;
-    using Net.Sockets;
     //using Reactive.Subjects;
     using Text;
-    using Threading;
-    using Threading.Tasks;
 
     /// <summary>
     ///   Extension methods any kind of streams

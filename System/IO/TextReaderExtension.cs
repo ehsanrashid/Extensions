@@ -10,7 +10,7 @@ namespace System.IO
         public static bool TryReadLine(this TextReader reader, out string line)
         {
             line = reader.ReadLine();
-            return null != line;
+            return (null != line);
         }
 
         /// <summary>
@@ -57,9 +57,6 @@ namespace System.IO
         ///     reader.IterateLines(l => Console.WriteLine(l));
         ///     }</code>
         /// </example>
-        /// <remarks>
-        ///   Contributed by OlivierJ
-        /// </remarks>
         public static void ForEachReadLines(this TextReader reader, Action<String> action)
         {
             if (default(TextReader) != reader

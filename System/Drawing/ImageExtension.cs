@@ -157,5 +157,6 @@ namespace System.Drawing
         {
             return Image.FromStream(new MemoryStream(byteArrayIn));
         }
+
     }
 }

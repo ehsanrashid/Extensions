@@ -46,5 +46,6 @@ namespace System.Drawing
                 }
             return splitIcons.ToArray();
         }
+
     }
 }
