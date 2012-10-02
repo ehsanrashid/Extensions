@@ -1028,6 +1028,8 @@
             return String.Format("{0}{1}{2}", String.Empty.PadRight(padding, '\t'), tag, Environment.NewLine);
         }
 
+
+
         public static bool InList<T>(this Object obj, IEnumerable<T> sequence)
         {
             //foreach (T item in sequence)
@@ -1087,8 +1089,6 @@
                 return dataSet;
             }
         }
-
-
 
         public static IEnumerable<T> Recurse<T>
             (
