@@ -32,7 +32,7 @@
     }
 
 
-
+    /*
     public class Person : ObservableItem
     {
         private String m_firstName;
@@ -50,4 +50,6 @@
             set { SetProperty("LastName", ref m_lastName, value, StringComparer.Ordinal); }
         }
     }
+    */
+    
 }
