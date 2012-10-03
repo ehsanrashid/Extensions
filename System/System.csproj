@@ -67,6 +67,7 @@
     <Compile Include="ComponentModel\DataAnnotations\DateGreaterThanAttribute.cs" />
     <Compile Include="ComponentModel\DataAnnotations\DateStartAttribute.cs" />
     <Compile Include="ComponentModel\DataAnnotations\EmailAttribute.cs" />
+    <Compile Include="ComponentModel\DataAnnotations\EqualToPropertyAttribute.cs" />
     <Compile Include="ComponentModel\DataAnnotations\PriceAttribute.cs" />
     <Compile Include="ComponentModel\DataAnnotations\RegexAttribute.cs" />
     <Compile Include="ConstructorExtension.cs" />
