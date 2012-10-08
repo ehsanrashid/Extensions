@@ -71,6 +71,7 @@
     <Compile Include="Generic\Interface\IDeque.cs" />
     <Compile Include="Generic\Interface\IHeap.cs" />
     <Compile Include="Generic\Interface\IMatrix.cs" />
+    <Compile Include="Generic\Interface\IPagedList.cs" />
     <Compile Include="Generic\Interface\ISet.cs" />
     <Compile Include="Generic\Interface\IStack.cs" />
     <Compile Include="Generic\Interface\ITree.cs" />
@@ -110,7 +111,6 @@
     <Compile Include="Generic\EnumerableExtension.cs" />
     <Compile Include="Generic\ListExtension.cs" />
     <Compile Include="EnumerableExtension.cs" />
-    <Compile Include="Generic\PaginatedListExtension.cs" />
     <Compile Include="Generic\PriorityQueue.cs" />
     <Compile Include="Generic\Tree.cs" />
     <Compile Include="Generic\VisitableHashtable.cs" />
