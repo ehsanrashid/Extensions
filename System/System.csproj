@@ -37,6 +37,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\System.Collections\bin\System.CollectionsEx.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity.Design" />
     <Reference Include="System.DirectoryServices" />
@@ -61,6 +62,14 @@
     <Compile Include="CancelEventArgs.cs" />
     <Compile Include="Complex.cs" />
     <Compile Include="ComponentModel\ComponentExtension.cs" />
+    <Compile Include="ComponentModel\DataAnnotations\CreditCardAttribute.cs" />
+    <Compile Include="ComponentModel\DataAnnotations\DateEndAttribute.cs" />
+    <Compile Include="ComponentModel\DataAnnotations\DateGreaterThanAttribute.cs" />
+    <Compile Include="ComponentModel\DataAnnotations\DateStartAttribute.cs" />
+    <Compile Include="ComponentModel\DataAnnotations\EmailAttribute.cs" />
+    <Compile Include="ComponentModel\DataAnnotations\EqualToPropertyAttribute.cs" />
+    <Compile Include="ComponentModel\DataAnnotations\PriceAttribute.cs" />
+    <Compile Include="ComponentModel\DataAnnotations\RegexAttribute.cs" />
     <Compile Include="ConstructorExtension.cs" />
     <Compile Include="Culture.cs" />
     <Compile Include="Data\DataReaderExtension.cs" />

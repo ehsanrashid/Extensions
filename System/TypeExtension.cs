@@ -5,22 +5,7 @@
     /// </summary>
     public static class TypeExtension
     {
-        /// <summary>
-        /// 	Creates and returns an instance of the desired type
-        /// </summary>
-        /// <param name = "type">The type to be instanciated.</param>
-        /// <param name = "constructorParameters">Optional constructor parameters</param>
-        /// <returns>The instanciated object</returns>
-        /// <example>
-        /// 	<code>
-        /// 		var type = Type.GetType(".NET full qualified class Type")
-        /// 		var instance = type.CreateInstance();
-        /// 	</code>
-        /// </example>
-        public static object CreateInstance(this Type type, params object[] constructorParameters)
-        {
-            return CreateInstance<object>(type, constructorParameters);
-        }
+        
 
         /// <summary>
         /// 	Creates and returns an instance of the desired type casted to the generic parameter type T
@@ -28,35 +13,52 @@
         /// <typeparam name = "T">The data type the instance is casted to.</typeparam>
         /// <param name = "type">The type to be instanciated.</param>
         /// <param name = "constructorParameters">Optional constructor parameters</param>
-        /// <returns>The instanciated object</returns>
+        /// <returns>The instanciated Object</returns>
         /// <example>
         /// 	<code>
         /// 		var type = Type.GetType(".NET full qualified class Type")
         /// 		var instance = type.CreateInstance&lt;IDataType&gt;();
         /// 	</code>
         /// </example>
-        public static T CreateInstance<T>(this Type type, params object[] constructorParameters)
+        public static T CreateInstance<T>(this Type type, params Object[] constructorParameters)
         {
             var instance = Activator.CreateInstance(type, constructorParameters);
             return (T) instance;
+        }
+
+        /// <summary>
+        /// 	Creates and returns an instance of the desired type
+        /// </summary>
+        /// <param name = "type">The type to be instanciated.</param>
+        /// <param name = "constructorParameters">Optional constructor parameters</param>
+        /// <returns>The instanciated Object</returns>
+        /// <example>
+        /// 	<code>
+        /// 		var type = Type.GetType(".NET full qualified class Type")
+        /// 		var instance = type.CreateInstance();
+        /// 	</code>
+        /// </example>
+        public static Object CreateInstance(this Type type, params Object[] constructorParameters)
+        {
+            return CreateInstance<Object>(type, constructorParameters);
         }
 
         ///<summary>
         ///	Check if this is a base type
         ///</summary>
         ///<param name = "type"></param>
-        ///<param name = "checkingType"></param>
+        ///<param name = "typeCheck"></param>
         ///<returns></returns>
         /// <remarks>
         /// 	Contributed by Michael T, http://about.me/MichaelTran
         /// </remarks>
-        public static bool IsBaseType(this Type type, Type checkingType)
+        public static bool IsBaseType(this Type type, Type typeCheck)
         {
-            while (type != typeof (object))
+            while (typeof (Object) != typeCheck)
             {
-                if (type == null) continue;
+                if (null == type) continue;
 
-                if (type == checkingType) return true;
+                if (type == typeCheck) return true;
 
                 type = type.BaseType;
             }
