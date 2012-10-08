@@ -149,30 +149,30 @@
             return TryCast<T>(obj, out success);
         }
 
-        /// <summary>
-        /// Casts the specified Object. If the Object is null a return type can be specified.
-        /// </summary>
-        /// <typeparam name="T">The type to cast to.</typeparam>
-        /// <param name="obj">The Object being casted</param>
-        /// <param name="defaultValue">The default Type.</param>
-        /// <returns>returns the Object as casted type. If null the default type is returned.</returns>
-        public static T Cast<T>(this Object obj, T defaultValue)
-        {
-            if (default(Object) == obj) return defaultValue;
-            return (T) Convert.ChangeType(obj, typeof(T));
-        }
+        ///// <summary>
+        ///// Casts the specified Object. If the Object is null a return type can be specified.
+        ///// </summary>
+        ///// <typeparam name="T">The type to cast to.</typeparam>
+        ///// <param name="obj">The Object being casted</param>
+        ///// <param name="defaultValue">The default Type.</param>
+        ///// <returns>returns the Object as casted type. If null the default type is returned.</returns>
+        //public static T Cast<T>(this Object obj, T defaultValue)
+        //{
+        //    if (default(Object) == obj) return defaultValue;
+        //    return (T) Convert.ChangeType(obj, typeof(T));
+        //}
 
-        /// <summary>
-        /// Casts the specified Object to the specified type.
-        /// </summary>
-        /// <typeparam name="T">The type to cast to</typeparam>
-        /// <param name="obj">The Object being casted</param>
-        /// <returns>returns the Object as casted type.</returns>
-        public static T Cast<T>(this Object obj)
-        {
-            if (default(Object) == obj) throw new NullReferenceException();
-            return (T) Convert.ChangeType(obj, typeof(T));
-        }
+        ///// <summary>
+        ///// Casts the specified Object to the specified type.
+        ///// </summary>
+        ///// <typeparam name="T">The type to cast to</typeparam>
+        ///// <param name="obj">The Object being casted</param>
+        ///// <returns>returns the Object as casted type.</returns>
+        //public static T Cast<T>(this Object obj)
+        //{
+        //    if (default(Object) == obj) throw new NullReferenceException();
+        //    return (T) Convert.ChangeType(obj, typeof(T));
+        //}
 
         /// <summary>
         /// Cast an Object to the given type. Usefull especially for anonymous types.

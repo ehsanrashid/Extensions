@@ -1,27 +1,55 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
 
 namespace System.Web.UI.WebControls
 {
     public static class ListControlExtension
     {
 
-        public static ListItemCollection SelectedItems(this ListControl listControl)
-        {
-            var colSelectedListItems = new ListItemCollection();
+        //public static ListItemCollection SelectedItems(this ListControl listControl)
+        //{
+        //    var colSelectedListItems = new ListItemCollection();
 
-            //foreach (var item in listControl.Items)
-            //{
-            //    if (item.Selected)
-            //    {
-            //        colSelectedListItems.Add(item);
-            //    }
-            //}
-            
-            foreach (var item in Enumerable.Cast<ListItem>(listControl.Items).Where((item) => item.Selected))
-            {
-                colSelectedListItems.Add(item);
-            }
-            return colSelectedListItems;
+        //    //foreach (var item in listControl.Items)
+        //    //{
+        //    //    if (item.Selected)
+        //    //    {
+        //    //        colSelectedListItems.Add(item);
+        //    //    }
+        //    //}
+
+        //    foreach (var item in listControl.Items.Cast<ListItem>().Where((item) => item.Selected))
+        //    {
+        //        colSelectedListItems.Add(item);
+        //    }
+        //    return colSelectedListItems;
+        //}
+
+        public static IEnumerable<ListItem> SelectedItems(this ListControl listControl)
+        {
+            return listControl.Items.Cast<ListItem>().Where((item) => item.Selected);//.Select((item) => item);
+        }
+
+        //public static StringCollection SelectedValues(this ListControl listControl)
+        //{
+        //    var colSelectedValues = new StringCollection();
+
+        //    foreach (var item in listControl.Items.Cast<ListItem>().Where((item) => item.Selected).Select((item) => item.Value))
+        //    {
+        //        colSelectedValues.Add(item);
+        //    }
+        //    return colSelectedValues;
+        //}
+
+        public static IEnumerable<String> SelectedValues(this ListControl listControl)
+        {
+            return listControl.Items.Cast<ListItem>().Where((item) => item.Selected).Select((item) => item.Value);
+        }
+
+        public static IEnumerable<String> SelectedTexts(this ListControl listControl)
+        {
+            return listControl.Items.Cast<ListItem>().Where((item) => item.Selected).Select((item) => item.Text);
         }
 
     }
