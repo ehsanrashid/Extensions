@@ -85,7 +85,7 @@
     <Compile Include="Generic\ObservableStack.cs" />
     <Compile Include="Generic\PagedCollection.cs" />
     <Compile Include="Generic\PagedEnumerable.cs" />
-    <Compile Include="Generic\PaginatedList.cs" />
+    <Compile Include="Generic\PagedList.cs" />
     <Compile Include="Generic\CollectionExtension.cs" />
     <Compile Include="Generic\Comparer\ComparableExtension.cs" />
     <Compile Include="Generic\Comparer\ComparisonComparer.cs" />

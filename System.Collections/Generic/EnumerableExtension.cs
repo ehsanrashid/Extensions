@@ -462,31 +462,6 @@
                 IEnumerable<T>;
         }
 
-        /// <summary>
-        ///   Apply paging to an IEnumerable.
-        /// </summary>
-        /// <typeparam name="T"> The type that the collection contains. </typeparam>
-        /// <param name="enumerable"> The data source. </param>
-        /// <param name="pageIndex"> The page index, starting at 0. </param>
-        /// <param name="pageSize"> The max number of items to return. </param>
-        /// <returns> The resulting object collection. </returns>
-        public static IEnumerable<T> Page<T>(this IEnumerable<T> enumerable, int? pageIndex, int pageSize)
-        {
-            return (null != enumerable) ? enumerable.Skip((pageIndex ?? 0) * pageSize).Take(pageSize) : null;
-        }
-
-        public static IEnumerable<SelectListItem> ToSelectItemList<T>(this IEnumerable<T> enumerable,
-                                                                      Func<T, String> text,
-                                                                      Func<T, String> value)
-        {
-            return Select(enumerable,
-                          (item) => new SelectListItem
-                                  {
-                                      Text = text(item),
-                                      Value = value(item)
-                                  });
-        }
-
         #region Min-Max
 
         /// <summary>
@@ -758,6 +733,92 @@
         }
 
         #endregion
+
+
+        #region Paging
+
+        /// <summary>
+        /// Apply paging to an IEnumerable.
+        /// </summary>
+        /// <typeparam name="T">The type that the collection contains.</typeparam>
+        /// <param name="enumerable">The data source.</param>
+        /// <param name="pageIndex">The page index, starting at 1.</param>
+        /// <param name="pageSize">The max number of items to return.</param>
+        /// <returns>The resulting object collection.</returns>
+        public static IEnumerable<T> Page<T>(this IEnumerable<T> enumerable, int? pageIndex, int pageSize)
+        {
+            return (null != enumerable) ? enumerable.Skip((pageIndex ?? 1) * pageSize).Take(pageSize) : null;
+        }
+
+        /// <summary>
+        /// Returns a paginated list.
+        /// </summary>
+        /// <typeparam name="T">Type of items in list.</typeparam>
+        /// <param name="enumerable">A IEnumerable instance to apply.</param>
+        /// <param name="pageIndex">Page number that starts with zero.</param>
+        /// <param name="pageSize">Size of each page.</param>
+        /// <returns>Returns a paginated list.</returns>
+        /// <remarks>This functionality may not work in SQL Compact 3.5</remarks>
+        /// <example>
+        ///     Following example shows how use this extension method in ASP.NET MVC web application.
+        ///     <code>
+        ///     public ActionResult Customers(int? page, int? size)
+        ///     {
+        ///         var q = from p in customers
+        ///                 select p;
+        ///     
+        ///         return View(q.ToPagedList(page.HasValue ? page.Value : 1, size.HasValue ? size.Value : 15));
+        ///     }
+        ///     </code>
+        /// </example>
+        public static PagedList<T> ToPagedList<T>(this IEnumerable<T> enumerable, int pageIndex, int pageSize)
+        {
+            return new PagedList<T>(enumerable, pageIndex, pageSize);
+        }
+
+        /// <summary>
+        /// Returns a paginated list. This function returns 15 rows from specific pageIndex.
+        /// </summary>
+        /// <typeparam name="T">Type of items in list.</typeparam>
+        /// <param name="enumerable">A IEnumerable instance to apply.</param>
+        /// <param name="pageIndex">Page number that starts with zero.</param>    
+        /// <returns>Returns a paginated list.</returns>
+        /// <remarks>This functionality may not work in SQL Compact 3.5</remarks>
+        public static PagedList<T> ToPagedList<T>(this IEnumerable<T> enumerable, int pageIndex)
+        {
+            return ToPagedList(enumerable, pageIndex, 15);
+        }
+
+        /// <summary>
+        /// Returns a paginated list. This function returns 15 rows from page one.
+        /// </summary>
+        /// <typeparam name="T">Type of items in list.</typeparam>
+        /// <param name="enumerable">A IEnumerable instance to apply.</param>    
+        /// <returns>Returns a paginated list.</returns>
+        /// <remarks>This functionality may not work in SQL Compact 3.5</remarks>
+        public static PagedList<T> ToPagedList<T>(this IEnumerable<T> enumerable)
+        {
+            return ToPagedList(enumerable, 1);
+        }
+
+        #endregion
+
+        public static SelectList ToSelectList<T>(this IEnumerable<T> enumerable, String dataValueField, String dataTextField, object selectedValue)
+        {
+            return new SelectList(enumerable, dataValueField, dataTextField, selectedValue ?? -1);
+        }
+
+        public static IEnumerable<SelectListItem> ToSelectListItem<T>(this IEnumerable<T> enumerable,
+                                                                      Func<T, String> text,
+                                                                      Func<T, String> value)
+        {
+            return Select(enumerable,
+                          (item) => new SelectListItem
+                          {
+                              Text = text(item),
+                              Value = value(item)
+                          });
+        }
 
         #region Numbers
 

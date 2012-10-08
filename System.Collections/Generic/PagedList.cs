@@ -30,7 +30,7 @@
         /// <param name="source">The source list of elements containing all elements to be paged over.</param>
         /// <param name="pageIndex">The current page number (1 based).</param>
         /// <param name="pageSize">Size of a page (number of items per page).</param>
-        public PaginatedList(IEnumerable<T> source, int pageIndex, int pageSize)
+        public PagedList(IEnumerable<T> source, int pageIndex, int pageSize)
         {
             PageIndex = Math.Min(Math.Max(1, pageIndex), TotalPages);
             PageSize = pageSize;
