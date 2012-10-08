@@ -30,6 +30,7 @@
             var listItem = dropDownList.Items.FindByText(textSelect);
             if (null != listItem)
             {
+                 
                 listItem.Selected = true;
                 return true;
             }

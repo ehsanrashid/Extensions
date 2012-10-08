@@ -19,33 +19,27 @@ namespace System.IO
         /// <param name="reader"> The text reader. </param>
         /// <returns> The iterator </returns>
         /// <example>
-        ///   <code>using(var reader = fileInfo.OpenText()) {
-        ///     foreach(var line in reader.IterateLines()) {
+        /// <code>
+        /// using(var reader = fileInfo.OpenText()) 
+        /// {
+        ///     foreach(var line in reader.IterateLines()) 
+        ///     {
         ///     // ...
         ///     }
-        ///     }</code>
+        /// }
+        /// </code>
         /// </example>
         /// <remarks>
         ///   Contributed by OlivierJ
         /// </remarks>
         public static IEnumerable<String> ReadLines(this TextReader reader)
         {
-            //if (default(TextReader) != reader)
-            //{
-            //    String line;
-            //    while (default(String) != (line = reader.ReadLine())) yield return line;
-            //}
-            //else yield return default(String);
+            if (default(TextReader) == reader) yield return default(String);
 
-            if (null != reader)
-            {
-                String line;
-                while (reader.TryReadLine(out line)) 
-                    yield return line;
-            }
+            String line;
+            while (reader.TryReadLine(out line))
+                yield return line;
         }
-
-
 
         /// <summary>
         ///   The method executes the passed delegate /lambda expression) for all lines of the text reader.
@@ -53,20 +47,21 @@ namespace System.IO
         /// <param name="reader"> The text reader. </param>
         /// <param name="action"> The action. </param>
         /// <example>
-        ///   <code>using(var reader = fileInfo.OpenText()) {
+        /// <code>
+        /// using(var reader = fileInfo.OpenText()) 
+        /// {
         ///     reader.IterateLines(l => Console.WriteLine(l));
-        ///     }</code>
+        /// }
+        /// </code>
         /// </example>
         public static void ForEachReadLines(this TextReader reader, Action<String> action)
         {
-            if (default(TextReader) != reader
-             && default(Action<String>) != action)
-            {
-                //foreach (var line in reader.ReadLines())
-                //    action(line);
-                // -------------------------------
-                reader.ReadLines().ForEach(action);
-            }
+            if (default(TextReader) == reader || default(Action<String>) == action) return;
+
+            //foreach (var line in reader.ReadLines())
+            //    action(line);
+            // -------------------------------
+            reader.ReadLines().ForEach(action);
         }
     }
 }
