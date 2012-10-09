@@ -54,8 +54,7 @@ namespace System.Web.Mvc
         ///<param name="alt"></param>
         ///<param name="htmlAttributes"></param>
         ///<returns>MvcHtmlString</returns>
-        public static MvcHtmlString Image(this HtmlHelper htmlHelper, String src, String alt = null,
-                                          Object htmlAttributes = null)
+        public static MvcHtmlString Image(this HtmlHelper htmlHelper, String src, String alt = null, Object htmlAttributes = null)
         {
             var tbImg = new TagBuilder("img");
             tbImg.Attributes.Add("src", htmlHelper.Encode(src));
@@ -72,8 +71,7 @@ namespace System.Web.Mvc
         /// <param name="text"></param>
         /// <param name="htmlAttributes"></param>
         /// <returns></returns>
-        public static MvcHtmlString Label(this HtmlHelper htmlHelper, String target, String text,
-                                          Object htmlAttributes = null)
+        public static MvcHtmlString Label(this HtmlHelper htmlHelper, String target, String text, Object htmlAttributes = null)
         {
             var tbLbl = new TagBuilder("label");
             tbLbl.MergeAttribute("for", target);
@@ -206,6 +204,93 @@ namespace System.Web.Mvc
         // --------------------------------------------------------------------
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="htmlHelper"></param>
+        /// <param name="name"></param>
+        /// <param name="items"></param>
+        /// <param name="htmlAttributes"></param>
+        /// <returns></returns>
+        /// <code>
+        /// ${Html.CheckBoxList(“Product.Categories”,
+        ///     ViewData.Model.Categories.ToDictionary(c => c.Name, c => c.Id.ToString()),
+        ///     ViewData.Model.Product.Categories.Select(c => c.Id.ToString()))}
+        /// </code>
+        public static MvcHtmlString CheckBoxList(this HtmlHelper htmlHelper, String name, IEnumerable<SelectListItem> items, IDictionary<String, Object> htmlAttributes)
+        {
+            var sb = new StringBuilder();
+            foreach (var item in items)
+            {
+                sb.Append("<div class=\"fields\"><label>");
+                var tagInput = new TagBuilder("input");
+                tagInput.MergeAttribute("type", "checkbox");
+                tagInput.MergeAttribute("name", name);
+                tagInput.MergeAttribute("value", item.Value);
+
+                // Check to see if it's checked
+                if (item.Selected) tagInput.MergeAttribute("checked", "checked");//, true);
+                // Add any attributes
+                if (null != htmlAttributes) tagInput.MergeAttributes(htmlAttributes);
+
+                tagInput.SetInnerText(item.Text);
+                sb.Append(tagInput.ToString(TagRenderMode.SelfClosing));
+                sb.Append("&nbsp; " + item.Text + "</label></div>");
+            }
+            return MvcHtmlString.Create(sb.ToString());
+        }
+
+        public static MvcHtmlString CheckBoxList(this HtmlHelper htmlHelper, String name, IEnumerable<SelectListItem> items)
+        {
+            return CheckBoxList(htmlHelper, name, items, null);
+        }
+
+        public static MvcHtmlString CheckBoxList(this HtmlHelper htmlHelper, String name, IDictionary<String, String> items, IEnumerable<String> selectedValues, IDictionary<String, Object> htmlAttributes)
+        {
+            var selectListItems = from item in items
+                                  select new SelectListItem
+                                  {
+                                      Text = item.Key,
+                                      Value = item.Value,
+                                      Selected = (null != selectedValues && selectedValues.Contains(item.Value))
+                                  };
+
+            return CheckBoxList(htmlHelper, name, selectListItems, htmlAttributes);
+        }
+
+        public static MvcHtmlString CheckBoxList(this HtmlHelper htmlHelper, String name, IDictionary<String, String> items, IEnumerable<String> selectedValues)
+        {
+            return CheckBoxList(htmlHelper, name, items, selectedValues, null);
+        }
+
+        public static MvcHtmlString CheckBoxList(this HtmlHelper htmlHelper, String name, IDictionary<String, String> items, IDictionary<String, Object> htmlAttributes)
+        {
+            return CheckBoxList(htmlHelper, name, items, null, htmlAttributes);
+        }
+
+        public static MvcHtmlString CheckBoxList(this HtmlHelper htmlHelper, String name, IDictionary<String, String> items)
+        {
+            return CheckBoxList(htmlHelper, name, items, null, null);
+        }
+
+
+        public static MvcHtmlString CheckBoxList(this HtmlHelper helper, String name, Dictionary<Int32, String> items, bool isVertical, String cssClass)
+        {
+            var sb = new StringBuilder();
+            sb.Append(String.Format("<div >"));
+            foreach (var item in items)
+            {
+                sb.Append(helper.CheckBox(item.Value, true, new { @class = cssClass, value = item.Key }));
+                sb.Append(helper.Label("RadioButtonItems", item.Value));
+                sb.Append("&nbsp;");
+                if (isVertical) sb.Append("<br>");
+            }
+            sb.Append("</div> ");
+            return MvcHtmlString.Create(sb.ToString());
+        }
+
+        // ----------------------------------------
+
+        /// <summary>
         /// Checks the box for.
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
@@ -215,29 +300,21 @@ namespace System.Web.Mvc
         /// <param name="htmlAttributes">The HTML attributes.</param>
         /// <param name="checkedValue">The checked value.</param>
         /// <returns>Checkbox</returns>
-        public static MvcHtmlString CheckBoxFor<TModel, TValue>(this HtmlHelper<TModel> htmlHelper,
-                                                                Expression<Func<TModel, TValue>> expression,
-                                                                object htmlAttributes, String checkedValue)
+        public static MvcHtmlString CheckBoxFor<TModel, TValue>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TValue>> expression, object htmlAttributes, String checkedValue)
         {
             var metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
             //var htmlFieldName = ExpressionHelper.GetExpressionText(expression);
 
-            var tag = new TagBuilder("input");
-            tag.Attributes.Add("type", "checkbox");
-            tag.Attributes.Add("name", metadata.PropertyName);
+            var tagInput = new TagBuilder("input");
+            tagInput.Attributes.Add("type", "checkbox");
+            tagInput.Attributes.Add("name", metadata.PropertyName);
+            tagInput.Attributes.Add("value", checkedValue.IsNullOrEmpty() ? metadata.Model.ToString() : checkedValue);
 
-            tag.Attributes.Add("value", checkedValue.IsNullOrEmpty() ? metadata.Model.ToString() : checkedValue);
+            if (metadata.Model.ToString() == checkedValue) tagInput.MergeAttribute("checked", "checked");
 
-            if (htmlAttributes != null)
-            {
-                tag.MergeAttributes(new RouteValueDictionary(htmlAttributes));
-            }
+            if (null != htmlAttributes) tagInput.MergeAttributes(new RouteValueDictionary(htmlAttributes));
 
-            if (metadata.Model.ToString() == checkedValue)
-            {
-                tag.Attributes.Add("checked", "checked");
-            }
-            return MvcHtmlString.Create(tag.ToString(TagRenderMode.SelfClosing));
+            return MvcHtmlString.Create(tagInput.ToString(TagRenderMode.SelfClosing));
         }
 
         /// <summary>
@@ -249,12 +326,9 @@ namespace System.Web.Mvc
         /// <param name="expression">The expression.</param>
         /// <param name="htmlAttributes">The HTML attributes.</param>
         /// <returns>Checkbox</returns>
-        public static MvcHtmlString CheckBoxFor<TModel, TValue>(this HtmlHelper<TModel> htmlHelper,
-                                                                Expression<Func<TModel, TValue>> expression,
-                                                                object htmlAttributes)
+        public static MvcHtmlString CheckBoxFor<TModel, TValue>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TValue>> expression, object htmlAttributes)
         {
-
-            return CheckBoxFor(htmlHelper, expression, htmlAttributes, "");
+            return CheckBoxFor(htmlHelper, expression, htmlAttributes, String.Empty);
         }
 
         /// <summary>
@@ -265,109 +339,77 @@ namespace System.Web.Mvc
         /// <param name="htmlHelper">The HTML.</param>
         /// <param name="expression">The expression.</param>
         /// <returns>Checkbox</returns>
-        public static MvcHtmlString CheckBoxFor<TModel, TValue>(this HtmlHelper<TModel> htmlHelper,
-                                                                Expression<Func<TModel, TValue>> expression)
+        public static MvcHtmlString CheckBoxFor<TModel, TValue>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TValue>> expression)
         {
             return CheckBoxFor(htmlHelper, expression, new RouteDirection());
         }
 
-        public static String CheckBoxList(this HtmlHelper htmlHelper, String name, IEnumerable<SelectListItem> items, IDictionary<String, object> checkboxHtmlAttributes)
+        public static MvcHtmlString CheckBoxListFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty[]>> expression, MultiSelectList multiSelectList, object htmlAttributes = null)
         {
-            var output = new StringBuilder();
-            foreach (var item in items)
+            //Derive property name for checkbox name
+            var body = expression.Body as MemberExpression;
+            var propertyName = body.Member.Name;
+
+            //Get currently select values from the ViewData model
+            var list = expression.Compile().Invoke(htmlHelper.ViewData.Model);
+
+            //Convert selected value list to a List<String> for easy manipulation
+            var selectedValues = new List<String>();
+
+            if (null != list) selectedValues = new List<TProperty>(list).ConvertAll(item => item.ToString());
+
+            //Create div
+            var tagDiv = new TagBuilder("div");
+            tagDiv.MergeAttributes(new RouteValueDictionary(htmlAttributes), true);
+            //Add checkboxes
+            foreach (var item in multiSelectList)
             {
-                output.Append("<div class=\"fields\"><label>");
-                var checkboxList = new TagBuilder("input");
-                checkboxList.MergeAttribute("type", "checkbox");
-                checkboxList.MergeAttribute("name", name);
-                checkboxList.MergeAttribute("value", item.Value);
+                tagDiv.InnerHtml += String.Format("<div><input type=\"checkbox\" name=\"{0}\" id=\"{0}_{1}\" value=\"{1}\" {2} /><label for=\"{0}_{1}\">{3}</label></div>",
+                                                    propertyName, item.Value, selectedValues.Contains(item.Value) ? "checked=\"checked\"" : "", item.Text);
+            }
+            return MvcHtmlString.Create(tagDiv.ToString());
+        }
 
-                // Check to see if it's checked
-                if (item.Selected) checkboxList.MergeAttribute("checked", "checked");
+        public static MvcHtmlString CheckBoxList(this HtmlHelper htmlHelper, List<SelectListItem> listSelectItem, String ModelCollectionName)
+        {
+            var sb = new StringBuilder();
 
-                // Add any attributes
-                if (checkboxHtmlAttributes != null) checkboxList.MergeAttributes(checkboxHtmlAttributes);
+            if (null != listSelectItem)
+            {
+                var i = 0;
 
-                checkboxList.SetInnerText(item.Text);
-                output.Append(checkboxList.ToString(TagRenderMode.SelfClosing));
-                output.Append("&nbsp; " + item.Text + "</label></div>");
+                foreach (var item in listSelectItem)
+                {
+                    var collectionNameIndex = String.Format("{0}[{1}]", ModelCollectionName, i);
+
+                    var tagHiddenName = new TagBuilder("input");
+                    tagHiddenName.Attributes.Add(new KeyValuePair<String, String>("type", "hidden"));
+                    tagHiddenName.Attributes.Add(new KeyValuePair<String, String>("name", String.Format("{0}.{1}", collectionNameIndex, "Text")));
+                    tagHiddenName.Attributes.Add(new KeyValuePair<String, String>("value", item.Text));
+
+                    var tagHiddenValue = new TagBuilder("input");
+                    tagHiddenValue.Attributes.Add(new KeyValuePair<String, String>("type", "hidden"));
+                    tagHiddenValue.Attributes.Add(new KeyValuePair<String, String>("name", String.Format("{0}.{1}", collectionNameIndex, "Value")));
+                    tagHiddenValue.Attributes.Add(new KeyValuePair<String, String>("value", item.Value));
+
+                    var checkBoxTag = htmlHelper.CheckBox(String.Format("{0}.{1}", collectionNameIndex, "Selected"), item.Selected);
+
+                    var tagLabel = new TagBuilder("label");
+                    tagLabel.Attributes.Add(new KeyValuePair<String, String>("for", String.Format("{0}.{1}", collectionNameIndex, "Name")));
+                    tagLabel.SetInnerText(item.Text);
+
+                    sb.Append(tagHiddenName);
+                    sb.Append(tagHiddenValue);
+                    sb.Append(checkBoxTag);
+                    sb.Append(tagLabel);
+                    sb.Append("<br/>");
+
+                    ++i;
+                }
             }
 
-            return output.ToString();
+            return MvcHtmlString.Create(sb.ToString());
         }
-
-        public static String CheckBoxList(this HtmlHelper htmlHelper, String name, IDictionary<String, String> items,
-                                         IEnumerable<String> selectedValues,
-                                         IDictionary<String, object> checkboxHtmlAttributes)
-        {
-
-            var selectListItems = from item in items
-                                  select new SelectListItem
-                                  {
-                                      Text = item.Key,
-                                      Value = item.Value,
-                                      Selected = (selectedValues != null && selectedValues.Contains(item.Value))
-                                  };
-
-            return CheckBoxList(htmlHelper, name, selectListItems, checkboxHtmlAttributes);
-        }
-
-        public static String CheckBoxList(this HtmlHelper htmlHelper, String name, IEnumerable<SelectListItem> items)
-        {
-            return CheckBoxList(htmlHelper, name, items, null);
-        }
-
-        public static String CheckBoxList(this HtmlHelper htmlHelper, String name, IDictionary<String, String> items)
-        {
-            return CheckBoxList(htmlHelper, name, items, null, null);
-        }
-
-        public static String CheckBoxList(this HtmlHelper htmlHelper, String name, IDictionary<String, String> items, IDictionary<String, object> checkboxHtmlAttributes)
-        {
-            return CheckBoxList(htmlHelper, name, items, null, checkboxHtmlAttributes);
-        }
-
-        public static String CheckBoxList(this HtmlHelper htmlHelper, String name, IDictionary<String, String> items, IEnumerable<String> selectedValues)
-        {
-            return CheckBoxList(htmlHelper, name, items, selectedValues, null);
-        }
-
-
-        //public static MvcHtmlString CheckBoxListFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty[]>> expression, MultiSelectList multiSelectList, object htmlAttributes = null)
-        //{
-        //    //Derive property name for checkbox name
-        //    var body = expression.Body as MemberExpression;
-        //    var propertyName = body.Member.Name;
-
-        //    //Get currently select values from the ViewData model
-        //    var list = expression.Compile().Invoke(htmlHelper.ViewData.Model);
-
-        //    //Convert selected value list to a List<String> for easy manipulation
-        //    var selectedValues = new List<String>();
-
-        //    if (null != list)
-        //    {
-        //        selectedValues = new List<TProperty>(list).ConvertAll(item => item.ToString());
-        //    }
-
-        //    //Create div
-        //    var divTag = new TagBuilder("div");
-        //    divTag.MergeAttributes(new RouteValueDictionary(htmlAttributes), true);
-
-        //    //Add checkboxes
-        //    foreach (var item in multiSelectList)
-        //    {
-        //        divTag.InnerHtml += String.Format("<div><input type=\"checkbox\" name=\"{0}\" id=\"{0}_{1}\" " +
-        //                                            "value=\"{1}\" {2} /><label for=\"{0}_{1}\">{3}</label></div>",
-        //                                            propertyName,
-        //                                            item.Value,
-        //                                            selectedValues.Contains(item.Value) ? "checked=\"checked\"" : "",
-        //                                            item.Text);
-        //    }
-
-        //    return MvcHtmlString.Create(divTag.ToString());
-        //}
-
 
         //public static String[] CheckBoxList(this HtmlHelper htmlHelper, String htmlName, object dataSource, String textField, String valueField, object selectedValue, RouteValueDictionary htmlAttributes)
         //{
