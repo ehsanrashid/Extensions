@@ -8,7 +8,7 @@ namespace System.Windows.Controls
         {
             if (richTextBox.Document != default(FlowDocument))
             {
-                TextRange textRange = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
+                var textRange = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
                 return textRange.Text;
             }
             return String.Empty;
@@ -21,7 +21,7 @@ namespace System.Windows.Controls
                 richTextBox.Document = new FlowDocument();
             }
 
-            Paragraph paragraph = new Paragraph(new Run(text));
+            var paragraph = new Paragraph(new Run(text));
             //paragraph.Margin = new Thickness(0.3);
 
             richTextBox.Document.Blocks.Clear();

@@ -15,7 +15,6 @@
     using Xml.XPath;
     using Data.Entity.Design.PluralizationServices;
 
-
     /// <summary>
     ///   Extension methods for the String data type
     /// </summary>
@@ -83,7 +82,7 @@
             //}
             //return true;
             // ----------------------
-            return (IsNotNullOrEmpty(str) && str.All(Char.IsLetter));
+            return (str.IsNotNullOrEmpty() && str.All(Char.IsLetter));
         }
 
         /// <summary>
@@ -93,7 +92,7 @@
         /// <returns> Boolean indicating whether or not the String contents are numeric </returns>
         public static bool IsNumeric(this String str)
         {
-            return (IsNotNullOrEmpty(str) && str.All(Char.IsDigit));
+            return (str.IsNotNullOrEmpty() && str.All(Char.IsDigit));
         }
 
         public static bool IsInteger(this String str)
@@ -129,7 +128,7 @@
         // -----
         public static bool IsNumber(this String str, bool floatpoint)
         {
-            if (IsNullOrEmpty(str)) return false;
+            if (str.IsNullOrEmpty()) return false;
             str = str.Trim();
 
             #region Old
@@ -184,7 +183,7 @@
         /// <returns> Either the String or the default value. </returns>
         public static String IfNullOrEmpty(this String str, String defaultValue)
         {
-            return IsNullOrEmpty(str) ? defaultValue : str;
+            return str.IsNullOrEmpty() ? defaultValue : str;
         }
 
         /// <summary>
@@ -206,7 +205,7 @@
         /// <param name="name"> The name of the parameter being tested. </param>
         public static String ExceptionIfNullOrEmpty(this String str, String message, String name)
         {
-            if (IsNullOrEmpty(str)) throw new ArgumentException(message, name);
+            if (str.IsNullOrEmpty()) throw new ArgumentException(message, name);
             return str;
         }
 
@@ -226,7 +225,7 @@
         /// </example>
         public static String EnsureStartsWith(this String str, String prefix)
         {
-            return (IsNotNullOrEmpty(str) && str.StartsWith(prefix)) ? str : String.Concat(prefix, str);
+            return (str.IsNotNullOrEmpty() && str.StartsWith(prefix)) ? str : String.Concat(prefix, str);
         }
 
         /// <summary>
@@ -241,7 +240,7 @@
         /// </example>
         public static String EnsureEndsWith(this String str, String suffix)
         {
-            return (IsNotNullOrEmpty(str) && str.EndsWith(suffix)) ? str : String.Concat(str, suffix);
+            return (str.IsNotNullOrEmpty() && str.EndsWith(suffix)) ? str : String.Concat(str, suffix);
         }
 
         #endregion
@@ -265,7 +264,7 @@
             {
                 return Convert.ToInt16(str);
             }
-            catch { }
+            catch {}
             return default(Int16?);
         }
 
@@ -276,7 +275,7 @@
             {
                 return Convert.ToInt32(str);
             }
-            catch { }
+            catch {}
             return default(Int32?);
         }
 
@@ -287,7 +286,7 @@
             {
                 return Convert.ToInt64(str);
             }
-            catch { }
+            catch {}
             return default(Int64?);
         }
 
@@ -298,7 +297,7 @@
             {
                 return Convert.ToDouble(str);
             }
-            catch { }
+            catch {}
             return default(Double?);
         }
 
@@ -309,7 +308,7 @@
             {
                 return Convert.ToDecimal(str);
             }
-            catch { }
+            catch {}
             return default(Decimal?);
         }
 
@@ -320,7 +319,7 @@
             {
                 return Convert.ToDateTime(str).Date;
             }
-            catch { }
+            catch {}
             return default(DateTime?);
         }
 
@@ -331,7 +330,7 @@
             {
                 return Convert.ToDateTime(str).TimeOfDay;
             }
-            catch { }
+            catch {}
             return default(TimeSpan?);
         }
 
@@ -342,7 +341,7 @@
             {
                 return Convert.ToBoolean(str);
             }
-            catch { }
+            catch {}
             return false;
         }
 
@@ -353,7 +352,7 @@
             {
                 return Convert.ToInt32(str);
             }
-            catch { }
+            catch {}
             return -1;
         }
 
@@ -364,13 +363,13 @@
             {
                 return Convert.ToInt32(str);
             }
-            catch { }
+            catch {}
             return 0;
         }
 
         public static T ToEnum<T>(this String str)
         {
-            return IsNullOrWhiteSpace(str) ? default(T) : (T) Enum.Parse(typeof(T), str);
+            return IsNullOrWhiteSpace(str) ? default(T) : (T) Enum.Parse(typeof (T), str);
         }
 
         public static Int32 ToInt32Any(this String str)
@@ -429,7 +428,7 @@
         /// <returns> </returns>
         public static String TrimToMaxLength(this String str, int maxLength, String suffix)
         {
-            return (IsNullOrEmpty(str) || str.Length <= maxLength)
+            return (str.IsNullOrEmpty() || str.Length <= maxLength)
                        ? str
                        : String.Concat(str.Substring(0, maxLength), suffix);
         }
@@ -455,7 +454,7 @@
         /// <returns> The left part </returns>
         public static String Left(this String str, int count)
         {
-            if (IsNullOrEmpty(str)) return str;
+            if (str.IsNullOrEmpty()) return str;
             if (count >= str.Length) throw new ArgumentOutOfRangeException("count", count, "count must be less than length of String");
             return
                 //str.Substring(0, count);
@@ -470,7 +469,7 @@
         /// <returns> The right part </returns>
         public static String Right(this String str, int count)
         {
-            if (IsNullOrEmpty(str)) return str;
+            if (str.IsNullOrEmpty()) return str;
             if (count >= str.Length)
             {
                 throw new ArgumentOutOfRangeException("count", count,
@@ -559,7 +558,7 @@
         public static String Replace(this String str, IEnumerable<String> oldValues,
                                      Func<String, String> predicateReplace)
         {
-            if (IsNullOrEmpty(str) || null == oldValues) return str;
+            if (str.IsNullOrEmpty() || null == oldValues) return str;
             //var sb = new StringBuilder(str);
             //// ----------------------------------
             ////foreach (var oldValue in oldValues)
@@ -590,7 +589,7 @@
         /// </example>
         public static String Replace(this String str, String newValue, params String[] oldValues)
         {
-            if (IsNullOrEmpty(str) || null == oldValues) return str;
+            if (str.IsNullOrEmpty() || null == oldValues) return str;
             //return oldValues.Aggregate(new StringBuilder(str), (sb, s) => sb.Replace(s, newValue)).ToString();
             return Replace(str, oldValues, (item) => newValue);
         }
@@ -610,7 +609,7 @@
         /// </example>
         public static String Replace(this String str, String newValue, IEnumerable<String> oldValues)
         {
-            if (IsNullOrEmpty(str) || null == oldValues) return str;
+            if (str.IsNullOrEmpty() || null == oldValues) return str;
             //var sb = new StringBuilder(str);
             //// ----------------------------------
             ////foreach (var oldValue in oldValues)
@@ -640,7 +639,7 @@
         /// </example>
         public static String Replace(this String str, IEnumerable<String> oldValues, IEnumerable<String> newValues)
         {
-            if (IsNullOrEmpty(str) || null == oldValues) return str;
+            if (str.IsNullOrEmpty() || null == oldValues) return str;
             var sb = new StringBuilder(str);
             var newValuesEnum = newValues.GetEnumerator();
             foreach (var oldValue in oldValues)
@@ -707,7 +706,7 @@
         /// <param name="arrChar"> The remove char. </param>
         public static String Remove(this String str, params char[] arrChar)
         {
-            if (IsNullOrEmpty(str) || null == arrChar) return str;
+            if (str.IsNullOrEmpty() || null == arrChar) return str;
             // --------------------------------------------
             //arrChar.ForEach((c) => str = str.Remove(c.ToString(CultureInfo.InvariantCulture)));
             // --------------------------------------------
@@ -811,14 +810,14 @@
         public static String Take(this String str, int count)
         {
             if (count < 0) throw new ArgumentException("value can't be less then zero", "count");
-            return (IsNotNullOrEmpty(str) && str.Length > count) ? str = str.Remove(count) : str;
+            return (str.IsNotNullOrEmpty() && str.Length > count) ? str = str.Remove(count) : str;
         }
 
         //like linq skip - skips the first x characters and returns the remaining String
         public static String Skip(this String str, int count)
         {
             if (count < 0) throw new ArgumentException("value can't be less then zero", "count");
-            return (IsNotNullOrEmpty(str) && str.Length > count) ? str.Substring(count) : String.Empty;
+            return (str.IsNotNullOrEmpty() && str.Length > count) ? str.Substring(count) : String.Empty;
         }
 
         /// <summary>
@@ -859,7 +858,7 @@
                        ? str
                        : (diff < 0)
                              ? str.Substring(0, width)
-                             : str.PadLeft(width - diff / 2, padChar).PadRight(width, padChar);
+                             : str.PadLeft(width - diff/2, padChar).PadRight(width, padChar);
         }
 
         /// <summary>
@@ -872,7 +871,7 @@
         {
             str.ExceptionIfNull("str");
             if (str.Length == 1) return new String(str[0], repeatCount);
-            var sb = new StringBuilder(repeatCount * str.Length);
+            var sb = new StringBuilder(repeatCount*str.Length);
             //while (repeatCount-- > 0) sb.Append(str);
             //-----------------------------------------
             repeatCount.Times(() => sb.Append(str));
@@ -1014,10 +1013,10 @@
         /// <returns>A string that is the plural form of the input parameter.</returns>
         public static string ToPlural(this String singular, int count = 0, CultureInfo cultureInfo = null)
         {
-            return count == 1 ? singular : PluralizationService.CreateService(cultureInfo ?? new CultureInfo("en-US")).Pluralize(singular);
+            return count == 1
+                       ? singular
+                       : PluralizationService.CreateService(cultureInfo ?? new CultureInfo("en-US")).Pluralize(singular);
         }
-
-        
 
         #region Chop
 
@@ -1156,7 +1155,7 @@
 
         public static String RemoveNonNumeric(this String str)
         {
-            if (IsNotNullOrEmpty(str))
+            if (str.IsNotNullOrEmpty())
             {
                 // -----------------------------------------
                 //char[] chars = new char[str.Length];
@@ -1277,7 +1276,7 @@
             {
                 switch (parts.Length)
                 {
-                    // Found a value (for the last parameter found (space separator))
+                        // Found a value (for the last parameter found (space separator))
                     case 1:
                         if (parameter.IsNotNullOrEmpty())
                         {
@@ -1290,13 +1289,13 @@
                         }
                         // else Error: no parameter waiting for a value (skipped)
                         break;
-                    // Found just a parameter
+                        // Found just a parameter
                     case 2:
                         // The last parameter is still waiting. With no value, set it to true.
                         if (parameter.IsNotNullOrEmpty()) if (!parameters.ContainsKey(parameter)) parameters.Add(parameter, "true");
                         parameter = parts[1];
                         break;
-                    // Parameter with enclosed value
+                        // Parameter with enclosed value
                     case 3:
                         // The last parameter is still waiting. With no value, set it to true.
                         if (parameter.IsNotNullOrEmpty()) if (!parameters.ContainsKey(parameter)) parameters.Add(parameter, "true");
@@ -1336,18 +1335,18 @@
         public static String[] Explode(this String str, int size)
         {
             // Number of segments exploded to except last.
-            var count = str.Length / size;
+            var count = str.Length/size;
             // Determine if we need to store a final segment.
             // ... Sometimes we have a partial segment.
-            var final = (size * count) < str.Length;
+            var final = (size*count) < str.Length;
             // Allocate the array to return.
             // ... The size varies depending on if there is a final fragment.
             var result = final ? new String[count + 1] : new String[count];
             // Loop through each index and take a substring.
             // ... The starting index is computed with multiplication.
-            for (var i = 0; i < count; i++) result[i] = str.Substring((i * size), size);
+            for (var i = 0; i < count; i++) result[i] = str.Substring((i*size), size);
             // Sometimes we need to set the final String fragment.
-            if (final) result[result.Length - 1] = str.Substring(count * size);
+            if (final) result[result.Length - 1] = str.Substring(count*size);
             return result;
         }
 
@@ -1366,7 +1365,7 @@
 
         public static T As<T>(this String str)
         {
-            return (T) TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(str);
+            return (T) TypeDescriptor.GetConverter(typeof (T)).ConvertFromString(str);
         }
 
         #region ExtractArguments extension
@@ -1397,7 +1396,7 @@
             Whole,
         }
 
-        private static readonly String[] _ReservedRegexOperators = new[] { @"\", "^", "$", "*", "+", "?", ".", "(", ")" };
+        private static readonly String[] _ReservedRegexOperators = new[] {@"\", "^", "$", "*", "+", "?", ".", "(", ")"};
 
         private static String GetRegexPattern(String template, ComparsionTemplateOptions compareTemplateOptions)
         {
@@ -1442,7 +1441,7 @@
             var pattern = GetRegexPattern(template, compareTemplateOptions);
             var regex = new Regex(pattern, regexOptions);
             var match = regex.Match(value);
-            return Enumerable.Cast<Group>(match.Groups).Skip(1);
+            return match.Groups.Cast<Group>().Skip(1);
         }
 
         /// <summary>
@@ -1526,7 +1525,7 @@
             {
                 return value.ToGuid();
             }
-            catch { }
+            catch {}
             return defaultValue;
         }
 
@@ -1658,40 +1657,27 @@
         /// <returns> An HTML safe String. </returns>
         public static String ToHtmlSafe(this String str, bool all = false, bool replace = false)
         {
-            if (IsNullOrWhiteSpace(str)) return String.Empty;
-            var entities = new[]
-                           {
-                               0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-                               24
-                               , 25, 26, 28, 29, 30, 31, 34, 39, 38, 60, 62, 123, 124, 125, 126, 127, 160, 161, 162,
-                               163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179,
-                               180
-                               , 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 215, 247, 192, 193, 194, 195
-                               ,
-                               196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212,
-                               213
-                               , 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230
-                               ,
-                               231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247,
-                               248
-                               , 249, 250, 251, 252, 253, 254, 255, 256, 8704, 8706, 8707, 8709, 8711, 8712, 8713,
-                               8715
-                               , 8719, 8721, 8722, 8727, 8730, 8733, 8734, 8736, 8743, 8744, 8745, 8746, 8747, 8756,
-                               8764, 8773, 8776, 8800, 8801, 8804, 8805, 8834, 8835, 8836, 8838, 8839, 8853, 8855,
-                               8869
-                               , 8901, 913, 914, 915, 916, 917, 918, 919, 920, 921, 922, 923, 924, 925, 926, 927,
-                               928,
-                               929, 931, 932, 933, 934, 935, 936, 937, 945, 946, 947, 948, 949, 950, 951, 952, 953,
-                               954
-                               , 955, 956, 957, 958, 959, 960, 961, 962, 963, 964, 965, 966, 967, 968, 969, 977, 978
-                               ,
-                               982, 338, 339, 352, 353, 376, 402, 710, 732, 8194, 8195, 8201, 8204, 8205, 8206, 8207
-                               ,
-                               8211, 8212, 8216, 8217, 8218, 8220, 8221, 8222, 8224, 8225, 8226, 8230, 8240, 8242,
-                               8243
-                               , 8249, 8250, 8254, 8364, 8482, 8592, 8593, 8594, 8595, 8596, 8629, 8968, 8969, 8970,
-                               8971, 9674, 9824, 9827, 9829, 9830
-                           };
+            if (str.IsNullOrWhiteSpace()) return String.Empty;
+            //var entities = new[]
+            //               {
+            //                   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+            //                   25, 26, 28, 29, 30, 31, 34, 39, 38, 60, 62, 123, 124, 125, 126, 127, 160, 161, 162, 163,
+            //                   164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181,
+            //                   182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 215, 247, 192, 193, 194, 195, 196, 197,
+            //                   198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215,
+            //                   216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233,
+            //                   234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251,
+            //                   252, 253, 254, 255, 256, 8704, 8706, 8707, 8709, 8711, 8712, 8713,8715, 8719, 8721, 8722,
+            //                   8727, 8730, 8733, 8734, 8736, 8743, 8744, 8745, 8746, 8747, 8756,8764, 8773, 8776, 8800,
+            //                   8801, 8804, 8805, 8834, 8835, 8836, 8838, 8839, 8853, 8855,8869, 8901, 913, 914, 915, 916,
+            //                   917, 918, 919, 920, 921, 922, 923, 924, 925, 926, 927, 928, 929, 931, 932, 933, 934, 935,
+            //                   936, 937, 945, 946, 947, 948, 949, 950, 951, 952, 953, 954, 955, 956, 957, 958, 959, 960,
+            //                   961, 962, 963, 964, 965, 966, 967, 968, 969, 977, 978, 982, 338, 339, 352, 353, 376, 402,
+            //                   710, 732, 8194, 8195, 8201, 8204, 8205, 8206, 8207,8211, 8212, 8216, 8217, 8218, 8220,
+            //                   8221, 8222, 8224, 8225, 8226, 8230, 8240, 8242,8243, 8249, 8250, 8254, 8364, 8482, 8592,
+            //                   8593, 8594, 8595, 8596, 8629, 8968, 8969, 8970,8971, 9674, 9824, 9827, 9829, 9830
+            //               };
+
             var sb = new StringBuilder();
             //foreach (var c in str)
             //{
@@ -1752,7 +1738,7 @@
         public static T ParseStringToEnum<T>(this String str, bool ignorecase = default(bool))
             where T : struct
         {
-            return str.IsItemInEnum<T>()() ? default(T) : (T) Enum.Parse(typeof(T), str, default(bool));
+            return str.IsItemInEnum<T>()() ? default(T) : (T) Enum.Parse(typeof (T), str, default(bool));
         }
 
         /// <summary>
@@ -1764,7 +1750,7 @@
         public static Func<bool> IsItemInEnum<T>(this String str)
             where T : struct
         {
-            return () => (str.IsNotNullOrEmpty() || !Enum.IsDefined(typeof(T), str));
+            return () => (str.IsNotNullOrEmpty() || !Enum.IsDefined(typeof (T), str));
         }
 
         #endregion
@@ -1822,9 +1808,9 @@
         public static byte[] HexStringToBytes(this String str)
         {
             str = str.Replace(" ", String.Empty);
-            var maxBytes = str.Length / 2 - 1;
+            var maxBytes = str.Length/2 - 1;
             var bytes = new byte[maxBytes + 1];
-            for (var i = 0; i <= maxBytes; ++i) bytes[i] = byte.Parse(str.Substring(2 * i, 2), NumberStyles.AllowHexSpecifier);
+            for (var i = 0; i <= maxBytes; ++i) bytes[i] = byte.Parse(str.Substring(2*i, 2), NumberStyles.AllowHexSpecifier);
             return bytes;
         }
 
@@ -1878,8 +1864,8 @@
         {
             //foreach (Match match in GetMatches(str, regexPattern, options))
             //    if (match.Success) yield return match.Value;
-            
-            return (GetMatches(str, regexPattern, options) as IEnumerable<Match>)
+
+            return (GetMatches(str, regexPattern, options).Cast<Match>())
                 .Where(match => match.Success)
                 .Select(match => match.Value);
         }
@@ -1991,7 +1977,7 @@
             // Generate the key and initialization vector.
             byte[] key = null;
             byte[] iv = null;
-            var salt = new Byte[] { 0x10, 0x20, 0x12, 0x23, 0x37, 0xA4, 0xC5, 0xA6, 0xF1, 0xF0, 0xEE, 0x21, 0x22, 0x45 };
+            var salt = new Byte[] {0x10, 0x20, 0x12, 0x23, 0x37, 0xA4, 0xC5, 0xA6, 0xF1, 0xF0, 0xEE, 0x21, 0x22, 0x45};
             MakeKeyAndIV(password, salt, keySize, blockSize, ref key, ref iv);
             // Make the encryptor or decryptor.
             var cryptoTransform = encrypt
@@ -2045,8 +2031,8 @@
         {
             using (var rfcDerive = new Rfc2898DeriveBytes(password, salt, 1234))
             {
-                key = rfcDerive.GetBytes(sizeKey / 8);
-                initVector = rfcDerive.GetBytes(sizeBlock / 8);
+                key = rfcDerive.GetBytes(sizeKey/8);
+                initVector = rfcDerive.GetBytes(sizeBlock/8);
             }
         }
 

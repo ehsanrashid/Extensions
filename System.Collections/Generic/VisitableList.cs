@@ -92,14 +92,14 @@ namespace System.Collections.Generic
         /// <exception cref="T:System.ArgumentException">obj is not the same type as this instance.</exception>
         public int CompareTo(object obj)
         {
-            if (obj == null) throw new ArgumentNullException("obj");
+            if (null == obj) throw new ArgumentNullException("obj");
             if (obj.GetType() == GetType())
             {
                 var lst = obj as VisitableList<T>;
                 if (null != lst) return Count.CompareTo(lst.Count);
             }
             var fullName = GetType().FullName;
-            return fullName.IsNotNullOrEmpty() ? fullName.CompareTo(obj.GetType().FullName) : 0;
+            return fullName.IsNotNullOrEmpty() ? String.Compare(fullName, obj.GetType().FullName, StringComparison.Ordinal) : 0;
         }
         #endregion
 

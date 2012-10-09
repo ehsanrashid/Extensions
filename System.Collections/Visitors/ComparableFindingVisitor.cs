@@ -3,12 +3,12 @@ namespace System.Collections.Visitors
 	/// <summary>
 	/// A visitor that searches objects for an equality, using the IComparable interface.
 	/// </summary>	
-	public sealed class ComparableFindingVisitor<T> : IVisitor<T>, IFindingIVisitor<T>  where T:IComparable
+	public sealed class ComparableFindingVisitor<T> : IFindingIVisitor<T>  where T:IComparable
 	{
 		#region Globals
 
-		private bool found = false;
-		private T searchValue;
+		bool _found;
+		readonly T _searchValue;
 
 		#endregion
 
@@ -20,7 +20,7 @@ namespace System.Collections.Visitors
         /// <param name="searchValue">The search value.</param>
 		public ComparableFindingVisitor(T searchValue)
 		{
-			this.searchValue = searchValue;
+			_searchValue = searchValue;
 		}
 
 		#endregion
@@ -35,7 +35,7 @@ namespace System.Collections.Visitors
 		{
 			get
 			{
-				return found;
+				return _found;
 			}
 		}
 
@@ -45,8 +45,8 @@ namespace System.Collections.Visitors
 		/// <param name="obj">The object.</param>
 		public void Visit(T obj)
 		{
-			if (obj.CompareTo(searchValue) == 0) {
-				found = true;
+			if (obj.CompareTo(_searchValue) == 0) {
+				_found = true;
 			}
 		}
 
@@ -62,7 +62,7 @@ namespace System.Collections.Visitors
 		{
 			get
 			{
-				return found;
+				return _found;
 			}
 		}
 
@@ -74,7 +74,7 @@ namespace System.Collections.Visitors
 		{
 			get
 			{
-				return searchValue;
+				return _searchValue;
 			}			
 		}
 

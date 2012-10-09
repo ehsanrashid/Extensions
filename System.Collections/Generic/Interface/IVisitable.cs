@@ -7,7 +7,7 @@ namespace System.Collections.Generic
     /// to visit every object contained in the structure.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-	public interface IVisitable<T>
+	public interface IVisitable<out T>
 	{
 		/// <summary>
 		/// Accepts the specified visitor.

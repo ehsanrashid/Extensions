@@ -33,17 +33,11 @@ namespace System.Windows.Forms
         {
             // Deal with nested calls.
             ++updating;
-
-            if (updating > 1)
-                return;
-
+            if (updating > 1) return;
             // Prevent the control from raising any events.
-            oldEventMask = SendMessage(new HandleRef(this, Handle),
-                                        EM_SETEVENTMASK, 0, 0);
-
+            oldEventMask = SendMessage(new HandleRef(this, Handle), EM_SETEVENTMASK, 0, 0);
             // Prevent the control from redrawing itself.
-            SendMessage(new HandleRef(this, Handle),
-                         WM_SETREDRAW, 0, 0);
+            SendMessage(new HandleRef(this, Handle), WM_SETREDRAW, 0, 0);
         }
 
         /// <summary>
@@ -58,17 +52,11 @@ namespace System.Windows.Forms
         {
             // Deal with nested calls.
             --updating;
-
-            if (updating > 0)
-                return;
-
+            if (updating > 0) return;
             // Allow the control to redraw itself.
-            SendMessage(new HandleRef(this, Handle),
-                         WM_SETREDRAW, 1, 0);
-
+            SendMessage(new HandleRef(this, Handle), WM_SETREDRAW, 1, 0);
             // Allow the control to raise event messages.
-            SendMessage(new HandleRef(this, Handle),
-                         EM_SETEVENTMASK, 0, oldEventMask);
+            SendMessage(new HandleRef(this, Handle), EM_SETEVENTMASK, 0, oldEventMask);
         }
 
         /// <summary>
@@ -83,32 +71,25 @@ namespace System.Windows.Forms
         {
             get
             {
-                PARAFORMAT fmt = new PARAFORMAT();
+                var fmt = new PARAFORMAT();
                 fmt.cbSize = Marshal.SizeOf(fmt);
 
                 // Get the alignment.
-                SendMessage(new HandleRef(this, Handle),
-                             EM_GETPARAFORMAT,
-                             SCF_SELECTION, ref fmt);
+                SendMessage(new HandleRef(this, Handle), EM_GETPARAFORMAT, SCF_SELECTION, ref fmt);
 
                 // Default to Left align.
-                if ((fmt.dwMask & PFM_ALIGNMENT) == 0)
-                    return TextAlign.Left;
-
-                return (TextAlign) fmt.wAlignment;
+                return (fmt.dwMask & PFM_ALIGNMENT) == 0 ? TextAlign.Left : (TextAlign) fmt.wAlignment;
             }
 
             set
             {
-                PARAFORMAT fmt = new PARAFORMAT();
+                var fmt = new PARAFORMAT();
                 fmt.cbSize = Marshal.SizeOf(fmt);
                 fmt.dwMask = PFM_ALIGNMENT;
                 fmt.wAlignment = (short) value;
 
                 // Set the alignment.
-                SendMessage(new HandleRef(this, Handle),
-                             EM_SETPARAFORMAT,
-                             SCF_SELECTION, ref fmt);
+                SendMessage(new HandleRef(this, Handle), EM_SETPARAFORMAT, SCF_SELECTION, ref fmt);
             }
         }
 
@@ -122,24 +103,21 @@ namespace System.Windows.Forms
             base.OnHandleCreated(e);
 
             // Enable support for justification.
-            SendMessage(new HandleRef(this, Handle),
-                         EM_SETTYPOGRAPHYOPTIONS,
-                         TO_ADVANCEDTYPOGRAPHY,
-                         TO_ADVANCEDTYPOGRAPHY);
+            SendMessage(new HandleRef(this, Handle), EM_SETTYPOGRAPHYOPTIONS, TO_ADVANCEDTYPOGRAPHY, TO_ADVANCEDTYPOGRAPHY);
         }
 
-        private int updating = 0;
-        private int oldEventMask = 0;
+        int updating = 0;
+        int oldEventMask = 0;
 
         // Constants from the Platform SDK.
-        private const int EM_SETEVENTMASK = 1073;
-        private const int EM_GETPARAFORMAT = 1085;
-        private const int EM_SETPARAFORMAT = 1095;
-        private const int EM_SETTYPOGRAPHYOPTIONS = 1226;
-        private const int WM_SETREDRAW = 11;
-        private const int TO_ADVANCEDTYPOGRAPHY = 1;
-        private const int PFM_ALIGNMENT = 8;
-        private const int SCF_SELECTION = 1;
+        const int EM_SETEVENTMASK = 1073;
+        const int EM_GETPARAFORMAT = 1085;
+        const int EM_SETPARAFORMAT = 1095;
+        const int EM_SETTYPOGRAPHYOPTIONS = 1226;
+        const int WM_SETREDRAW = 11;
+        const int TO_ADVANCEDTYPOGRAPHY = 1;
+        const int PFM_ALIGNMENT = 8;
+        const int SCF_SELECTION = 1;
 
         // It makes no difference if we use PARAFORMAT or
         // PARAFORMAT2 here, so I have opted for PARAFORMAT2.

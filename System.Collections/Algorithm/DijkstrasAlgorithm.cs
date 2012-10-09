@@ -45,17 +45,17 @@ namespace System.Collections.Algorithm
                     var edges = item.Value.EmanatingEdgeList;
                     vertexStatus[item.Value].IsFinalised = true;
                     // Enumerate through all the edges emanating from this node					
-                    for (var i = 0; i < edges.Count; i++)
+                    foreach (var edge in edges)
                     {
-                        var partnerVertex = edges[i].GetPartnerVertex(item.Value);
+                        var partnerVertex = edge.GetPartnerVertex(item.Value);
                         // Calculate the new distance to this distance
-                        var distance = vertexInfo.Distance + edges[i].Weight;
+                        var distance = vertexInfo.Distance + edge.Weight;
                         var newVertexInfo = vertexStatus[partnerVertex];
                         // Found a better path, update the vertex status and add the 
                         // vertex to the heap for further analysis
                         if (distance < newVertexInfo.Distance)
                         {
-                            newVertexInfo.EdgeFollowed = edges[i];
+                            newVertexInfo.EdgeFollowed = edge;
                             newVertexInfo.Distance = distance;
                             heap.Add(new Association<double, Vertex<T>>(distance, partnerVertex));
                         }

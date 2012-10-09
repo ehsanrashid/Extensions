@@ -1,9 +1,10 @@
-﻿using System.Globalization;
-using System.Linq;
-using System.Text.RegularExpressions;
-
-namespace System.ComponentModel.DataAnnotations
+﻿namespace System.ComponentModel.DataAnnotations
 {
+    using Globalization;
+    using Linq;
+    using Text.RegularExpressions;
+
+
     [Serializable]
     public sealed class CreditCardAttribute : ValidationAttribute
     {
@@ -37,7 +38,7 @@ namespace System.ComponentModel.DataAnnotations
         public override bool IsValid(object value)
         {
             var pan = value as String;
-            if (String.IsNullOrEmpty(pan))
+            if (pan.IsNullOrEmpty())
             {
                 return false;
             }
@@ -49,21 +50,23 @@ namespace System.ComponentModel.DataAnnotations
             var reversedPan = new String((pan.ToCharArray()).Reverse().ToArray());
             var sum = 0;
             var multiplier = 0;
-            //foreach (var ch in reversedPan)
+            foreach (var ch in reversedPan)
+            {
+                var product = (ch - Zero) * (multiplier + 1);
+                sum = sum + (product / 10) + (product % 10);
+                multiplier = (multiplier + 1) % 2;
+            }
+
+            //foreach (var product in reversedPan.Select(ch => (ch - Zero) * (multiplier + 1)))
             //{
-            //    var product = (ch - Zero) * (multiplier + 1);
             //    sum = sum + (product / 10) + (product % 10);
             //    multiplier = (multiplier + 1) % 2;
             //}
 
-            foreach (var product in reversedPan.Select(ch => (ch - Zero) * (multiplier + 1)))
-            {
-                sum = sum + (product / 10) + (product % 10);
-                multiplier = (multiplier + 1) % 2;
-            }
             return (sum % 10 == 0);
         }
     }
+
     /*
      public class CreditCardAttribute : ValidationAttribute, IClientValidatable
     {

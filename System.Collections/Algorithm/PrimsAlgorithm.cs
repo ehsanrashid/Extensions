@@ -46,9 +46,8 @@ namespace System.Collections.Algorithm
                 var edges = item.Value.IncidentEdgeList;
                 vertexStatus[item.Value].IsFinalised = true;
                 // Enumerate through all the edges emanating from this node					
-                for (var i = 0; i < edges.Count; i++)
+                foreach (var edge in edges) 
                 {
-                    var edge = edges[i];
                     var partnerVertex = edge.GetPartnerVertex(item.Value);
                     var newVertexInfo = vertexStatus[partnerVertex];
                     if (!newVertexInfo.IsFinalised)

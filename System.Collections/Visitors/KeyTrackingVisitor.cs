@@ -11,7 +11,7 @@ namespace System.Collections.Visitors
     {
         #region Globals
 
-        private VisitableList<TKey> tracks;
+        readonly VisitableList<TKey> _tracks;
 
         #endregion
 
@@ -22,7 +22,7 @@ namespace System.Collections.Visitors
         /// </summary>
         public KeyTrackingVisitor()
         {
-            tracks = new VisitableList<TKey>();
+            _tracks = new VisitableList<TKey>();
         }
 
         #endregion
@@ -37,7 +37,7 @@ namespace System.Collections.Visitors
         {
             get
             {
-                return tracks;
+                return _tracks;
             }
         }
 
@@ -52,7 +52,7 @@ namespace System.Collections.Visitors
         /// <param name="obj">The object to visit.</param>
         public void Visit(KeyValuePair<TKey, TValue> obj)
         {
-            tracks.Add(obj.Key);
+            _tracks.Add(obj.Key);
         }
 
         /// <summary>

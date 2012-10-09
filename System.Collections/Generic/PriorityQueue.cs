@@ -39,8 +39,9 @@
         /// <param name="queueType">Type of the queue.</param>
         public PriorityQueue(PriorityQueueType queueType)
         {
-            if (queueType == PriorityQueueType.MaxPriorityQueue) heap = new Heap<Association<int, T>>(HeapType.MaxHeap, new AssociationKeyComparer<int, T>());
-            else heap = new Heap<Association<int, T>>(HeapType.MinHeap, new AssociationKeyComparer<int, T>());
+            heap = (queueType == PriorityQueueType.MaxPriorityQueue)
+                       ? new Heap<Association<int, T>>(HeapType.MaxHeap, new AssociationKeyComparer<int, T>())
+                       : new Heap<Association<int, T>>(HeapType.MinHeap, new AssociationKeyComparer<int, T>());
         }
 
         /// <summary>
@@ -50,8 +51,9 @@
         /// <param name="capacity">The initial capacity of the Priority Queue.</param>
         public PriorityQueue(PriorityQueueType queueType, int capacity)
         {
-            if (queueType == PriorityQueueType.MaxPriorityQueue) heap = new Heap<Association<int, T>>(HeapType.MaxHeap, capacity, new AssociationKeyComparer<int, T>());
-            else heap = new Heap<Association<int, T>>(HeapType.MaxHeap, capacity, new AssociationKeyComparer<int, T>());
+            heap = (queueType == PriorityQueueType.MaxPriorityQueue)
+                       ? new Heap<Association<int, T>>(HeapType.MaxHeap, capacity, new AssociationKeyComparer<int, T>())
+                       : new Heap<Association<int, T>>(HeapType.MinHeap, capacity, new AssociationKeyComparer<int, T>());
         }
 
         #endregion

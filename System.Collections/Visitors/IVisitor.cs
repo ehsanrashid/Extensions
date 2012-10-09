@@ -5,7 +5,7 @@ namespace System.Collections.Visitors
 	/// Provides an interface for visitors.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public interface IVisitor<T>
+	public interface IVisitor<in T>
 	{
 		/// <summary>
 		/// Gets a value indicating whether this instance is done performing it's work..

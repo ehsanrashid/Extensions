@@ -9,7 +9,7 @@ namespace System.Collections.Visitors
     /// <typeparam name="TValue">The type of value of the KeyValuePair.</typeparam>
     public sealed class ValueTrackingVisitor<TKey, TValue> : IVisitor<KeyValuePair<TKey, TValue>>
     {
-        private VisitableList<TValue> tracks;
+        readonly VisitableList<TValue> _tracks;
 
         #region Construction
 
@@ -18,7 +18,7 @@ namespace System.Collections.Visitors
         /// </summary>
         public ValueTrackingVisitor()
         {
-            tracks = new VisitableList<TValue>();
+            _tracks = new VisitableList<TValue>();
         }
 
         #endregion
@@ -33,7 +33,7 @@ namespace System.Collections.Visitors
         {
             get
             {
-                return tracks;
+                return _tracks;
             }
         }
 
@@ -48,7 +48,7 @@ namespace System.Collections.Visitors
         /// <param name="obj">The object to visit.</param>
         public void Visit(KeyValuePair<TKey, TValue> obj)
         {
-            tracks.Add(obj.Value);
+            _tracks.Add(obj.Value);
         }
 
         /// <summary>

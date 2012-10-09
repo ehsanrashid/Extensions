@@ -21,7 +21,7 @@
 
         public static IQueryable<T> Skip<T>(this IQueryable<T> queryable, int? count)
         {
-            return (count.HasValue ? Queryable.Skip(queryable, count.Value) : queryable);
+            return (count.HasValue ? queryable.Skip(count.Value) : queryable);
         }
 
         public static IQueryable<T> WhereAny<T>(this IQueryable<T> queryable, params Expression<Func<T, bool>>[] predicates)

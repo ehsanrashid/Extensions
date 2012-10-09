@@ -10,7 +10,7 @@ namespace System.Collections
         //var typed = data.Cast(() => new { Foo = "never used" });
         public static IEnumerable<T> Cast<T>(this IEnumerable seq, Func<T> template)
         {
-            return Enumerable.Cast<T>(seq);
+            return seq.Cast<T>();
         }
 
         public static IEnumerable<T> Convert<T>(this IEnumerable seq)
