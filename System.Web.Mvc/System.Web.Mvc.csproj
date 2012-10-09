@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HtmlHelperExtension.cs" />
+    <Compile Include="Pager.cs" />
     <Compile Include="TempDataDictionaryExtension.cs" />
     <Compile Include="ViewDataDictionaryExtension.cs" />
     <Compile Include="ViewExtension.cs" />

@@ -7,7 +7,7 @@
     /// Represent a class to implements Paging functionality.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class PagedList<T> : List<T>, IPagedList
+    public class PagedList<T> : List<T>, IPagedList<T>
     {
         /// <summary>
         /// Gets a value that indicate current page index (Starts by Zero).
@@ -22,7 +22,7 @@
         /// <summary>
         /// Gets a value that indicate count of all rows in data source.
         /// </summary>
-        public int TotalCount { get; private set; }
+        public int NoOfItems { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see><cref>PagedList&amp;lt;T&amp;gt;</cref></see> class.
@@ -32,9 +32,9 @@
         /// <param name="pageSize">Size of a page (number of items per page).</param>
         public PagedList(IEnumerable<T> source, int pageIndex, int pageSize)
         {
-            PageIndex = Math.Min(Math.Max(1, pageIndex), TotalPages);
+            PageIndex = Math.Min(Math.Max(1, pageIndex), NoOfPages);
             PageSize = pageSize;
-            TotalCount = source.Count();
+            NoOfItems = source.Count();
 
             AddRange(source.Skip((PageIndex - 1) * PageSize).Take(PageSize));
         }
@@ -42,9 +42,9 @@
         /// <summary>
         /// Gets a value that indicate count of pages in data source.
         /// </summary>
-        public int TotalPages
+        public int NoOfPages
         {
-            get { return (int) Math.Ceiling(TotalCount / (double) PageSize); }
+            get { return (int) Math.Ceiling(NoOfItems / (double) PageSize); }
         }
 
         /// <summary>
@@ -64,7 +64,7 @@
             {
                 return
                     //(PageIndex < TotalPages);
-                    (PageIndex * PageSize) < TotalCount;
+                    (PageIndex * PageSize) < NoOfItems;
             }
         }
     }

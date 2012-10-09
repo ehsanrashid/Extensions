@@ -8,7 +8,7 @@ namespace System.Web.Mvc
     public static class ViewPageExtension
     {
 
-        public static string GetDefaultPageTitle<T>(this ViewPage<T> viewPage)
+        public static String GetDefaultPageTitle<T>(this ViewPage<T> viewPage)
             where T : class
         {
             return "";
@@ -22,10 +22,10 @@ namespace System.Web.Mvc
         /// <param name="pagedList">A PagedList instance containing the data for the paged control</param>
         /// <param name="controllerName">Name of the controller.</param>
         /// <param name="actionName">Name of the action on the controller.</param>
-        public static void PagerControl(this ViewPage page, IPagedList pagedList, string controllerName, string actionName)
+        public static void PagerControl<T>(this ViewPage page, IPagedList<T> pagedList, String controllerName, String actionName)
         {
             var writer = new HtmlTextWriter(page.Response.Output);
-            for (var pageNum = 1; pageNum <= pagedList.TotalPages; ++pageNum)
+            for (var pageNum = 1; pageNum <= pagedList.NoOfPages; ++pageNum)
             {
                 if (pageNum != pagedList.PageIndex)
                 {
@@ -50,8 +50,9 @@ namespace System.Web.Mvc
                 writer.Write("&nbsp;");
             }
 
-            writer.Write(String.Concat("(", pagedList.TotalCount, " items in all)"));
+            writer.Write(String.Concat("(", pagedList.NoOfItems, " items in all)"));
         }
+
 
     }
 }

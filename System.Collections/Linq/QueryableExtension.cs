@@ -29,20 +29,20 @@ namespace System.Linq
 
         public static IQueryable<T> WhereAny<T>(this IQueryable<T> source, params Expression<Func<T, bool>>[] predicates)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (predicates == null) throw new ArgumentNullException("predicates");
-            if (predicates.Length == 0) return source.Where(x => false); // no matches!
-            if (predicates.Length == 1) return source.Where(predicates[0]); // simple
+            if (null == source) throw new ArgumentNullException("source");
+            if (null == predicates) throw new ArgumentNullException("predicates");
+            if (0 == predicates.Length) return source.Where(x => false); // no matches!
+            if (1 == predicates.Length) return source.Where(predicates[0]); // simple
 
-            var param = Expression.Parameter(typeof(T), "x");
-            Expression body = Expression.Invoke(predicates[0], param);
+            var paramExpr = Expression.Parameter(typeof(T), "x");
+            Expression body = Expression.Invoke(predicates[0], paramExpr);
             for (var i = 1; i < predicates.Length; ++i)
             {
-                body = Expression.OrElse(body, Expression.Invoke(predicates[i], param));
+                body = Expression.OrElse(body, Expression.Invoke(predicates[i], paramExpr));
             }
-            var lambda = Expression.Lambda<Func<T, bool>>(body, param);
-            return source.Where(lambda);
+            return source.Where(Expression.Lambda<Func<T, bool>>(body, paramExpr));
         }
+
 
         /*
         public static IQueryable OrderBy(this IQueryable source,
