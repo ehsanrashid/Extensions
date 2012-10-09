@@ -1,6 +1,4 @@
-using System;
-
-namespace Threading
+namespace System.Threading
 {
     /// <summary>
     /// References the method that will handle the OnJob event.
@@ -36,7 +34,7 @@ namespace Threading
         /// <summary>
         /// The thread, which will perform the calculations.
         /// </summary>
-        readonly System.Threading.Thread _thread;
+        readonly Thread _thread;
 
         /// <summary>
         /// Event is raised once, when the processing starts.
@@ -88,25 +86,25 @@ namespace Threading
         /// <summary>
         /// The thread responsible for the working process...
         /// </summary>
-        public System.Threading.Thread Thread
+        public Thread Thread
         {
             get { return _thread; }
         }
 
         public ThreadHandler()
         {
-            _thread = new System.Threading.Thread(new System.Threading.ThreadStart(Worker));
+            _thread = new Thread(Worker);
         }
 
         public ThreadHandler(Threads thread)
         {
-            _thread = new System.Threading.Thread(new System.Threading.ThreadStart(Worker));
+            _thread = new Thread(Worker);
 
-            OnJob += new HandlerForOnJob(thread.OnJob);
-            OnFinish += new HandlerForOnFinish(thread.OnFinish);
-            OnAbort += new HandlerForOnAbort(thread.OnAbort);
-            OnTerminate += new HandlerForOnTerminate(thread.OnTerminate);
-            OnException += new HandlerForOnException(thread.OnException);
+            OnJob += thread.OnJob;
+            OnFinish += thread.OnFinish;
+            OnAbort += thread.OnAbort;
+            OnTerminate += thread.OnTerminate;
+            OnException += thread.OnException;
         }
 
         /// <summary>
@@ -130,71 +128,71 @@ namespace Threading
                 try
                 {
                     // MAIN FUNCTION
-                    System.Threading.Monitor.Enter(this);
+                    Monitor.Enter(this);
                     if (OnJob != null)
                     {
-                        System.Threading.Monitor.Exit(this);
+                        Monitor.Exit(this);
                         OnJob(evArgs);
-                        System.Threading.Monitor.Enter(this);
+                        Monitor.Enter(this);
                     }
-                    System.Threading.Monitor.Exit(this);
+                    Monitor.Exit(this);
 
                     // NOTE: It is also possible to abort the finish event !!!
-                    System.Threading.Monitor.Enter(this);
+                    Monitor.Enter(this);
                     if (OnFinish != null)
                     {
-                        System.Threading.Monitor.Exit(this);
+                        Monitor.Exit(this);
                         OnFinish(evArgs);
-                        System.Threading.Monitor.Enter(this);
+                        Monitor.Enter(this);
                     }
-                    System.Threading.Monitor.Exit(this);
+                    Monitor.Exit(this);
                 }
-                catch (System.Threading.ThreadAbortException)
+                catch (ThreadAbortException)
                 {
                     // WHEN ABORTING
 
                     // NOTE: If you call ResetAbort the ThreadAbortException will not be re-throw-ed after each catch block... Code after block finally will also be executed...
                     // System.Threading.Thread.ResetAbort();
 
-                    System.Threading.Monitor.Enter(this);
+                    Monitor.Enter(this);
                     if (OnAbort != null)
                     {
-                        System.Threading.Monitor.Exit(this);
+                        Monitor.Exit(this);
                         OnAbort(evArgs);
-                        System.Threading.Monitor.Enter(this);
+                        Monitor.Enter(this);
                     }
-                    System.Threading.Monitor.Exit(this);
+                    Monitor.Exit(this);
                 }
             }
-            catch (System.Threading.ThreadAbortException)
+            catch (ThreadAbortException)
             {
                 // Ignore this king of exception, it was already handled...but if not reseted, it is automatically re-thrown.
             }
             catch (Exception ex)
             {
                 // HANDLING EXCEPTIONS
-                System.Threading.Monitor.Enter(this);
+                Monitor.Enter(this);
                 if (OnException != null)
                 {
                     var exArgs = new ThreadHandlerExceptionArgs(this, ex);
 
-                    System.Threading.Monitor.Exit(this);
+                    Monitor.Exit(this);
                     OnException(exArgs);
-                    System.Threading.Monitor.Enter(this);
+                    Monitor.Enter(this);
                 }
-                System.Threading.Monitor.Exit(this);
+                Monitor.Exit(this);
             }
             finally
             {
                 // CLEAN-UP - NOTE: Exceptions are not handled here, so be careful!
-                System.Threading.Monitor.Enter(this);
+                Monitor.Enter(this);
                 if (OnTerminate != null)
                 {
-                    System.Threading.Monitor.Exit(this);
+                    Monitor.Exit(this);
                     OnTerminate(evArgs);
-                    System.Threading.Monitor.Enter(this);
+                    Monitor.Enter(this);
                 }
-                System.Threading.Monitor.Exit(this);
+                Monitor.Exit(this);
             }
 
             // This line executes only, when ThreadAbortException is Reset-ed...

@@ -53,10 +53,7 @@ namespace System.Collections.Generic
         {
             get
             {
-                if (direction)
-                    return rightSubtree;
-                else
-                    return leftSubtree;
+                return direction ? rightSubtree : leftSubtree;
             }
             set
             {

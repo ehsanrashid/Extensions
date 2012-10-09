@@ -119,7 +119,6 @@
     <Compile Include="Generic\VisitableList.cs" />
     <Compile Include="Generic\VisitableQueue.cs" />
     <Compile Include="Generic\VisitableStack.cs" />
-    <Compile Include="Linq\QueryableExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sorter\ISortable.cs" />
     <Compile Include="Sorter\ISorter.cs" />

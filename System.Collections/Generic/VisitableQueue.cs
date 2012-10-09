@@ -96,8 +96,7 @@ namespace System.Collections.Generic
                 var q = obj as VisitableQueue<T>;
                 return Count.CompareTo(q.Count);
             }
-            else
-                return GetType().FullName.CompareTo(obj.GetType().FullName);
+            return String.Compare(GetType().FullName, obj.GetType().FullName, StringComparison.Ordinal);
         }
         #endregion
 

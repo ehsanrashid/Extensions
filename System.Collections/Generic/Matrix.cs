@@ -8,11 +8,11 @@ namespace System.Collections.Generic
     /// </summary>
     public class Matrix : IVisitableCollection<double>, ICloneable, IMathematicalMatrix
     {
-        private int noOfRows;
-        private int noOfColumns;
-        private double[,] data;
+        int _noOfRows;
+        int _noOfColumns;
+        double[,] _data;
 
-       
+
         /// <summary>
         ///   Initializes a new instance of the <see cref="Matrix" /> class.
         /// </summary>
@@ -22,11 +22,11 @@ namespace System.Collections.Generic
         {
             if ((rows_ <= 0) || (columns_ <= 0))
                 throw new ArgumentException(Resources.RowsOrColumnsInvalid);
-            noOfRows = rows_;
-            noOfColumns = columns_;
-            data = new double[noOfRows,noOfColumns];
+            _noOfRows = rows_;
+            _noOfColumns = columns_;
+            _data = new double[_noOfRows, _noOfColumns];
         }
-        
+
 
         #region IMatrix Members
         IMatrix<double> IMatrix<double>.GetSubMatrix(int rowStart, int columnStart, int rowCount, int columnCount)
@@ -40,7 +40,7 @@ namespace System.Collections.Generic
         /// <value> The rows. </value>
         public int Rows
         {
-            get { return noOfRows; }
+            get { return _noOfRows; }
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace System.Collections.Generic
         /// <value> The columns. </value>
         public int Columns
         {
-            get { return noOfColumns; }
+            get { return _noOfColumns; }
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace System.Collections.Generic
         /// <returns> The result of the times operation. </returns>
         IMathematicalMatrix IMathematicalMatrix.Times(IMathematicalMatrix matrix)
         {
-            if (matrix.GetType() != typeof (Matrix))
+            if (matrix.GetType() != typeof(Matrix))
                 throw new ArgumentException(Resources.InvalidOperationWrongMatrixType);
             return Times((Matrix) matrix);
         }
@@ -92,7 +92,7 @@ namespace System.Collections.Generic
         /// <returns> The result of the plus operation. </returns>
         IMathematicalMatrix IMathematicalMatrix.Plus(IMathematicalMatrix matrix)
         {
-            if (matrix.GetType() != typeof (Matrix))
+            if (matrix.GetType() != typeof(Matrix))
                 throw new ArgumentException(Resources.InvalidOperationWrongMatrixType);
             return Plus((Matrix) matrix);
         }
@@ -113,7 +113,7 @@ namespace System.Collections.Generic
         /// <returns> The result of the minus operation. </returns>
         IMathematicalMatrix IMathematicalMatrix.Minus(IMathematicalMatrix matrix)
         {
-            if (matrix.GetType() != typeof (Matrix))
+            if (matrix.GetType() != typeof(Matrix))
                 throw new ArgumentException(Resources.InvalidOperationWrongMatrixType);
             return Minus((Matrix) matrix);
         }
@@ -138,16 +138,16 @@ namespace System.Collections.Generic
         public Matrix Times(Matrix matrix)
         {
             // Check the dimensions to make sure the operation is a valid one.
-            if (noOfColumns != matrix.noOfRows)
+            if (_noOfColumns != matrix._noOfRows)
                 throw new ArgumentException(Resources.IncompatibleMatricesTimes);
-            var ret = new Matrix(noOfRows, matrix.noOfColumns);
-            for (var i = 0; i < noOfRows; i++)
-                for (var j = 0; j < matrix.noOfColumns; j++)
+            var ret = new Matrix(_noOfRows, matrix._noOfColumns);
+            for (var i = 0; i < _noOfRows; i++)
+                for (var j = 0; j < matrix._noOfColumns; j++)
                 {
                     double sum = 0;
-                    for (var k = 0; k < noOfColumns; k++)
-                        sum += (data[i, k]*matrix.data[k, j]);
-                    ret.data[i, j] = sum;
+                    for (var k = 0; k < _noOfColumns; k++)
+                        sum += (_data[i, k] * matrix._data[k, j]);
+                    ret._data[i, j] = sum;
                 }
             return ret;
         }
@@ -159,10 +159,10 @@ namespace System.Collections.Generic
         /// <returns> The result of the times operation. </returns>
         public Matrix Times(double number)
         {
-            var ret = new Matrix(noOfRows, noOfColumns);
-            for (var i = 0; i < noOfRows; i++)
-                for (var j = 0; j < noOfColumns; j++)
-                    ret[i, j] = this[i, j]*number;
+            var ret = new Matrix(_noOfRows, _noOfColumns);
+            for (var i = 0; i < _noOfRows; i++)
+                for (var j = 0; j < _noOfColumns; j++)
+                    ret[i, j] = this[i, j] * number;
             return ret;
         }
 
@@ -173,11 +173,11 @@ namespace System.Collections.Generic
         /// <returns> The result of the plus operation. </returns>
         public Matrix Plus(Matrix matrix)
         {
-            if ((noOfRows != matrix.noOfRows) || (noOfColumns != matrix.noOfColumns))
+            if ((_noOfRows != matrix._noOfRows) || (_noOfColumns != matrix._noOfColumns))
                 throw new ArgumentException(Resources.IncompatibleMatricesSameSize);
-            var ret = new Matrix(noOfRows, noOfColumns);
-            for (var i = 0; i < noOfRows; i++)
-                for (var j = 0; j < noOfColumns; j++)
+            var ret = new Matrix(_noOfRows, _noOfColumns);
+            for (var i = 0; i < _noOfRows; i++)
+                for (var j = 0; j < _noOfColumns; j++)
                     ret[i, j] = this[i, j] + matrix[i, j];
             return ret;
         }
@@ -188,7 +188,7 @@ namespace System.Collections.Generic
         /// <returns> An inverted representation of the current matrix. </returns>
         public Matrix Invert()
         {
-            return this*-1;
+            return this * -1;
         }
 
         /// <summary>
@@ -210,9 +210,9 @@ namespace System.Collections.Generic
         /// <value> </value>
         public Matrix Transpose()
         {
-            var ret = new Matrix(noOfColumns, noOfRows);
-            for (var i = 0; i < noOfRows; i++)
-                for (var j = 0; j < noOfColumns; j++)
+            var ret = new Matrix(_noOfColumns, _noOfRows);
+            for (var i = 0; i < _noOfRows; i++)
+                for (var j = 0; j < _noOfColumns; j++)
                     ret[j, i] = this[i, j];
             return ret;
         }
@@ -224,19 +224,17 @@ namespace System.Collections.Generic
         /// <param name="secondRow"> The index of the second row. </param>
         public void InterchangeRows(int firstRow, int secondRow)
         {
-            if ((firstRow < 0) || (firstRow > noOfRows - 1))
+            if ((firstRow < 0) || (firstRow > _noOfRows - 1))
                 throw new ArgumentOutOfRangeException("firstRow");
-            if ((secondRow < 0) || (secondRow > noOfRows - 1))
+            if ((secondRow < 0) || (secondRow > _noOfRows - 1))
                 throw new ArgumentOutOfRangeException("secondRow");
-            /// Nothing to do
-            if (firstRow == secondRow)
-                return;
-            double temp;
-            for (var i = 0; i < noOfColumns; i++)
+            // Nothing to do
+            if (firstRow == secondRow) return;
+            for (var i = 0; i < _noOfColumns; i++)
             {
-                temp = data[firstRow, i];
-                data[firstRow, i] = data[secondRow, i];
-                data[secondRow, i] = temp;
+                double tmp = _data[firstRow, i];
+                _data[firstRow, i] = _data[secondRow, i];
+                _data[secondRow, i] = tmp;
             }
         }
 
@@ -247,19 +245,15 @@ namespace System.Collections.Generic
         /// <param name="secondColumn"> The second column. </param>
         public void InterchangeColumns(int firstColumn, int secondColumn)
         {
-            if ((firstColumn < 0) || (firstColumn > noOfColumns - 1))
-                throw new ArgumentOutOfRangeException("firstRow");
-            if ((secondColumn < 0) || (secondColumn > noOfColumns - 1))
-                throw new ArgumentOutOfRangeException("secondRow");
+            if ((firstColumn < 0) || (firstColumn > _noOfColumns - 1)) throw new ArgumentOutOfRangeException("firstColumn");
+            if ((secondColumn < 0) || (secondColumn > _noOfColumns - 1)) throw new ArgumentOutOfRangeException("secondColumn");
             // Nothing to do
-            if (firstColumn == secondColumn)
-                return;
-            double temp;
-            for (var i = 0; i < noOfRows; i++)
+            if (firstColumn == secondColumn) return;
+            for (var i = 0; i < _noOfRows; i++)
             {
-                temp = data[i, firstColumn];
-                data[i, firstColumn] = data[i, secondColumn];
-                data[i, secondColumn] = temp;
+                double tmp = _data[i, firstColumn];
+                _data[i, firstColumn] = _data[i, secondColumn];
+                _data[i, secondColumn] = tmp;
             }
         }
 
@@ -270,11 +264,11 @@ namespace System.Collections.Generic
         /// <returns> An array containing the values of the requested row. </returns>
         public double[] GetRow(int rowIndex)
         {
-            if ((rowIndex < 0) || (rowIndex > noOfRows - 1))
+            if ((rowIndex < 0) || (rowIndex > _noOfRows - 1))
                 throw new ArgumentOutOfRangeException("rowIndex");
-            var ret = new double[noOfColumns];
-            for (var i = 0; i < noOfColumns; i++)
-                ret[i] = data[rowIndex, i];
+            var ret = new double[_noOfColumns];
+            for (var i = 0; i < _noOfColumns; i++)
+                ret[i] = _data[rowIndex, i];
             return ret;
         }
 
@@ -285,11 +279,11 @@ namespace System.Collections.Generic
         /// <returns> An array containing the values of the requested column. </returns>
         public double[] GetColumn(int columnIndex)
         {
-            if ((columnIndex < 0) || (columnIndex > noOfColumns - 1))
+            if ((columnIndex < 0) || (columnIndex > _noOfColumns - 1))
                 throw new ArgumentOutOfRangeException("columnIndex");
-            var ret = new double[noOfRows];
-            for (var i = 0; i < noOfRows; i++)
-                ret[i] = data[columnIndex, i];
+            var ret = new double[_noOfRows];
+            for (var i = 0; i < _noOfRows; i++)
+                ret[i] = _data[columnIndex, i];
             return ret;
         }
 
@@ -299,14 +293,13 @@ namespace System.Collections.Generic
         /// <param name="rowCount"> The number of rows to add. </param>
         public void AddRows(int rowCount)
         {
-            if (rowCount <= 0)
-                throw new ArgumentOutOfRangeException("columnCount");
-            var newRowCount = noOfRows + rowCount;
+            if (rowCount <= 0) throw new ArgumentOutOfRangeException("rowCount");
+            var newRowCount = _noOfRows + rowCount;
             // Create a new matrix of the specified size
-            var newData = new double[newRowCount,noOfColumns];
+            var newData = new double[newRowCount, _noOfColumns];
             CopyData(newData);
-            noOfRows = newRowCount;
-            data = newData;
+            _noOfRows = newRowCount;
+            _data = newData;
         }
 
         /// <summary>
@@ -326,14 +319,14 @@ namespace System.Collections.Generic
         {
             if (values == null)
                 throw new ArgumentNullException("values");
-            if (values.Length > noOfColumns)
+            if (values.Length > _noOfColumns)
                 throw new ArgumentException(Resources.NumberOfValuesDoNotAgreeWithNumberOfColumns);
             AddRow();
             for (var i = 0; i < values.Length; i++)
-                data[noOfRows - 1, i] = values[i];
+                _data[_noOfRows - 1, i] = values[i];
         }
 
-        
+
         /// <summary>
         ///   Adds the specified number of rows to the matrix.
         /// </summary>
@@ -342,12 +335,12 @@ namespace System.Collections.Generic
         {
             if (columnCount <= 0)
                 throw new ArgumentOutOfRangeException("columnCount");
-            var newColumnCount = noOfColumns + columnCount;
+            var newColumnCount = _noOfColumns + columnCount;
             // Create a new matrix of the specified size
-            var newData = new double[noOfRows,newColumnCount];
+            var newData = new double[_noOfRows, newColumnCount];
             CopyData(newData);
-            noOfColumns = newColumnCount;
-            data = newData;
+            _noOfColumns = newColumnCount;
+            _data = newData;
         }
 
         /// <summary>
@@ -367,11 +360,11 @@ namespace System.Collections.Generic
         {
             if (values == null)
                 throw new ArgumentNullException("values");
-            if (values.Length > noOfRows)
+            if (values.Length > _noOfRows)
                 throw new ArgumentException(Resources.NumberOfValuesDoNotAgreeWithNumberOfRows);
             AddColumn();
             for (var i = 0; i < values.Length; i++)
-                data[i, noOfColumns - 1] = values[i];
+                _data[i, _noOfColumns - 1] = values[i];
         }
 
 
@@ -384,17 +377,17 @@ namespace System.Collections.Generic
         {
             if ((newNumberOfRows <= 0) || (newNumberOfColumns <= 0))
                 throw new ArgumentException(Resources.RowsOrColumnsInvalid);
-            var newData = new double[newNumberOfRows,newNumberOfColumns];
+            var newData = new double[newNumberOfRows, newNumberOfColumns];
             // Find the minimum of the rows and the columns.
             // Case 1 : Target array is smaller than original - don't cross boundaries of target.
             // Case 2 : Original is smaller than target - don't cross boundaries of original.
-            var minRows = Math.Min(noOfRows, newNumberOfRows);
-            var minColumns = Math.Min(noOfColumns, newNumberOfColumns);
+            var minRows = Math.Min(_noOfRows, newNumberOfRows);
+            var minColumns = Math.Min(_noOfColumns, newNumberOfColumns);
             for (var i = 0; i < minRows; i++)
-                for (var j = 0; j < minColumns; j++) newData[i, j] = data[i, j];
-            data = newData;
-            noOfRows = newNumberOfRows;
-            noOfColumns = newNumberOfColumns;
+                for (var j = 0; j < minColumns; j++) newData[i, j] = _data[i, j];
+            _data = newData;
+            _noOfRows = newNumberOfRows;
+            _noOfColumns = newNumberOfColumns;
         }
 
         /// <summary>
@@ -405,16 +398,15 @@ namespace System.Collections.Generic
         {
             get
             {
-                if (noOfRows == noOfColumns)
+                if (_noOfRows == _noOfColumns)
                 {
-                    for (var i = 0; i < noOfRows; i++)
+                    for (var i = 0; i < _noOfRows; i++)
                         for (var j = 0; j <= i; j++)
-                            if (data[i, j] != data[j, i])
+                            if (_data[i, j] != _data[j, i])
                                 return false;
                     return true;
                 }
-                else
-                    return false;
+                return false;
             }
         }
 
@@ -447,9 +439,9 @@ namespace System.Collections.Generic
         /// <returns> A new object that is a copy of this instance. </returns>
         public Matrix Clone()
         {
-            var matrix = new Matrix(noOfRows, noOfColumns);
-            for (var i = 0; i < noOfRows; i++)
-                for (var j = 0; j < noOfColumns; j++)
+            var matrix = new Matrix(_noOfRows, _noOfColumns);
+            for (var i = 0; i < _noOfRows; i++)
+                for (var j = 0; j < _noOfColumns; j++)
                     matrix[i, j] = this[i, j];
             return matrix;
         }
@@ -462,8 +454,8 @@ namespace System.Collections.Generic
         /// <value> </value>
         public double this[int i, int j]
         {
-            get { return data[i, j]; }
-            set { data[i, j] = value; }
+            get { return _data[i, j]; }
+            set { _data[i, j] = value; }
         }
 
         /// <summary>
@@ -577,7 +569,7 @@ namespace System.Collections.Generic
         /// <returns> The number of elements contained in the <see cref="T:System.Collections.ICollection"></see> . </returns>
         public int Count
         {
-            get { return noOfRows*noOfColumns; }
+            get { return _noOfRows * _noOfColumns; }
         }
 
         /// <summary>
@@ -587,8 +579,8 @@ namespace System.Collections.Generic
         /// <returns> true if item is found in the <see cref="T:System.Collections.Generic.ICollection`1"></see> ; otherwise, false. </returns>
         public bool Contains(double item)
         {
-            for (var i = 0; i < noOfRows; i++)
-                for (var j = 0; j < noOfColumns; j++)
+            for (var i = 0; i < _noOfRows; i++)
+                for (var j = 0; j < _noOfColumns; j++)
                     if (this[i, j] == item)
                         return true;
             return false;
@@ -602,8 +594,8 @@ namespace System.Collections.Generic
         {
             if (visitor == null)
                 throw new ArgumentNullException("visitor");
-            for (var i = 0; i < noOfRows; i++)
-                for (var j = 0; j < noOfColumns; j++)
+            for (var i = 0; i < _noOfRows; i++)
+                for (var j = 0; j < _noOfColumns; j++)
                     visitor.Visit(this[i, j]);
         }
 
@@ -626,8 +618,8 @@ namespace System.Collections.Generic
             if ((array.Length - arrayIndex) < Count)
                 throw new ArgumentException(Resources.NotEnoughSpaceInTargetArray);
             var counter = arrayIndex;
-            for (var i = 0; i < noOfRows; i++)
-                for (var j = 0; j < noOfColumns; j++)
+            for (var i = 0; i < _noOfRows; i++)
+                for (var j = 0; j < _noOfColumns; j++)
                 {
                     array.SetValue(this[i, j], counter);
                     counter++;
@@ -640,9 +632,9 @@ namespace System.Collections.Generic
         /// <returns> A <see cref="T:System.Collections.Generic.IEnumerator`1"></see> that can be used to iterate through the collection. </returns>
         public IEnumerator<double> GetEnumerator()
         {
-            for (var i = 0; i < noOfRows; i++)
-                for (var j = 0; j < noOfColumns; j++)
-                    yield return data[i, j];
+            for (var i = 0; i < _noOfRows; i++)
+                for (var j = 0; j < _noOfColumns; j++)
+                    yield return _data[i, j];
         }
 
         /// <summary>
@@ -650,9 +642,9 @@ namespace System.Collections.Generic
         /// </summary>
         public void Clear()
         {
-            for (var i = 0; i < noOfRows; i++)
-                for (var j = 0; j < noOfColumns; j++)
-                    data[i, j] = 0;
+            for (var i = 0; i < _noOfRows; i++)
+                for (var j = 0; j < _noOfColumns; j++)
+                    _data[i, j] = 0;
         }
 
         /// <summary>
@@ -689,15 +681,13 @@ namespace System.Collections.Generic
         /// <exception cref="T:System.ArgumentException">obj is not the same type as this instance.</exception>
         public int CompareTo(object obj)
         {
-            if (obj == null)
-                throw new ArgumentNullException("obj");
+            if (obj == null) throw new ArgumentNullException("obj");
             if (obj.GetType() == GetType())
             {
                 var m = obj as Matrix;
                 return Count.CompareTo(m.Count);
             }
-            else
-                return GetType().FullName.CompareTo(obj.GetType().FullName);
+            return String.Compare(GetType().FullName, obj.GetType().FullName, StringComparison.Ordinal);
         }
         #endregion
 
@@ -738,9 +728,9 @@ namespace System.Collections.Generic
         private void CopyData(double[,] newData)
         {
             // Copy all the original data over the new matrix
-            for (var i = 0; i < noOfRows; i++)
-                for (var j = 0; j < noOfColumns; j++)
-                    newData[i, j] = data[i, j];
+            for (var i = 0; i < _noOfRows; i++)
+                for (var j = 0; j < _noOfColumns; j++)
+                    newData[i, j] = _data[i, j];
         }
         #endregion
     }

@@ -100,8 +100,7 @@ namespace System.Collections.Generic
                 var l = obj as VisitableLinkedList<T>;
                 return Count.CompareTo(l.Count);
             }
-            else
-                return GetType().FullName.CompareTo(obj.GetType().FullName);
+            return String.Compare(GetType().FullName, obj.GetType().FullName, StringComparison.Ordinal);
         }
         #endregion
     }

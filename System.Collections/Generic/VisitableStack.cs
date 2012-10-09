@@ -133,8 +133,7 @@ namespace System.Collections.Generic
                 var s = obj as VisitableStack<T>;
                 return Count.CompareTo(s.Count);
             }
-            else
-                return GetType().FullName.CompareTo(obj.GetType().FullName);
+            return String.Compare(GetType().FullName, obj.GetType().FullName, StringComparison.Ordinal);
         }
         #endregion
     }

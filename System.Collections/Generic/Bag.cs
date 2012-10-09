@@ -12,7 +12,7 @@ namespace System.Collections.Generic
     /// <typeparam name="T"> </typeparam>
     public sealed class Bag<T> : IVisitableCollection<T>, IBag<T>
     {
-        readonly VisitableHashtable<T, int> data;
+        readonly VisitableHashtable<T, int> _data;
 
         /// <summary>
         ///   Gets the number of elements contained in the <see cref="T:System.Collections.ICollection"></see>.
@@ -27,7 +27,7 @@ namespace System.Collections.Generic
         /// </summary>
         public Bag()
         {
-            data = new VisitableHashtable<T, int>();
+            _data = new VisitableHashtable<T, int>();
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace System.Collections.Generic
         /// <param name="capacity"> The initial capacity of the bag. </param>
         public Bag(int capacity)
         {
-            data = new VisitableHashtable<T, int>(capacity);
+            _data = new VisitableHashtable<T, int>(capacity);
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace System.Collections.Generic
         {
             if (comparer == null)
                 throw new ArgumentNullException("comparer");
-            data = new VisitableHashtable<T, int>(comparer);
+            _data = new VisitableHashtable<T, int>(comparer);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace System.Collections.Generic
         {
             if (comparer == null)
                 throw new ArgumentNullException("comparer");
-            data = new VisitableHashtable<T, int>(capacity, comparer);
+            _data = new VisitableHashtable<T, int>(capacity, comparer);
         }
 
         /// <summary>
@@ -72,9 +72,9 @@ namespace System.Collections.Generic
             Debug.Assert(dictionary != null);
             #endregion
 
-            data = new VisitableHashtable<T, int>(dictionary);
+            _data = new VisitableHashtable<T, int>(dictionary);
             // Update the count
-            using (var enumerator = data.GetEnumerator())
+            using (var enumerator = _data.GetEnumerator())
                 while (enumerator.MoveNext())
                     Count += enumerator.Current.Value;
         }
@@ -89,16 +89,16 @@ namespace System.Collections.Generic
         /// <returns> A value indicating whether the items have been removed (was found). </returns>
         public bool Remove(T item, int max)
         {
-            if (!data.ContainsKey(item)) return false;
-            if (max >= data[item])
+            if (!_data.ContainsKey(item)) return false;
+            if (max >= _data[item])
             {
-                Count -= data[item];
-                data.Remove(item);
+                Count -= _data[item];
+                _data.Remove(item);
             }
             else
             {
                 Count -= max;
-                data[item] -= max;
+                _data[item] -= max;
             }
             return true;
         }
@@ -114,10 +114,10 @@ namespace System.Collections.Generic
         public void Add(T item, int amount)
         {
             if (amount <= 0) throw new ArgumentOutOfRangeException(Resources.OnlyAddPositiveAmount);
-            if (data.ContainsKey(item))
-                data[item] += amount;
+            if (_data.ContainsKey(item))
+                _data[item] += amount;
             else
-                data.Add(item, amount);
+                _data.Add(item, amount);
             Count += amount;
         }
 
@@ -188,7 +188,7 @@ namespace System.Collections.Generic
                 throw new ArgumentNullException("array");
             if ((array.Length - arrayIndex) < Count)
                 throw new ArgumentException(Resources.NotEnoughSpaceInTargetArray);
-            var enumerator = data.GetEnumerator();
+            var enumerator = _data.GetEnumerator();
             var counter = arrayIndex;
             while (enumerator.MoveNext())
             {
@@ -209,10 +209,10 @@ namespace System.Collections.Generic
         ///   is read-only.</exception>
         public void Add(T item)
         {
-            if (data.ContainsKey(item))
-                data[item]++;
+            if (_data.ContainsKey(item))
+                _data[item]++;
             else
-                data.Add(item, 1);
+                _data.Add(item, 1);
             Count++;
         }
 
@@ -227,16 +227,15 @@ namespace System.Collections.Generic
         ///   is read-only.</exception>
         public bool Remove(T item)
         {
-            if (data.ContainsKey(item))
+            if (_data.ContainsKey(item))
             {
-                data[item]--;
-                if (data[item] == 0)
-                    data.Remove(item);
+                _data[item]--;
+                if (_data[item] == 0)
+                    _data.Remove(item);
                 Count--;
                 return true;
             }
-            else
-                return false;
+            return false;
         }
 
         /// <summary>
@@ -246,7 +245,7 @@ namespace System.Collections.Generic
         /// <returns> true if item is found in the <see cref="T:System.Collections.Generic.ICollection`1"></see> ; otherwise, false. </returns>
         public bool Contains(T item)
         {
-            return data.ContainsKey(item);
+            return _data.ContainsKey(item);
         }
 
         /// <summary>
@@ -255,7 +254,7 @@ namespace System.Collections.Generic
         /// <returns> A <see cref="T:System.Collections.Generic.IEnumerator`1"></see> that can be used to iterate through the collection. </returns>
         public IEnumerator<T> GetEnumerator()
         {
-            var enumerator = data.GetEnumerator();
+            var enumerator = _data.GetEnumerator();
             while (enumerator.MoveNext())
                 yield return enumerator.Current.Key;
         }
@@ -265,7 +264,7 @@ namespace System.Collections.Generic
         /// </summary>
         public void Clear()
         {
-            data.Clear();
+            _data.Clear();
             Count = 0;
         }
 
@@ -284,7 +283,7 @@ namespace System.Collections.Generic
                 var bag = obj as Bag<T>;
                 return Count.CompareTo(bag.Count);
             }
-            return GetType().FullName.CompareTo(obj.GetType().FullName);
+            return String.Compare(GetType().FullName, obj.GetType().FullName, StringComparison.Ordinal);
         }
 
         /// <summary>
@@ -314,7 +313,7 @@ namespace System.Collections.Generic
                 throw new ArgumentNullException("bag");
             if (bag.Count != Count)
                 return false;
-            var enumerator = data.GetEnumerator();
+            var enumerator = _data.GetEnumerator();
             while (enumerator.MoveNext())
                 if (!bag.Contains(enumerator.Current.Key))
                     return false;
@@ -330,10 +329,10 @@ namespace System.Collections.Generic
         /// <returns> A value indicating if the item was found (and removed) from the bag. </returns>
         public bool RemoveAll(T item)
         {
-            if (data.ContainsKey(item))
+            if (_data.ContainsKey(item))
             {
-                Count -= data[item];
-                data.Remove(item);
+                Count -= _data[item];
+                _data.Remove(item);
                 return true;
             }
             return false;
@@ -345,7 +344,7 @@ namespace System.Collections.Generic
         /// <returns> A <see cref="T:System.Collections.Generic.IEnumerator`1"></see> that can be used to iterate through the collection. </returns>
         public IEnumerator<KeyValuePair<T, int>> GetCountEnumerator()
         {
-            return data.GetEnumerator();
+            return _data.GetEnumerator();
         }
 
         /// <summary>
@@ -360,15 +359,15 @@ namespace System.Collections.Generic
             Bag<T> result;
             Dictionary<T, int>.Enumerator enumerator;
             // A small optimisation for big Bags - make a copy of the biggest Bag
-            if (bag.data.Count > data.Count)
+            if (bag._data.Count > _data.Count)
             {
-                result = new Bag<T>(bag.data);
-                enumerator = data.GetEnumerator();
+                result = new Bag<T>(bag._data);
+                enumerator = _data.GetEnumerator();
             }
             else
             {
-                result = new Bag<T>(data);
-                enumerator = bag.data.GetEnumerator();
+                result = new Bag<T>(_data);
+                enumerator = bag._data.GetEnumerator();
             }
             while (enumerator.MoveNext()) result.Add(enumerator.Current.Key, enumerator.Current.Value);
             enumerator.Dispose();
@@ -384,12 +383,12 @@ namespace System.Collections.Generic
         {
             if (bag == null)
                 throw new ArgumentNullException("bag");
-            var result = new Bag<T>(data);
-            using (var enumerator = bag.data.GetEnumerator())
+            var result = new Bag<T>(_data);
+            using (var enumerator = bag._data.GetEnumerator())
                 while (enumerator.MoveNext())
-                    if (result.data.ContainsKey(enumerator.Current.Key))
+                    if (result._data.ContainsKey(enumerator.Current.Key))
                     {
-                        var itemCount = result.data[enumerator.Current.Key];
+                        var itemCount = result._data[enumerator.Current.Key];
                         if (itemCount - enumerator.Current.Value <= 0)
                             result.RemoveAll(enumerator.Current.Key);
                         else
@@ -408,11 +407,11 @@ namespace System.Collections.Generic
             if (bag == null)
                 throw new ArgumentNullException("bag");
             var result = new Bag<T>();
-            var enumerator = bag.data.GetEnumerator();
+            var enumerator = bag._data.GetEnumerator();
             while (enumerator.MoveNext())
-                if (data.ContainsKey(enumerator.Current.Key))
+                if (_data.ContainsKey(enumerator.Current.Key))
                     result.Add(enumerator.Current.Key,
-                               Math.Min(enumerator.Current.Value, data[enumerator.Current.Key])
+                               Math.Min(enumerator.Current.Value, _data[enumerator.Current.Key])
                         );
             return result;
         }
@@ -425,7 +424,7 @@ namespace System.Collections.Generic
         {
             if (visitor == null)
                 throw new ArgumentNullException("visitor");
-            data.Accept(visitor);
+            _data.Accept(visitor);
         }
 
         /// <summary>
@@ -452,7 +451,7 @@ namespace System.Collections.Generic
         /// <value> </value>
         public int this[T item]
         {
-            get { return data.ContainsKey(item) ? data[item] : 0; }
+            get { return _data.ContainsKey(item) ? _data[item] : 0; }
         }
 
         /// <summary>

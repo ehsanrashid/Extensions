@@ -13,17 +13,17 @@
         public static void SetInitialFocus(this Window window, Control controlFocus)
         {
             RoutedEventHandler routedHandler = null; // set to null to prevent unassigned compiler error
-            routedHandler = delegate(object sender, RoutedEventArgs e)
-            {
-                controlFocus.Focus();
-                var txtBox = controlFocus as TextBox;
-                if (txtBox != null)
-                {
-                    txtBox.SelectAll();
-                }
-                // unsubscribe after first execute
-                window.GotFocus -= routedHandler;
-            };
+            routedHandler = delegate
+                            {
+                                controlFocus.Focus();
+                                var txtBox = controlFocus as TextBox;
+                                if (txtBox != null)
+                                {
+                                    txtBox.SelectAll();
+                                }
+                                // unsubscribe after first execute
+                                window.GotFocus -= routedHandler;
+                            };
 
             window.GotFocus += routedHandler;
         }

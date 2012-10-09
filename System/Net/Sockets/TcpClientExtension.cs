@@ -1,7 +1,7 @@
-﻿using System.Runtime.InteropServices;
-
-namespace System.Net.Sockets
+﻿namespace System.Net.Sockets
 {
+    using Runtime.InteropServices;
+
     public static class TcpClientExtension
     {
         /// <summary>

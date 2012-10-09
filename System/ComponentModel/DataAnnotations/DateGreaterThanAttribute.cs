@@ -4,7 +4,7 @@
     public sealed class DateGreaterThanAttribute : ValidationAttribute
     {
         const String DefaultErrorMessage = "'{0}' must be greater than '{1}'";
-        String _basePropertyName;
+        readonly String _basePropertyName;
 
         public DateGreaterThanAttribute(String basePropertyName)
             : base(DefaultErrorMessage)

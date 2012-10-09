@@ -14,8 +14,8 @@ namespace System.Collections.Algorithm
         public VertexInfo(double d, Edge<T> edgeFollowed, bool isFinalised)
         {
             Distance = d;
-            this.EdgeFollowed = edgeFollowed;
-            this.IsFinalised = isFinalised;
+            EdgeFollowed = edgeFollowed;
+            IsFinalised = isFinalised;
         }
         #endregion
 

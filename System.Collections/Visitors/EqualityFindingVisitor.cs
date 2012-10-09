@@ -5,13 +5,13 @@ namespace System.Collections.Visitors
     /// <summary>
 	/// A visitor that searches objects for an equality, using the IEqualityComparer interface.
 	/// </summary>	
-	public sealed class EqualityFindingVisitor<T> : IVisitor<T>, IFindingIVisitor<T>
+	public sealed class EqualityFindingVisitor<T> : IFindingIVisitor<T>
 	{
 		#region Globals
 
-		bool found = false;
-		T valueToSearchFor;
-		IEqualityComparer<T> comparerToUse;
+		bool _found;
+        readonly T _valueToSearchFor;
+        readonly IEqualityComparer<T> _comparerToUse;
 
 		#endregion
 
@@ -29,8 +29,8 @@ namespace System.Collections.Visitors
 				throw new ArgumentNullException("comparer");
 			}
 
-			this.valueToSearchFor = valueToSearchFor;
-			this.comparerToUse = comparer;
+			_valueToSearchFor = valueToSearchFor;
+			_comparerToUse = comparer;
 		}
 
 		#endregion
@@ -45,7 +45,7 @@ namespace System.Collections.Visitors
 		{
 			get
 			{
-				return found;
+				return _found;
 			}
 		}
 
@@ -57,7 +57,7 @@ namespace System.Collections.Visitors
 		{
 			get
 			{
-				return valueToSearchFor;
+				return _valueToSearchFor;
 			}
 		}
 
@@ -73,7 +73,7 @@ namespace System.Collections.Visitors
 		{
 			get
 			{
-				return found;
+				return _found;
 			}
 		}
 
@@ -83,9 +83,9 @@ namespace System.Collections.Visitors
 		/// <param name="obj">The object to visit.</param>
 		public void Visit(T obj)
 		{
-			if (comparerToUse.Equals(valueToSearchFor, obj))
+			if (_comparerToUse.Equals(_valueToSearchFor, obj))
 			{
-				found = true;
+				_found = true;
 			}
 		}
 
@@ -101,7 +101,7 @@ namespace System.Collections.Visitors
 		{
 			get
 			{
-				return comparerToUse;
+				return _comparerToUse;
 			}
 		}
 

@@ -9,7 +9,7 @@ namespace System.Collections.Visitors
 	{
 		#region Globals
 		
-		private IVisitor<T> visitorToUse;
+		readonly IVisitor<T> _visitorToUse;
 		
 		#endregion
 
@@ -21,17 +21,11 @@ namespace System.Collections.Visitors
 		/// <param name="visitorToUse">The visitor to use when visiting the object.</param>
 		public OrderedVisitor(IVisitor<T> visitorToUse)
 		{
-			if (visitorToUse == null)
-			{
-				throw new ArgumentNullException("visitorToUse");
-			}
-			else
-			{
-				this.visitorToUse = visitorToUse;
-			}
+		    if (visitorToUse == null) throw new ArgumentNullException("visitorToUse");
+		    _visitorToUse = visitorToUse;
 		}
 
-		#endregion
+	    #endregion
 
 		#region IOrderedVisitor<T> Members
 
@@ -46,7 +40,7 @@ namespace System.Collections.Visitors
 		{
 			get
 			{
-				return visitorToUse.HasCompleted;
+				return _visitorToUse.HasCompleted;
 			}
 		}
 
@@ -55,7 +49,7 @@ namespace System.Collections.Visitors
 		/// </summary>
 		/// <param name="obj">The obj.</param>
 		public virtual void VisitPreOrder(T obj) {
-			visitorToUse.Visit(obj);
+			_visitorToUse.Visit(obj);
 		}
 
 		/// <summary>
@@ -64,7 +58,7 @@ namespace System.Collections.Visitors
 		/// <param name="obj">The obj.</param>
 		public virtual void VisitPostOrder(T obj)
 		{
-			visitorToUse.Visit(obj);
+			_visitorToUse.Visit(obj);
 		}
 
 		/// <summary>
@@ -73,7 +67,7 @@ namespace System.Collections.Visitors
 		/// <param name="obj">The obj.</param>
 		public virtual void VisitInOrder(T obj)
 		{
-			visitorToUse.Visit(obj);
+			_visitorToUse.Visit(obj);
 		}
 
 		#endregion
@@ -88,7 +82,7 @@ namespace System.Collections.Visitors
 		{
 			get
 			{
-				return visitorToUse;
+				return _visitorToUse;
 			}
 		}
 

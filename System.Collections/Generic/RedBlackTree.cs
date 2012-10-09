@@ -3,9 +3,6 @@
  * It's an excellent tutorial - if you want to understand Red Black trees, look there first.
  */
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Visitors;
 using System.Diagnostics;
@@ -13,7 +10,7 @@ using System.Diagnostics;
 namespace System.Collections.Generic
 {
     using Properties;
-    
+
     /// <summary>
     /// An implementation of a Red-Black tree.
     /// </summary>
@@ -168,8 +165,7 @@ namespace System.Collections.Generic
                 var rb = obj as RedBlackTree<TKey, TValue>;
                 return Count.CompareTo(rb.Count);
             }
-            else
-                return GetType().FullName.CompareTo(obj.GetType().FullName);
+            return String.Compare(GetType().FullName, obj.GetType().FullName, StringComparison.Ordinal);
         }
 
         /// <summary>
@@ -231,16 +227,15 @@ namespace System.Collections.Generic
             if (root != null)
             {
                 var startNode = new RedBlackTreeNode<TKey, TValue>(default(TKey), default(TValue));
-                RedBlackTreeNode<TKey, TValue> childNode = startNode;
+                var childNode = startNode;
                 startNode.Right = root;
                 RedBlackTreeNode<TKey, TValue> parent = null;
-                RedBlackTreeNode<TKey, TValue> grandParent = null;
                 RedBlackTreeNode<TKey, TValue> foundNode = null;
-                bool direction = true;
+                var direction = true;
                 while (childNode[direction] != null)
                 {
-                    bool lastDirection = direction;
-                    grandParent = parent;
+                    var directionLast = direction;
+                    var grandParent = parent;
                     parent = childNode;
                     childNode = childNode[direction];
                     int comparisonValue = comparerToUse.Compare(childNode.Key, key);
@@ -250,10 +245,10 @@ namespace System.Collections.Generic
                     if ((RedBlackTreeNode<TKey, TValue>.IsBlack(childNode)) &&
                         (RedBlackTreeNode<TKey, TValue>.IsBlack(childNode[direction])))
                         if (RedBlackTreeNode<TKey, TValue>.IsRed(childNode[!direction]))
-                            parent = parent[lastDirection] = SingleRotation(childNode, direction);
+                            parent = parent[directionLast] = SingleRotation(childNode, direction);
                         else if (RedBlackTreeNode<TKey, TValue>.IsBlack(childNode[direction]))
                         {
-                            RedBlackTreeNode<TKey, TValue> sibling = parent[!lastDirection];
+                            var sibling = parent[!directionLast];
                             if (sibling != null)
                                 if ((RedBlackTreeNode<TKey, TValue>.IsBlack(sibling.Left)) &&
                                     (RedBlackTreeNode<TKey, TValue>.IsBlack(sibling.Right)))
@@ -264,14 +259,14 @@ namespace System.Collections.Generic
                                 }
                                 else
                                 {
-                                    bool parentDirection = grandParent.Right == parent;
-                                    if (RedBlackTreeNode<TKey, TValue>.IsRed(sibling[lastDirection]))
-                                        grandParent[parentDirection] = DoubleRotation(parent, lastDirection);
-                                    else if (RedBlackTreeNode<TKey, TValue>.IsRed(sibling[!lastDirection]))
-                                        grandParent[parentDirection] = SingleRotation(parent, lastDirection);
-                                    childNode.Color = grandParent[parentDirection].Color = NodeColor.Red;
-                                    grandParent[parentDirection].Left.Color = NodeColor.Black;
-                                    grandParent[parentDirection].Right.Color = NodeColor.Black;
+                                    var directionParent = grandParent.Right == parent;
+                                    if (RedBlackTreeNode<TKey, TValue>.IsRed(sibling[directionLast]))
+                                        grandParent[directionParent] = DoubleRotation(parent, directionLast);
+                                    else if (RedBlackTreeNode<TKey, TValue>.IsRed(sibling[!directionLast]))
+                                        grandParent[directionParent] = SingleRotation(parent, directionLast);
+                                    childNode.Color = grandParent[directionParent].Color = NodeColor.Red;
+                                    grandParent[directionParent].Left.Color = NodeColor.Black;
+                                    grandParent[directionParent].Right.Color = NodeColor.Black;
                                 }
                         }
                 }
@@ -300,17 +295,14 @@ namespace System.Collections.Generic
         /// <returns>A value indicating whether the key was found in the tree.</returns>
         public bool TryGetValue(TKey key, out TValue value)
         {
-            RedBlackTreeNode<TKey, TValue> node = FindNode(key);
+            var node = FindNode(key);
             if (node == null)
             {
                 value = default(TValue);
                 return false;
             }
-            else
-            {
-                value = node.Value;
-                return true;
-            }
+            value = node.Value;
+            return true;
         }
 
         /// <summary>
@@ -340,16 +332,13 @@ namespace System.Collections.Generic
                 RedBlackTreeNode<TKey, TValue> node = FindNode(key);
                 if (node == null)
                     throw new ArgumentException(Resources.KeyDoesNotExist);
-                else
-                    return node.Value;
+                return node.Value;
             }
             set
             {
                 RedBlackTreeNode<TKey, TValue> node = FindNode(key);
-                if (node == null)
-                    throw new ArgumentException(Resources.KeyDoesNotExist);
-                else
-                    node.Value = value;
+                if (node == null) throw new ArgumentException(Resources.KeyDoesNotExist);
+                node.Value = value;
             }
         }
 
@@ -373,10 +362,7 @@ namespace System.Collections.Generic
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
             RedBlackTreeNode<TKey, TValue> node = FindNode(item.Key);
-            if (node == null)
-                return false;
-            else
-                return item.Value.Equals(node.Value);
+            return node != null && item.Value.Equals(node.Value);
         }
 
         /// <summary>
@@ -393,8 +379,8 @@ namespace System.Collections.Generic
                 throw new ArgumentNullException("array");
             if ((array.Length - arrayIndex) < count)
                 throw new ArgumentException(Resources.NotEnoughSpaceInTargetArray);
-            int counter = arrayIndex;
-            using (IEnumerator<KeyValuePair<TKey, TValue>> enumerator = GetEnumerator())
+            var counter = arrayIndex;
+            using (var enumerator = GetEnumerator())
                 while (enumerator.MoveNext())
                 {
                     array.SetValue(enumerator.Current, counter);
@@ -434,18 +420,14 @@ namespace System.Collections.Generic
         /// <returns>The node with the specified key, if found, null if not found.</returns>
         private RedBlackTreeNode<TKey, TValue> FindNode(TKey key)
         {
-            if (root == null)
-                return null;
-            RedBlackTreeNode<TKey, TValue> currentNode = root;
+            if (root == null) return null;
+            var currentNode = root;
             while (currentNode != null)
             {
-                int nodeResult = comparerToUse.Compare(key, currentNode.Key);
-                if (nodeResult == 0)
-                    return currentNode;
-                else if (nodeResult < 0)
-                    currentNode = currentNode.Left;
-                else
-                    currentNode = currentNode.Right;
+                var nodeResult = comparerToUse.Compare(key, currentNode.Key);
+
+                if (nodeResult == 0) return currentNode;
+                currentNode = nodeResult < 0 ? currentNode.Left : currentNode.Right;
             }
             return null;
         }
@@ -461,7 +443,7 @@ namespace System.Collections.Generic
             Debug.Assert(startNode != null);
             #endregion
 
-            RedBlackTreeNode<TKey, TValue> searchNode = startNode;
+            var searchNode = startNode;
             while (searchNode.Right != null)
                 searchNode = searchNode.Right;
             return searchNode;
@@ -478,7 +460,7 @@ namespace System.Collections.Generic
             Debug.Assert(startNode != null);
             #endregion
 
-            RedBlackTreeNode<TKey, TValue> searchNode = startNode;
+            var searchNode = startNode;
             while (searchNode.Left != null)
                 searchNode = searchNode.Left;
             return searchNode;
@@ -493,11 +475,10 @@ namespace System.Collections.Generic
         /// <returns>The node created in the insertion.</returns>
         private RedBlackTreeNode<TKey, TValue> InsertNode(RedBlackTreeNode<TKey, TValue> node, TKey key, TValue value)
         {
-            if (node == null)
-                node = new RedBlackTreeNode<TKey, TValue>(key, value);
+            if (node == null) node = new RedBlackTreeNode<TKey, TValue>(key, value);
             else if (comparerToUse.Compare(key, node.Key) != 0)
             {
-                bool direction = comparerToUse.Compare(node.Key, key) < 0;
+                var direction = comparerToUse.Compare(node.Key, key) < 0;
                 node[direction] = InsertNode(node[direction], key, value);
                 if (RedBlackTreeNode<TKey, TValue>.IsRed(node[direction]))
                     if (RedBlackTreeNode<TKey, TValue>.IsRed(node[!direction]))

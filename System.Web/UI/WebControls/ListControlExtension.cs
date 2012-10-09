@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-
-namespace System.Web.UI.WebControls
+﻿namespace System.Web.UI.WebControls
 {
+    using Collections.Generic;
+    using Linq;
+
     public static class ListControlExtension
     {
 

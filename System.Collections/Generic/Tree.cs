@@ -352,8 +352,7 @@
                 var t = obj as Tree<T>;
                 return Count.CompareTo(t.Count);
             }
-            else
-                return GetType().FullName.CompareTo(obj.GetType().FullName);
+            return String.Compare(GetType().FullName, obj.GetType().FullName, StringComparison.Ordinal);
         }
         #endregion
 

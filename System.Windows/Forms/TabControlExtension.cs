@@ -1,8 +1,7 @@
-using System.Collections.Generic;
-
 namespace System.Windows.Forms
 {
-    using System.Drawing;
+    using Collections.Generic;
+    using Drawing;
 
     /// <summary>
     /// Extension methods for System.Windows.Forms.TabControl

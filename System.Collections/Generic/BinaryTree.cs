@@ -7,25 +7,25 @@ namespace System.Collections.Generic
     ///   An implementation of a Binary Tree data structure.
     /// </summary>
     /// <typeparam name="T"> </typeparam>
-    public class BinaryTree<T> : IVisitableCollection<T>, ITree<T>
+    public sealed class BinaryTree<T> : IVisitableCollection<T>, ITree<T>
     {
         /// <summary>
         ///   Gets or sets the value contained in this node.
         /// </summary>
         /// <value> The value contained in this node. </value>
-        public virtual T Data { get; set; }
+        public T Data { get; set; }
 
         /// <summary>
         ///   Gets or sets the left subtree.
         /// </summary>
         /// <value> The left subtree. </value>
-        public virtual BinaryTree<T> Left { get; set; }
+        public BinaryTree<T> Left { get; set; }
 
         /// <summary>
         ///   Gets or sets the right subtree.
         /// </summary>
         /// <value> The right subtree. </value>
-        public virtual BinaryTree<T> Right { get; set; }
+        public BinaryTree<T> Right { get; set; }
 
         /// <summary>
         ///   Initializes a new instance of the <see cref="BinaryTree&lt;T&gt;" /> class.
@@ -262,8 +262,7 @@ namespace System.Collections.Generic
                 var tree = obj as BinaryTree<T>;
                 return Count.CompareTo(tree.Count);
             }
-            else
-                return GetType().FullName.CompareTo(obj.GetType().FullName);
+            return String.Compare(GetType().FullName, obj.GetType().FullName, StringComparison.Ordinal);
         }
         #endregion
 
@@ -319,22 +318,20 @@ namespace System.Collections.Generic
         {
             if (condition == null)
                 throw new ArgumentNullException("condition");
-            if (condition.Invoke(Data))
-                return this;
-            else
+
+            if (condition.Invoke(Data)) return this;
+
+            if (Left != null)
             {
-                if (Left != null)
-                {
-                    var ret = Left.FindNode(condition);
-                    if (ret != null)
-                        return ret;
-                }
-                if (Right != null)
-                {
-                    var ret = Right.FindNode(condition);
-                    if (ret != null)
-                        return ret;
-                }
+                var ret = Left.FindNode(condition);
+                if (ret != null)
+                    return ret;
+            }
+            if (Right != null)
+            {
+                var ret = Right.FindNode(condition);
+                if (ret != null)
+                    return ret;
             }
             return null;
         }
@@ -355,57 +352,45 @@ namespace System.Collections.Generic
         /// <returns> The child at the specified index. </returns>
         public BinaryTree<T> GetChild(int index)
         {
-            if (index == 0)
-                return Left;
-            else if (index == 1)
-                return Right;
-            else
-                throw new ArgumentOutOfRangeException();
+            if (index == 0) return Left;
+            if (index == 1) return Right;
+            throw new ArgumentOutOfRangeException();
         }
 
         /// <summary>
         ///   Gets the height of the this tree.
         /// </summary>
         /// <value> The height. </value>
-        public virtual int Height
+        public int Height
         {
-            get
-            {
-                if (Degree == 0)
-                    return 0;
-                else
-                    return 1 + FindMaximumChildHeight();
-            }
+            get { return Degree == 0 ? 0 : 1 + FindMaximumChildHeight(); }
         }
 
         /// <summary>
         ///   Performs a depth first traversal on this tree with the specified visitor.
         /// </summary>
         /// <param name="orderedVisitor"> The ordered visitor. </param>
-        public virtual void DepthFirstTraversal(OrderedVisitor<T> orderedVisitor)
+        public void DepthFirstTraversal(OrderedVisitor<T> orderedVisitor)
         {
-            if (orderedVisitor.HasCompleted)
-                return;
-            else
-            {
-                // Preorder visit
-                orderedVisitor.VisitPreOrder(Data);
-                if (Left != null)
-                    Left.DepthFirstTraversal(orderedVisitor);
-                // Inorder visit
-                orderedVisitor.VisitInOrder(Data);
-                if (Right != null)
-                    Right.DepthFirstTraversal(orderedVisitor);
-                // PostOrder visit
-                orderedVisitor.VisitPostOrder(Data);
-            }
+            if (orderedVisitor.HasCompleted) return;
+
+            // Preorder visit
+            orderedVisitor.VisitPreOrder(Data);
+            if (Left != null)
+                Left.DepthFirstTraversal(orderedVisitor);
+            // Inorder visit
+            orderedVisitor.VisitInOrder(Data);
+            if (Right != null)
+                Right.DepthFirstTraversal(orderedVisitor);
+            // PostOrder visit
+            orderedVisitor.VisitPostOrder(Data);
         }
 
         /// <summary>
         ///   Performs a breadth first traversal on this tree with the specified visitor.
         /// </summary>
         /// <param name="visitor"> The visitor. </param>
-        public virtual void BreadthFirstTraversal(IVisitor<T> visitor)
+        public void BreadthFirstTraversal(IVisitor<T> visitor)
         {
             var q = new VisitableQueue<BinaryTree<T>>();
             q.Enqueue(this);
@@ -426,7 +411,7 @@ namespace System.Collections.Generic
         ///   Gets a value indicating whether this instance is leaf node.
         /// </summary>
         /// <value> <c>true</c> if this instance is leaf node; otherwise, <c>false</c> . </value>
-        public virtual bool IsLeafNode
+        public bool IsLeafNode
         {
             get { return Degree == 0; }
         }
@@ -434,7 +419,7 @@ namespace System.Collections.Generic
         /// <summary>
         ///   Removes the left child.
         /// </summary>
-        public virtual void RemoveLeft()
+        public void RemoveLeft()
         {
             Left = null;
         }
@@ -442,7 +427,7 @@ namespace System.Collections.Generic
         /// <summary>
         ///   Removes the left child.
         /// </summary>
-        public virtual void RemoveRight()
+        public void RemoveRight()
         {
             Right = null;
         }
@@ -456,10 +441,8 @@ namespace System.Collections.Generic
         ///   is read-only.</exception>
         public void Add(BinaryTree<T> subtree)
         {
-            if (Left == null)
-                Left = subtree;
-            else if (Right == null)
-                Right = subtree;
+            if (Left == null) Left = subtree;
+            else if (Right == null) Right = subtree;
             else
                 throw new InvalidOperationException(Resources.BinaryTreeIsFull);
         }
@@ -470,7 +453,7 @@ namespace System.Collections.Generic
         ///   Finds the maximum height between the childnodes.
         /// </summary>
         /// <returns> The maximum height of the tree between all paths from this node and all leaf nodes. </returns>
-        protected virtual int FindMaximumChildHeight()
+        private int FindMaximumChildHeight()
         {
             var leftHeight = 0;
             var rightHeight = 0;

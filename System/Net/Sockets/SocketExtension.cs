@@ -1,10 +1,8 @@
-﻿using System.Linq;
-//using System.Reactive;
-//using System.Reactive.Linq;
-using System.Text;
-
-namespace System.Net.Sockets
+﻿namespace System.Net.Sockets
 {
+    //using Reactive;
+    //using Reactive.Linq;
+
     public static class SocketExtension
     {
         public static bool IsConnected(this Socket socket)

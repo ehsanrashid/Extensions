@@ -1,8 +1,7 @@
-﻿using System;
-using System.Linq;
-
-namespace System.Collections.Generic
+﻿namespace System.Collections.Generic
 {
+    using Linq;
+
     /// <summary>
     /// 	Extension methods for Dictionary.
     /// </summary>

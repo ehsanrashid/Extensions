@@ -45,12 +45,9 @@ namespace System.Collections.Generic
         public T DequeueHead()
         {
             if (_list.Count == 0) throw new InvalidOperationException(Resources.DequeIsEmpty);
-            else
-            {
-                var ret = _list.First.Value;
-                _list.RemoveFirst();
-                return ret;
-            }
+            var ret = _list.First.Value;
+            _list.RemoveFirst();
+            return ret;
         }
 
         /// <summary>
@@ -70,12 +67,9 @@ namespace System.Collections.Generic
         {
             if (_list.Count == 0)
                 throw new InvalidOperationException(Resources.DequeIsEmpty);
-            else
-            {
-                var ret = _list.Last.Value;
-                _list.RemoveLast();
-                return ret;
-            }
+            var ret = _list.Last.Value;
+            _list.RemoveLast();
+            return ret;
         }
 
         /// <summary>
@@ -88,8 +82,7 @@ namespace System.Collections.Generic
             {
                 if (_list.Count == 0)
                     throw new InvalidOperationException(Resources.DequeIsEmpty);
-                else
-                    return _list.First.Value;
+                return _list.First.Value;
             }
         }
 
@@ -103,8 +96,7 @@ namespace System.Collections.Generic
             {
                 if (_list.Count == 0)
                     throw new InvalidOperationException(Resources.DequeIsEmpty);
-                else
-                    return _list.Last.Value;
+                return _list.Last.Value;
             }
         }
         #endregion
@@ -245,8 +237,7 @@ namespace System.Collections.Generic
                 var d = obj as Deque<T>;
                 return Count.CompareTo(d.Count);
             }
-            else
-                return GetType().FullName.CompareTo(obj.GetType().FullName);
+            return String.Compare(GetType().FullName, obj.GetType().FullName, StringComparison.Ordinal);
         }
         #endregion
 

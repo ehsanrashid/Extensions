@@ -1,6 +1,4 @@
-using System;
-
-namespace Threading
+namespace System.Threading
 {
     /// <summary>
     /// When unhandled exception occurs in the event delegate functions, the exception will be cathed by the thread!
@@ -24,7 +22,6 @@ namespace Threading
         /// </summary>
         /// <param name="threadHandler">ThreadHandler object</param>
         /// <param name="exception">Exception object</param>
-        /// <param name="stateAtException">Thread's state at the moment of the exception.</param>
         public ThreadHandlerExceptionArgs(ThreadHandler threadHandler, Exception exception)
         {
             ThreadHandler = threadHandler;

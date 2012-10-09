@@ -12,7 +12,7 @@ namespace System.Collections.Generic
     /// <typeparam name="TValue"> </typeparam>
     public class BinarySearchTree<TKey, TValue> : IVisitableDictionary<TKey, TValue>
     {
-        BinaryTree<Association<TKey, TValue>> tree;
+        BinaryTree<Association<TKey, TValue>> _tree;
 
         /// <summary>
         ///   Gets the comparer.
@@ -56,7 +56,7 @@ namespace System.Collections.Generic
             {
                 if (Count == 0) throw new InvalidOperationException(Resources.SearchTreeIsEmpty);
                 BinaryTree<Association<TKey, TValue>> parent;
-                return FindMaxNode(tree, out parent).Data.ToKeyValuePair();
+                return FindMaxNode(_tree, out parent).Data.ToKeyValuePair();
             }
         }
 
@@ -70,7 +70,7 @@ namespace System.Collections.Generic
             {
                 if (Count == 0) throw new InvalidOperationException(Resources.SearchTreeIsEmpty);
                 BinaryTree<Association<TKey, TValue>> parent;
-                return FindMinNode(tree, out parent).Data.ToKeyValuePair();
+                return FindMinNode(_tree, out parent).Data.ToKeyValuePair();
             }
         }
 
@@ -80,14 +80,14 @@ namespace System.Collections.Generic
         /// <returns> A <see cref="T:System.Collections.Generic.IEnumerator`1"></see> that can be used to iterate through the collection. </returns>
         public IEnumerator<KeyValuePair<TKey, TValue>> GetSortedEnumerator()
         {
-            if (tree != null)
+            if (_tree != null)
             {
                 var trackingVisitor = new TrackingVisitor<Association<TKey, TValue>>();
                 var inOrderVisitor = new InOrderVisitor<Association<TKey, TValue>>(trackingVisitor);
-                tree.DepthFirstTraversal(inOrderVisitor);
-                List<Association<TKey, TValue>> trackingList = trackingVisitor.TrackingList;
-                for (var i = 0; i < trackingList.Count; i++)
-                    yield return trackingList[i].ToKeyValuePair();
+                _tree.DepthFirstTraversal(inOrderVisitor);
+                var trackingList = trackingVisitor.TrackingList;
+                foreach (var assoc in trackingList)
+                    yield return assoc.ToKeyValuePair();
             }
         }
 
@@ -97,10 +97,10 @@ namespace System.Collections.Generic
         /// <returns> A <see cref="T:System.Collections.Generic.IEnumerator`1"></see> that can be used to iterate through the collection. </returns>
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            if (tree != null)
+            if (_tree != null)
             {
                 var stack = new VisitableStack<BinaryTree<Association<TKey, TValue>>>();
-                stack.Push(tree);
+                stack.Push(_tree);
                 while (!stack.IsEmpty)
                 {
                     var t = stack.Pop();
@@ -121,16 +121,13 @@ namespace System.Collections.Generic
         /// <returns> The node with the specified key if found. If the key is not in the tree, this method returns null. </returns>
         BinaryTree<Association<TKey, TValue>> FindNode(TKey key)
         {
-            var currentNode = tree;
+            var currentNode = _tree;
             while (currentNode != null)
             {
                 var nodeResult = Comparer.Compare(key, currentNode.Data.Key);
-                if (nodeResult == 0)
-                    return currentNode;
-                else if (nodeResult < 0)
-                    currentNode = currentNode.Left;
-                else
-                    currentNode = currentNode.Right;
+                if (nodeResult == 0) return currentNode;
+
+                currentNode = nodeResult < 0 ? currentNode.Left : currentNode.Right;
             }
             return null;
         }
@@ -144,14 +141,13 @@ namespace System.Collections.Generic
         BinaryTree<Association<TKey, TValue>> FindNode(TKey key,
                                                        out BinaryTree<Association<TKey, TValue>> parent)
         {
-            var currentNode = tree;
+            var currentNode = _tree;
             parent = null;
             while (currentNode != null)
             {
                 var nodeResult = Comparer.Compare(key, currentNode.Data.Key);
-                if (nodeResult == 0)
-                    return currentNode;
-                else if (nodeResult < 0)
+                if (nodeResult == 0) return currentNode;
+                if (nodeResult < 0)
                 {
                     parent = currentNode;
                     currentNode = currentNode.Left;
@@ -250,11 +246,11 @@ namespace System.Collections.Generic
         public void Add(TKey key, TValue value)
         {
             var item = new Association<TKey, TValue>(key, value);
-            if (tree == null)
-                tree = new BinaryTree<Association<TKey, TValue>>(item);
+            if (_tree == null)
+                _tree = new BinaryTree<Association<TKey, TValue>>(item);
             else
             {
-                var currentNode = tree;
+                var currentNode = _tree;
                 // Find the place to insert the item.
                 //	- If the item is found, throw an exception - no duplicate items allowed.
                 //  - If a leaf is reached, insert the item in the correct place.
@@ -262,9 +258,9 @@ namespace System.Collections.Generic
                 while (true)
                 {
                     var nodeResult = Comparer.Compare(item.Key, currentNode.Data.Key);
-                    if (nodeResult == 0)
-                        throw new ArgumentException(Resources.ItemAllreadyInTree);
-                    else if (nodeResult < 0)
+                    if (nodeResult == 0) throw new ArgumentException(Resources.ItemAllreadyInTree);
+
+                    if (nodeResult < 0)
                         if (currentNode.Left == null)
                         {
                             currentNode.Left = new BinaryTree<Association<TKey, TValue>>(item);
@@ -329,29 +325,25 @@ namespace System.Collections.Generic
             BinaryTree<Association<TKey, TValue>> parentNode = null;
             var currentNode = FindNode(key, out parentNode);
             // The node wasn't found in the tree.
-            if (currentNode == null)
-                return false;
-            else
+            if (currentNode == null) return false;
+            if (currentNode.Degree == 2)
             {
-                if (currentNode.Degree == 2)
-                {
-                    // Find the element with the largest key in the left sub-tree					
-                    BinaryTree<Association<TKey, TValue>> searchParent;
-                    var searchNode = FindMaxNode(currentNode.Left, out searchParent);
-                    parentNode = searchParent == null ? currentNode : searchParent;
-                    currentNode.Data = searchNode.Data;
-                    currentNode = searchNode;
-                }
-                var leftOverChild = currentNode.Left == null ? currentNode.Right : currentNode.Left;
-                if (currentNode == tree)
-                    tree = leftOverChild;
-                else if (currentNode == parentNode.Left)
-                    parentNode.Left = leftOverChild;
-                else
-                    parentNode.Right = leftOverChild;
-                Count--;
-                return true;
+                // Find the element with the largest key in the left sub-tree					
+                BinaryTree<Association<TKey, TValue>> searchParent;
+                var searchNode = FindMaxNode(currentNode.Left, out searchParent);
+                parentNode = searchParent ?? currentNode;
+                currentNode.Data = searchNode.Data;
+                currentNode = searchNode;
             }
+            var leftOverChild = currentNode.Left ?? currentNode.Right;
+            if (currentNode == _tree)
+                _tree = leftOverChild;
+            else if (currentNode == parentNode.Left)
+                parentNode.Left = leftOverChild;
+            else
+                parentNode.Right = leftOverChild;
+            Count--;
+            return true;
         }
 
         /// <summary>
@@ -368,11 +360,8 @@ namespace System.Collections.Generic
                 value = default(TValue);
                 return false;
             }
-            else
-            {
-                value = node.Data.Value;
-                return true;
-            }
+            value = node.Data.Value;
+            return true;
         }
 
         /// <summary>
@@ -438,10 +427,7 @@ namespace System.Collections.Generic
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
             var node = FindNode(item.Key);
-            if (node == null)
-                return false;
-            else
-                return item.Value.Equals(node.Data.Value);
+            return null != node && item.Value.Equals(node.Data.Value);
         }
 
         /// <summary>
@@ -460,7 +446,7 @@ namespace System.Collections.Generic
         {
             if (array == null)
                 throw new ArgumentNullException("array");
-            using (var enumerator = tree.GetEnumerator())
+            using (var enumerator = _tree.GetEnumerator())
                 while (enumerator.MoveNext())
                 {
                     if (arrayIndex >= array.Length)
@@ -504,8 +490,8 @@ namespace System.Collections.Generic
         {
             if (visitor == null)
                 throw new ArgumentNullException("visitor");
-            if (tree != null)
-                using (var enumerator = tree.GetEnumerator())
+            if (_tree != null)
+                using (var enumerator = _tree.GetEnumerator())
                     while (enumerator.MoveNext())
                     {
                         visitor.Visit(enumerator.Current.ToKeyValuePair());
@@ -524,7 +510,7 @@ namespace System.Collections.Generic
         ///   is read-only.</exception>
         public void Clear()
         {
-            tree = null;
+            _tree = null;
             Count = 0;
         }
         #endregion
@@ -545,8 +531,7 @@ namespace System.Collections.Generic
                 var t = obj as BinarySearchTree<TKey, TValue>;
                 return Count.CompareTo(t.Count);
             }
-            else
-                return GetType().FullName.CompareTo(obj.GetType().FullName);
+            return String.Compare(GetType().FullName, obj.GetType().FullName, StringComparison.Ordinal);
         }
         #endregion
 

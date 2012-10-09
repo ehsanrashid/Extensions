@@ -110,6 +110,7 @@
     <Compile Include="Int64Extension.cs" />
     <Compile Include="IO\StreamExtension.cs" />
     <Compile Include="IO\TextReaderExtension.cs" />
+    <Compile Include="Linq\QueryableExtension.cs" />
     <Compile Include="Matrix.cs" />
     <Compile Include="MultiException.cs" />
     <Compile Include="Net\HttpListenerContextExtension.cs" />

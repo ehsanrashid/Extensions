@@ -1,8 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Collections;
-
-/*
+﻿/*
     How to use Thread Classs
     * 
     * ==============
@@ -20,8 +16,10 @@ using System.Collections;
     * 
     */
 
-namespace Threading
+namespace System.Threading
 {
+    using Collections;
+
     public delegate void ThreadActivationCallback();
 
     public delegate void JobFinishCallback(Object state);
@@ -49,12 +47,12 @@ namespace Threading
         Timer timer;
         public String Name;
 
-        public void ClalThreadPool(String name, uint maxThreads)
+        public void CallThreadPool(String name, uint maxThreads)
         {
             Name = name;
             MaxThreads = maxThreads;
             workItems = Stack.Synchronized(new Stack((int) (10*maxThreads)));
-            timer = new Timer(new TimerCallback(OnTimer), null, 0, 2000);
+            timer = new Timer(OnTimer, null, 0, 2000);
         }
 
         public bool QueueUserWorkItem(WaitCallback callback, Object state)

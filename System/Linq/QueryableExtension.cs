@@ -1,9 +1,6 @@
-﻿
-
-namespace System.Linq
+﻿namespace System.Linq
 {
-    using Collections.Generic;
-    using Web.Mvc;
+    //using Collections.Generic;
     using Expressions;
     using DirectoryServices;
 
@@ -27,12 +24,12 @@ namespace System.Linq
             return (count.HasValue ? Queryable.Skip(queryable, count.Value) : queryable);
         }
 
-        public static IQueryable<T> WhereAny<T>(this IQueryable<T> source, params Expression<Func<T, bool>>[] predicates)
+        public static IQueryable<T> WhereAny<T>(this IQueryable<T> queryable, params Expression<Func<T, bool>>[] predicates)
         {
-            if (null == source) throw new ArgumentNullException("source");
+            if (null == queryable) throw new ArgumentNullException("queryable");
             if (null == predicates) throw new ArgumentNullException("predicates");
-            if (0 == predicates.Length) return source.Where(x => false); // no matches!
-            if (1 == predicates.Length) return source.Where(predicates[0]); // simple
+            if (0 == predicates.Length) return queryable.Where(x => false); // no matches!
+            if (1 == predicates.Length) return queryable.Where(predicates[0]); // simple
 
             var paramExpr = Expression.Parameter(typeof(T), "x");
             Expression body = Expression.Invoke(predicates[0], paramExpr);
@@ -40,7 +37,7 @@ namespace System.Linq
             {
                 body = Expression.OrElse(body, Expression.Invoke(predicates[i], paramExpr));
             }
-            return source.Where(Expression.Lambda<Func<T, bool>>(body, paramExpr));
+            return queryable.Where(Expression.Lambda<Func<T, bool>>(body, paramExpr));
         }
 
 

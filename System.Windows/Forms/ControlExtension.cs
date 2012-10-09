@@ -27,10 +27,10 @@
             var ret = false;
 
             var ctl = target;
-            while (!Object.ReferenceEquals(ctl, null))
+            while (!ReferenceEquals(ctl, null))
             {
                 var site = ctl.Site;
-                if (!Object.ReferenceEquals(site, null))
+                if (!ReferenceEquals(site, null))
                 {
                     if (site.DesignMode)
                     {
@@ -64,10 +64,10 @@
             var ret = true;
 
             var ctl = target;
-            while (!Object.ReferenceEquals(ctl, null))
+            while (!ReferenceEquals(ctl, null))
             {
                 var site = ctl.Site;
-                if (!Object.ReferenceEquals(site, null))
+                if (!ReferenceEquals(site, null))
                 {
                     if (site.DesignMode)
                     {
@@ -96,14 +96,10 @@
         /// </remarks>
         public static void RunInUIThread(this Control target, Action action)
         {
-            if (target.InvokeRequired)
-            {
+            if (target.InvokeRequired) 
                 target.Invoke(action);
-            }
             else
-            {
                 action();
-            }
         }
 
         /// <summary>
@@ -123,10 +119,10 @@
         public static IEnumerable<T> FindParentsOfType<T>(this Control target) where T : class
         {
             var ctl = target.Parent;
-            while (!Object.ReferenceEquals(ctl, null))
+            while (!ReferenceEquals(ctl, null))
             {
                 var typedControl = ctl as T;
-                if (!Object.ReferenceEquals(typedControl, null))
+                if (!ReferenceEquals(typedControl, null))
                 {
                     yield return typedControl;
                 }
@@ -150,8 +146,7 @@
         /// <returns>Enumerable object with child controls of specified type.</returns>
         public static IEnumerable<T> FindChildsOfType<T>(this Control target) where T : class
         {
-            var result = FindChildsOfType<T>(target, false);
-            return result;
+            return FindChildsOfType<T>(target, false);
         }
 
         /// <summary>
@@ -171,7 +166,7 @@
             foreach (Control child in target.Controls)
             {
                 var typedControl = child as T;
-                if (!Object.ReferenceEquals(typedControl, null))
+                if (!ReferenceEquals(typedControl, null))
                 {
                     yield return typedControl;
                 }

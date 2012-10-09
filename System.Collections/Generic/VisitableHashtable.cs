@@ -23,7 +23,8 @@ namespace System.Collections.Generic
         ///   Initializes a new instance of the <see cref="VisitableHashtable&lt;TKey, TValue&gt;" /> class.
         /// </summary>
         /// <param name="dictionary"> The dictionary. </param>
-        public VisitableHashtable(IDictionary<TKey, TValue> dictionary) : base(dictionary)
+        public VisitableHashtable(IDictionary<TKey, TValue> dictionary)
+            : base(dictionary)
         {
         }
 
@@ -31,7 +32,8 @@ namespace System.Collections.Generic
         ///   Initializes a new instance of the <see cref="VisitableHashtable&lt;TKey, TValue&gt;" /> class.
         /// </summary>
         /// <param name="comparer"> The comparer. </param>
-        public VisitableHashtable(IEqualityComparer<TKey> comparer) : base(comparer)
+        public VisitableHashtable(IEqualityComparer<TKey> comparer)
+            : base(comparer)
         {
         }
 
@@ -39,7 +41,8 @@ namespace System.Collections.Generic
         ///   Initializes a new instance of the <see cref="VisitableHashtable&lt;TKey, TValue&gt;" /> class.
         /// </summary>
         /// <param name="capacity"> The capacity. </param>
-        public VisitableHashtable(int capacity) : base(capacity)
+        public VisitableHashtable(int capacity)
+            : base(capacity)
         {
         }
 
@@ -58,7 +61,8 @@ namespace System.Collections.Generic
         /// </summary>
         /// <param name="capacity"> The capacity. </param>
         /// <param name="comparer"> The comparer. </param>
-        public VisitableHashtable(int capacity, IEqualityComparer<TKey> comparer) : base(capacity, comparer)
+        public VisitableHashtable(int capacity, IEqualityComparer<TKey> comparer)
+            : base(capacity, comparer)
         {
         }
 
@@ -69,7 +73,8 @@ namespace System.Collections.Generic
         ///    cref="T:System.Collections.Generic.Dictionary`2"></see> . </param>
         /// <param name="context"> A <see cref="T:System.Runtime.Serialization.StreamingContext"></see> structure containing the source and destination of the serialized stream associated with the <see
         ///    cref="T:System.Collections.Generic.Dictionary`2"></see> . </param>
-        protected VisitableHashtable(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected VisitableHashtable(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
         #endregion
@@ -130,15 +135,13 @@ namespace System.Collections.Generic
         /// <exception cref="T:System.ArgumentException">obj is not the same type as this instance.</exception>
         public int CompareTo(object obj)
         {
-            if (obj == null)
-                throw new ArgumentNullException("obj");
+            if (obj == null) throw new ArgumentNullException("obj");
             if (obj.GetType() == GetType())
             {
                 var h = obj as VisitableHashtable<TKey, TValue>;
                 return Count.CompareTo(h.Count);
             }
-            else
-                return GetType().FullName.CompareTo(obj.GetType().FullName);
+            return String.Compare(GetType().FullName, obj.GetType().FullName, StringComparison.Ordinal);
         }
         #endregion
     }

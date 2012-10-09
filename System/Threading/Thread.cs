@@ -1,4 +1,4 @@
-namespace Threading
+namespace System.Threading
 {
     public abstract class Threads
     {

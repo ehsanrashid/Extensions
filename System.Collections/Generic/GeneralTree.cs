@@ -145,8 +145,7 @@ namespace System.Collections.Generic
                 var t = obj as GeneralTree<T>;
                 return Count.CompareTo(t.Count);
             }
-            else
-                return GetType().FullName.CompareTo(obj.GetType().FullName);
+            return String.Compare(GetType().FullName, obj.GetType().FullName, StringComparison.Ordinal);
         }
 
         /// <summary>
@@ -292,7 +291,7 @@ namespace System.Collections.Generic
             }
         }
 
-        
+
         /// <summary>
         ///   Gets the degree (number of childnodes).
         /// </summary>
@@ -310,17 +309,15 @@ namespace System.Collections.Generic
         /// <returns> The first node that matches the condition supplied. If a node is not found, null is returned. </returns>
         public GeneralTree<T> FindNode(Predicate<T> condition)
         {
-            if (condition == null)
-                throw new ArgumentNullException("condition");
-            if (condition.Invoke(Data))
-                return this;
-            else
-                for (var i = 0; i < Degree; i++)
-                {
-                    var ret = ChildNodes[i].FindNode(condition);
-                    if (ret != null)
-                        return ret;
-                }
+            if (condition == null) throw new ArgumentNullException("condition");
+            if (condition.Invoke(Data)) return this;
+
+            for (var i = 0; i < Degree; i++)
+            {
+                var ret = ChildNodes[i].FindNode(condition);
+                if (ret != null)
+                    return ret;
+            }
             return null;
         }
 
@@ -341,13 +338,7 @@ namespace System.Collections.Generic
         /// <value> The height. </value>
         public int Height
         {
-            get
-            {
-                if (Degree == 0)
-                    return 0;
-                else
-                    return 1 + FindMaximumChildHeight();
-            }
+            get { return Degree == 0 ? 0 : 1 + FindMaximumChildHeight(); }
         }
 
         /// <summary>
@@ -356,16 +347,12 @@ namespace System.Collections.Generic
         /// <param name="orderedVisitor"> The ordered visitor. </param>
         public void DepthFirstTraversal(OrderedVisitor<T> orderedVisitor)
         {
-            if (orderedVisitor.HasCompleted)
-                return;
-            else
-            {
-                orderedVisitor.VisitPreOrder(Data);
-                for (var i = 0; i < Degree; i++)
-                    if (GetChild(i) != null)
-                        GetChild(i).DepthFirstTraversal(orderedVisitor);
-                orderedVisitor.VisitPostOrder(Data);
-            }
+            if (orderedVisitor.HasCompleted) return;
+            orderedVisitor.VisitPreOrder(Data);
+            for (var i = 0; i < Degree; i++)
+                if (GetChild(i) != null)
+                    GetChild(i).DepthFirstTraversal(orderedVisitor);
+            orderedVisitor.VisitPostOrder(Data);
         }
 
         /// <summary>
@@ -389,7 +376,7 @@ namespace System.Collections.Generic
             }
         }
 
-        
+
         /// <summary>
         ///   Gets a value indicating whether this instance is leaf node.
         /// </summary>
@@ -426,8 +413,7 @@ namespace System.Collections.Generic
                 child.Parent = null;
                 return true;
             }
-            else
-                return false;
+            return false;
         }
 
         /// <summary>
@@ -449,8 +435,8 @@ namespace System.Collections.Generic
         public void SortAllDescendants(ISorter<GeneralTree<T>> sorter)
         {
             ChildNodes.Sort(sorter);
-            for (var i = 0; i < ChildNodes.Count; i++)
-                ChildNodes[i].SortAllDescendants(sorter);
+            foreach (var tree in ChildNodes)
+                tree.SortAllDescendants(sorter);
         }
 
         /// <summary>
@@ -461,8 +447,8 @@ namespace System.Collections.Generic
         public void SortAllDescendants(ISorter<GeneralTree<T>> sorter, Comparison<GeneralTree<T>> comparison)
         {
             ChildNodes.Sort(sorter, comparison);
-            for (var i = 0; i < ChildNodes.Count; i++)
-                ChildNodes[i].SortAllDescendants(sorter, comparison);
+            foreach (var tree in ChildNodes)
+                tree.SortAllDescendants(sorter, comparison);
         }
 
         /// <summary>
@@ -473,9 +459,10 @@ namespace System.Collections.Generic
         public void SortAllDescendants(ISorter<GeneralTree<T>> sorter, IComparer<GeneralTree<T>> comparer)
         {
             ChildNodes.Sort(sorter, comparer);
-            for (var i = 0; i < ChildNodes.Count; i++)
-                ChildNodes[i].SortAllDescendants(sorter, comparer);
+            foreach (var tree in ChildNodes)
+                tree.SortAllDescendants(sorter, comparer);
         }
+
         #endregion
 
         #region Private Members
@@ -508,7 +495,7 @@ namespace System.Collections.Generic
 
         #region Operator Overloads
         /// <summary>
-        ///   Gets the <see cref="NGenerics.DataStructures.GeneralTree&lt;T&gt;" /> with the specified i.
+        ///   Gets the <see cref="GeneralTree&lt;T&gt;" /> with the specified i.
         /// </summary>
         /// <value> </value>
         public GeneralTree<T> this[int i]

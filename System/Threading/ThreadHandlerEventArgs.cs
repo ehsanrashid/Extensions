@@ -1,6 +1,4 @@
-using System;
-
-namespace Threading
+namespace System.Threading
 {
     /// <summary>
     /// When event is raised from ThreadHandler the ThreadHandler itself will be passed to the delegate function.

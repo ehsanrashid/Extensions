@@ -4,6 +4,7 @@
     using Text;
     using Html;
 
+    // todo::
     public class Pager<T>
     {
         readonly StringBuilder htmlText;

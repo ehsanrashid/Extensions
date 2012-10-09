@@ -10,10 +10,8 @@
         /// <param name="priority">The <see cref="DispatcherPriority"/>.  Defaults to <see cref="DispatcherPriority.ApplicationIdle"/></param>
         public static void InvokeAction(this Dispatcher dispatcher, Action action, DispatcherPriority priority)
         {
-            if (dispatcher == null)
-                throw new ArgumentNullException("dispatcher");
-            if (action == null)
-                throw new ArgumentNullException("action");
+            if (dispatcher == null) throw new ArgumentNullException("dispatcher");
+            if (action == null) throw new ArgumentNullException("action");
             dispatcher.Invoke(action, priority);
         }
 
@@ -28,10 +26,8 @@
         public static void InvokeAction<T>(this Dispatcher dispatcher, Action<T> action, T arg,
                                            DispatcherPriority priority = DispatcherPriority.ApplicationIdle)
         {
-            if (dispatcher == null)
-                throw new ArgumentNullException("dispatcher");
-            if (action == null)
-                throw new ArgumentNullException("action");
+            if (dispatcher == null) throw new ArgumentNullException("dispatcher");
+            if (action == null) throw new ArgumentNullException("action");
             dispatcher.Invoke(action, priority, arg);
         }
 
@@ -48,10 +44,8 @@
         public static void InvokeAction<T1, T2>(this Dispatcher dispatcher, Action<T1, T2> action, T1 arg1, T2 arg2,
                                                 DispatcherPriority priority = DispatcherPriority.ApplicationIdle)
         {
-            if (dispatcher == null)
-                throw new ArgumentNullException("dispatcher");
-            if (action == null)
-                throw new ArgumentNullException("action");
+            if (dispatcher == null) throw new ArgumentNullException("dispatcher");
+            if (action == null) throw new ArgumentNullException("action");
             dispatcher.Invoke(action, priority, arg1, arg2);
         }
 
@@ -71,10 +65,8 @@
                                                     T2 arg2, T3 arg3,
                                                     DispatcherPriority priority = DispatcherPriority.ApplicationIdle)
         {
-            if (dispatcher == null)
-                throw new ArgumentNullException("dispatcher");
-            if (action == null)
-                throw new ArgumentNullException("action");
+            if (dispatcher == null) throw new ArgumentNullException("dispatcher");
+            if (action == null) throw new ArgumentNullException("action");
             dispatcher.Invoke(action, priority, arg1, arg2, arg3);
         }
 
@@ -87,117 +79,123 @@
         /// <returns>Returns the invoked Func output</returns>
         public static TResult InvokeAction<TResult>(this DispatcherObject source, Func<TResult> func)
         {
-            if (source.Dispatcher.CheckAccess())
-                return func();
-
-            return (TResult) source.Dispatcher.Invoke(func);
+            return source.Dispatcher.CheckAccess() ? func() : source.Dispatcher.Invoke(func);
         }
 
         /// <summary>
         /// Invokes the specified <paramref name="func"/> on the given <paramref name="source"/>.
         /// </summary>
         /// <typeparam name="TResult">Output of the function</typeparam>
+        /// <typeparam name="T"> </typeparam>
         /// <param name="source">Current Source</param>
         /// <param name="func">Func to be invoked </param>
         /// <returns>Returns the invoked Func output</returns>
         public static TResult InvokeAction<T, TResult>(this T source, Func<T, TResult> func) where T : DispatcherObject
         {
-            if (source.Dispatcher.CheckAccess())
-                return func(source);
-
-            return (TResult) source.Dispatcher.Invoke(func, source);
+            return source.Dispatcher.CheckAccess() ? func(source) : (TResult) source.Dispatcher.Invoke(func, source);
         }
 
         /// <summary>
         /// Invokes the specified <paramref name="func"/> on the given <paramref name="source"/>.
         /// </summary>
         /// <typeparam name="TResult">Output of the function</typeparam>
+        /// <typeparam name="TSource"> </typeparam>
+        /// <typeparam name="T"> </typeparam>
         /// <param name="source">Current Source</param>
         /// <param name="func">Func to be invoked </param>
+        /// <param name="param1"> </param>
         /// <returns>Returns the invoked Func output</returns>
         public static TResult InvokeAction<TSource, T, TResult>(this TSource source, Func<TSource, T, TResult> func,
                                                                 T param1) where TSource : DispatcherObject
         {
-            if (source.Dispatcher.CheckAccess())
-                return func(source, param1);
-
-            return (TResult) source.Dispatcher.Invoke(func, source, param1);
+            return source.Dispatcher.CheckAccess()
+                       ? func(source, param1)
+                       : (TResult) source.Dispatcher.Invoke(func, source, param1);
         }
 
         /// <summary>
         /// Invokes the specified <paramref name="func"/> on the given <paramref name="source"/>.
         /// </summary>
         /// <typeparam name="TResult">Output of the function</typeparam>
+        /// <typeparam name="TSource"> </typeparam>
+        /// <typeparam name="T1"> </typeparam>
+        /// <typeparam name="T2"> </typeparam>
         /// <param name="source">Current Source</param>
         /// <param name="func">Func to be invoked </param>
+        /// <param name="param1"> </param>
+        /// <param name="param2"> </param>
         /// <returns>Returns the invoked Func output</returns>
         public static TResult InvokeAction<TSource, T1, T2, TResult>(this TSource source,
                                                                      Func<TSource, T1, T2, TResult> func, T1 param1,
                                                                      T2 param2) where TSource : DispatcherObject
         {
-            if (source.Dispatcher.CheckAccess())
-                return func(source, param1, param2);
-
-            return (TResult) source.Dispatcher.Invoke(func, source, param1, param2);
+            return source.Dispatcher.CheckAccess()
+                       ? func(source, param1, param2)
+                       : (TResult) source.Dispatcher.Invoke(func, source, param1, param2);
         }
 
         /// <summary>
         /// Invokes the specified <paramref name="func"/> on the given <paramref name="source"/>.
         /// </summary>
         /// <typeparam name="TResult">Output of the function</typeparam>
+        /// <typeparam name="TSource"> </typeparam>
+        /// <typeparam name="T1"> </typeparam>
+        /// <typeparam name="T2"> </typeparam>
+        /// <typeparam name="T3"> </typeparam>
         /// <param name="source">Current Source</param>
         /// <param name="func">Func to be invoked </param>
+        /// <param name="param1"> </param>
+        /// <param name="param2"> </param>
+        /// <param name="param3"> </param>
         /// <returns>Returns the invoked Func output</returns>
         public static TResult InvokeAction<TSource, T1, T2, T3, TResult>(this TSource source,
                                                                          Func<TSource, T1, T2, T3, TResult> func,
                                                                          T1 param1, T2 param2, T3 param3)
             where TSource : DispatcherObject
         {
-            if (source.Dispatcher.CheckAccess())
-                return func(source, param1, param2, param3);
-
-            return (TResult) source.Dispatcher.Invoke(func, source, param1, param2, param3);
+            return source.Dispatcher.CheckAccess()
+                       ? func(source, param1, param2, param3)
+                       : (TResult) source.Dispatcher.Invoke(func, source, param1, param2, param3);
         }
 
         /// <summary>
         /// Invokes the specified <paramref name="func"/> on the given <paramref name="source"/>.
         /// </summary>
-        /// <typeparam name="TResult">Output of the function</typeparam>
         /// <param name="source">Current Source</param>
         /// <param name="func">Func to be invoked </param>
         /// <returns>Returns the invoked Func output</returns>
         public static void InvokeAction(this DispatcherObject source, Action func)
         {
-            if (source.Dispatcher.CheckAccess())
+            if (source.Dispatcher.CheckAccess()) 
                 func();
-            else
+            else 
                 source.Dispatcher.Invoke(func);
         }
 
         public static void InvokeAction<TSource>(this TSource source, Action<TSource> func)
             where TSource : DispatcherObject
         {
-            if (source.Dispatcher.CheckAccess())
+            if (source.Dispatcher.CheckAccess()) 
                 func(source);
-            else
+            else 
                 source.Dispatcher.Invoke(func, source);
         }
 
         public static void InvokeAction<TSource, T1>(this TSource source, Action<TSource, T1> func, T1 param1)
             where TSource : DispatcherObject
         {
-            if (source.Dispatcher.CheckAccess())
+            if (source.Dispatcher.CheckAccess()) 
                 func(source, param1);
-            else
+            else 
                 source.Dispatcher.Invoke(func, source, param1);
         }
 
         public static void InvokeAction<TSource, T1, T2>(this TSource source, Action<TSource, T1, T2> func, T1 param1,
                                                          T2 param2) where TSource : DispatcherObject
         {
-            if (source.Dispatcher.CheckAccess())
+            if (source.Dispatcher.CheckAccess()) 
                 func(source, param1, param2);
-            else
+            else 
                 source.Dispatcher.Invoke(func, source, param1, param2);
         }
 
@@ -205,11 +203,10 @@
                                                              T1 param1, T2 param2, T3 param3)
             where TSource : DispatcherObject
         {
-            if (source.Dispatcher.CheckAccess())
+            if (source.Dispatcher.CheckAccess()) 
                 func(source, param1, param2, param3);
-            else
+            else 
                 source.Dispatcher.Invoke(func, source, param1, param2, param3);
         }
-
     }
 }
