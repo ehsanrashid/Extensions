@@ -1,4 +1,6 @@
-﻿namespace System
+﻿using System.Web.Mvc;
+
+namespace System
 {
     using Collections.Generic;
     using Collections.Specialized;
@@ -1604,6 +1606,11 @@
         public static String StripHtml(this String html)
         {
             return html.IsNullOrEmpty() ? String.Empty : Regex.Replace(html, @"<[^>]*>", String.Empty);
+        }
+
+        public static MvcHtmlString HtmlEncode(this String value)
+        {
+            return MvcHtmlString.Create(value);
         }
 
         /// <summary>
