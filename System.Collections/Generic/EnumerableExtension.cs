@@ -820,6 +820,11 @@
                           });
         }
 
+        public static IEnumerable<T> Skip<T>(this IEnumerable<T> enumerable, int? count)
+        {
+            return (count.HasValue ? Enumerable.Skip(enumerable, count.Value) : enumerable);
+        }
+
         #region Numbers
 
         //public static int Sum(this IEnumerable<int> numbers)

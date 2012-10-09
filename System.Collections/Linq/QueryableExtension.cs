@@ -1,10 +1,79 @@
-﻿namespace System.Linq
+﻿
+
+namespace System.Linq
 {
     using Collections.Generic;
     using Web.Mvc;
+    using Expressions;
+    using DirectoryServices;
 
     public static class QueryableExtension
     {
+        public static IQueryable<T> And<T>(this IQueryable<T> queryable, Expression<Func<T, bool>> predicate)
+        {
+            return queryable.Where(predicate);
+        }
+
+
+        public static IQueryable<T> Sort<T>(this IQueryable<T> query, String sortField, SortDirection direction)
+        {
+            return direction == SortDirection.Ascending
+                       ? query.OrderBy(s => s.GetType().GetProperty(sortField))
+                       : query.OrderByDescending(s => s.GetType().GetProperty(sortField));
+        }
+
+        public static IQueryable<T> Skip<T>(this IQueryable<T> queryable, int? count)
+        {
+            return (count.HasValue ? Queryable.Skip(queryable, count.Value) : queryable);
+        }
+
+        public static IQueryable<T> WhereAny<T>(this IQueryable<T> source, params Expression<Func<T, bool>>[] predicates)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            if (predicates == null) throw new ArgumentNullException("predicates");
+            if (predicates.Length == 0) return source.Where(x => false); // no matches!
+            if (predicates.Length == 1) return source.Where(predicates[0]); // simple
+
+            var param = Expression.Parameter(typeof(T), "x");
+            Expression body = Expression.Invoke(predicates[0], param);
+            for (var i = 1; i < predicates.Length; ++i)
+            {
+                body = Expression.OrElse(body, Expression.Invoke(predicates[i], param));
+            }
+            var lambda = Expression.Lambda<Func<T, bool>>(body, param);
+            return source.Where(lambda);
+        }
+
+        /*
+        public static IQueryable OrderBy(this IQueryable source,
+                                      String ordering,
+                                      params object[] values)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            if (ordering == null) throw new ArgumentNullException("ordering");
+            ParameterExpression[] parameters = new ParameterExpression[] {
+        Expression.Parameter(source.ElementType, "") };
+            ExpressionParser parser = new ExpressionParser(parameters,
+                                                           ordering,
+                                                           values);
+            IEnumerable<DynamicOrdering> orderings = parser.ParseOrdering();
+            Expression queryExpr = source.Expression;
+            String methodAsc = "OrderBy";
+            String methodDesc = "OrderByDescending";
+            foreach (DynamicOrdering o in orderings)
+            {
+                queryExpr = Expression.Call(
+                    typeof(Queryable), o.Ascending ? methodAsc : methodDesc,
+                    new Type[] { source.ElementType, o.Selector.Type },
+                    queryExpr, Expression.Quote(Expression.Lambda(o.Selector,
+                                                                  parameters)));
+                methodAsc = "ThenBy";
+                methodDesc = "ThenByDescending";
+            }
+            return source.Provider.CreateQuery(queryExpr);
+        }
+        */
+
         ///// <summary>
         ///// Apply paging to an IQueryable.
         ///// </summary>
@@ -73,7 +142,5 @@
         //{
         //    return new SelectList(query, dataValueField, dataTextField, selectedValue ?? -1);
         //}
-
-
     }
 }
