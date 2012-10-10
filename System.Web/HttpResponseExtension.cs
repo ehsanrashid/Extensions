@@ -21,7 +21,7 @@
         /// <param name = "response">The HttpResponse to perform on.</param>
         /// <param name = "urlFormat">The URL including String.Format placeholders.</param>
         /// <param name = "values">The values to the populated.</param>
-        public static void Redirect(this HttpResponse response, String urlFormat, params object[] values)
+        public static void Redirect(this HttpResponse response, String urlFormat, params Object[] values)
         {
             response.Redirect(urlFormat, true, values);
         }
@@ -30,37 +30,37 @@
         ///   Performs a response redirect and allows the url to be populated with String format parameters.
         /// </summary>
         /// <param name = "response">The HttpResponse to perform on.</param>
-        /// <param name = "urlFormat">The URL including String.Format placeholders.</param>
+        /// <param name = "formatURL">The URL including String.Format placeholders.</param>
         /// <param name = "endResponse">If set to <c>true</c> the response will be terminated.</param>
         /// <param name = "values">The values to the populated.</param>
-        public static void Redirect(this HttpResponse response, String urlFormat, bool endResponse, params object[] values)
+        public static void Redirect(this HttpResponse response, String formatURL, bool endResponse, params Object[] values)
         {
-            var url = String.Format(urlFormat, values);
-            response.Redirect(url, endResponse);
+            var urlRedirect = String.Format(formatURL, values);
+            response.Redirect(urlRedirect, endResponse);
         }
 
         /// <summary>
         ///   Performs a response redirect and allows the url to be populated with a query String.
         /// </summary>
         /// <param name = "response">The HttpResponse to perform on.</param>
-        /// <param name = "url">The URL.</param>
+        /// <param name = "urlRedirect">The URL.</param>
         /// <param name = "queryString">The query String.</param>
-        public static void Redirect(this HttpResponse response, String url, UriQueryString queryString)
+        public static void Redirect(this HttpResponse response, String urlRedirect, UriQueryString queryString)
         {
-            response.Redirect(url, queryString, true);
+            response.Redirect(urlRedirect, queryString, true);
         }
 
         /// <summary>
         ///   Performs a response redirect and allows the url to be populated with a query String.
         /// </summary>
         /// <param name = "response">The HttpResponse to perform on.</param>
-        /// <param name = "url">The URL.</param>
+        /// <param name = "urlRedirect">The URL.</param>
         /// <param name = "queryString">The Query String.</param>
         /// <param name = "endResponse">If set to <c>true</c> the response will be terminated.</param>
-        public static void Redirect(this HttpResponse response, String url, UriQueryString queryString, bool endResponse)
+        public static void Redirect(this HttpResponse response, String urlRedirect, UriQueryString queryString, bool endResponse)
         {
-            url = queryString.ToString(url);
-            response.Redirect(url, endResponse);
+            urlRedirect = queryString.ToString(urlRedirect);
+            response.Redirect(urlRedirect, endResponse);
         }
 
         /// <summary>

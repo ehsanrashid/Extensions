@@ -10,7 +10,7 @@
         ///<returns></returns>
         public static String GetRouteName(this RouteData routeData)
         {
-            return default(RouteData) == routeData ? default(String) : routeData.DataTokens.GetRouteName();
+            return (default(RouteData) == routeData) ? default(String) : routeData.DataTokens.GetRouteName();
         }
 
     }

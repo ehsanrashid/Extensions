@@ -37,7 +37,8 @@
         /// <returns>The session state value.</returns>
         /// <example>
         ///   <code>
-        ///     public List&lt;String&gt; StringValues {
+        ///     public List&lt;String&gt; StringValues 
+        ///     {
         ///     get { return this.Session.Ensure&lt;List&lt;String&gt;&gt;("StringValues"); }
         ///     set { this.ViewState.Set("StringValues", value); }
         ///     }
