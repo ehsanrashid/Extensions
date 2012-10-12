@@ -27,14 +27,11 @@ namespace System.Algorithm
         {
             if (upperBoundN < 0) throw new ArgumentOutOfRangeException(Resources.SetIndexMustBePostive);
             var numbers = new long[upperBoundN + 1];
-
             numbers[0] = 0;
-
             if (upperBoundN >= 1)
             {
                 numbers[1] = 1;
-
-                for (var i = 2; i <= upperBoundN; i++)
+                for (var i = 2; i <= upperBoundN; ++i)
                 {
                     numbers[i] = numbers[i - 1] + numbers[i - 2];
                 }
