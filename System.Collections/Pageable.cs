@@ -66,12 +66,12 @@
 
     public sealed class Pageable : IEnumerable<int>
     {
+        int _noOfItems;
+        int _pageIndex;
         int _noOfPages;
         int _skipPages;
         int _takePages;
-        int _pageIndex;
-        int _noOfItems;
-        int _itemsPerPage;
+        int _pageSize;
 
         Pageable()
         { }
@@ -83,7 +83,7 @@
             _noOfPages = pager._noOfPages;
             _takePages = pager._takePages;
             _skipPages = pager._skipPages;
-            _itemsPerPage = pager._itemsPerPage;
+            _pageSize = pager._pageSize;
         }
 
         /// <summary>
@@ -98,23 +98,23 @@
                 _noOfPages = 1,
                 _skipPages = 0,
                 _takePages = 1,
-                _itemsPerPage = noOfItems
+                _pageSize = noOfItems
             };
         }
 
         /// <summary>
         /// Specifies the number of items per page.
         /// </summary>
-        public Pageable PerPage(int itemsPerPage)
+        public Pageable PerPage(int pageSize)
         {
-            int noOfPages = (_noOfItems + itemsPerPage - 1) / itemsPerPage;
+            int noOfPages = (_noOfItems - 1) / pageSize + 1;
 
             return new Pageable(this)
                     {
                         _noOfPages = noOfPages,
                         _skipPages = 0,
                         _takePages = noOfPages - _pageIndex + 1,
-                        _itemsPerPage = itemsPerPage
+                        _pageSize = pageSize
                     };
         }
 
@@ -166,7 +166,7 @@
             return GetEnumerator();
         }
 
-        public bool IsPaged { get { return _noOfItems > _itemsPerPage; } }
+        public bool IsPaged { get { return _noOfItems > _pageSize; } }
 
         public int NumberOfPages { get { return _noOfPages; } }
 

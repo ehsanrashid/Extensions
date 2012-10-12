@@ -147,22 +147,6 @@
             return (null == enumerable) ? Enumerable.Empty<T>() : enumerable.GroupBy(expression).Select(i => i.First());
         }
 
-        ///<summary>
-        ///  Remove matching items from a list
-        ///</summary>
-        ///<param name="enumerable"> </param>
-        ///<param name="predicate"> </param>
-        ///<typeparam name="T"> </typeparam>
-        ///<returns> </returns>
-        [Obsolete("Use RemoveWhere instead..")]
-        public static IEnumerable<T> RemoveAll<T>(this IEnumerable<T> enumerable, Predicate<T> predicate)
-        {
-            if (null == enumerable) return Enumerable.Empty<T>();
-            var list = enumerable.ToList();
-            list.RemoveAll(predicate);
-            return list;
-        }
-
         /// <summary>
         ///   Removes matching items from a enumerable
         /// </summary>
@@ -176,7 +160,7 @@
         public static IEnumerable<T> RemoveWhere<T>(this IEnumerable<T> enumerable, Predicate<T> predicate)
         {
             if (null == enumerable) yield break;
-            foreach (var t in Where(enumerable, t => !predicate(t))) yield return t;
+            foreach (var item in Where(enumerable, item => !predicate(item))) yield return item;
         }
 
         ///<summary>

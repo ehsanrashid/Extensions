@@ -1,11 +1,31 @@
 ﻿namespace System.Web.Mvc
 {
     using Collections.Generic;
+    using Html;
     using Ajax;
     using Routing;
+    
 
     public static class AjaxHelperExtension
     {
+
+
+        #region Input
+
+        public static MvcHtmlString ImageActionLink(this AjaxHelper ajaxHelper, string imageUrl, string altText, string actionName, object routeValues, AjaxOptions ajaxOptions)
+        {
+            
+            var builder = new TagBuilder("img");
+            builder.MergeAttribute("src", imageUrl);
+            builder.MergeAttribute("alt", altText);
+            var link = ajaxHelper.ActionLink("[replaceme]", actionName, routeValues, ajaxOptions).ToHtmlString();
+            return MvcHtmlString.Create(link.Replace("[replaceme]", builder.ToString(TagRenderMode.SelfClosing)));
+            
+
+        }
+
+        #endregion
+
         #region Pager
         #region Microsoft Ajax Pager
         public static String Pager(this AjaxHelper ajaxHelper, int noOfPages, int pageIndex, String actionName, String controllerName, String routeName, PagerOptions pagerOptions, object routeValues, AjaxOptions ajaxOptions, object htmlAttributes)
