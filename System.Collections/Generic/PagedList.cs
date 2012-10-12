@@ -27,17 +27,32 @@
         /// <summary>
         /// Initializes a new instance of the <see><cref>PagedList&amp;lt;T&amp;gt;</cref></see> class.
         /// </summary>
-        /// <param name="source">The source list of elements containing all elements to be paged over.</param>
+        /// <param name="enumerable">The source list of elements containing all elements to be paged over.</param>
         /// <param name="pageIndex">The current page number (1 based).</param>
         /// <param name="pageSize">Size of a page (number of items per page).</param>
-        public PagedList(IEnumerable<T> source, int pageIndex, int pageSize)
+        /// <param name="noOfItems"></param>
+        public PagedList(IEnumerable<T> enumerable, int pageIndex, int pageSize, int noOfItems)
         {
-            PageIndex = Math.Min(Math.Max(1, pageIndex), NoOfPages);
             PageSize = pageSize;
-            NoOfItems = source.Count();
+            NoOfItems = noOfItems;
+            PageIndex = Math.Min(Math.Max(1, pageIndex), NoOfPages);
 
-            AddRange(source.Skip((PageIndex - 1) * PageSize).Take(PageSize));
+            AddRange(enumerable.Skip((PageIndex - 1) * PageSize).Take(PageSize));
         }
+
+        public PagedList(IEnumerable<T> enumerable, int pageIndex, int pageSize)
+            : this(enumerable, pageIndex, pageSize, enumerable.Count())
+        { }
+
+        public PagedList(IList<T> list, int pageIndex, int pageSize)
+        {
+            PageSize = pageSize;
+            NoOfItems = list.Count;
+            PageIndex = Math.Min(Math.Max(1, pageIndex), NoOfPages);
+
+            AddRange(list.Skip((PageIndex - 1) * PageSize).Take(PageSize));
+        }
+
 
         /// <summary>
         /// Gets a value that indicate count of pages in data source.
@@ -50,7 +65,7 @@
         /// <summary>
         /// Gets a value that indicate that does previous page exists or not.
         /// </summary>
-        public bool HasPreviousPage
+        public bool HasPrevPage
         {
             get { return (PageIndex > 1); }
         }
@@ -60,12 +75,7 @@
         /// </summary>
         public bool HasNextPage
         {
-            get
-            {
-                return
-                    //(PageIndex < TotalPages);
-                    (PageIndex * PageSize) < NoOfItems;
-            }
+            get { return (PageIndex < NoOfPages); }
         }
     }
 }

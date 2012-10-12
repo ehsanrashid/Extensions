@@ -1,6 +1,9 @@
 ﻿using System;
 using System.IO;
 
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Test
 {
     class Program
@@ -29,15 +32,25 @@ namespace Test
             //Console.WriteLine(ss1);
             //Console.WriteLine(ss2);
 
-            var name = @"D:\test.txt";
-            FileInfo file = new FileInfo(name);
+            //var name = @"D:\test.txt";
+            //FileInfo file = new FileInfo(name);
 
-            DirectoryInfo dir = new DirectoryInfo(@"D:\temp");
-            dir.Delete();
+            //DirectoryInfo dir = new DirectoryInfo(@"D:\temp");
+            //dir.Delete();
 
             //file.TurnOnReadOnlyFlag();
             ///file.SetAttributes(FileAttributes.Temporary| FileAttributes.Normal);
             //file.RenameWithoutExtension("test2");
+
+            //var e = new[] { 1, 3, 5, 6, 7, 4, 5, 3, 6, 8, 3 };
+            var e = Enumerable.Range(2, 19);
+            PagedList<int> pl = new PagedList<int>(e, 7, 3);
+
+            Console.WriteLine(pl.HasPrevPage);
+            Console.WriteLine(pl.HasNextPage);
+            Console.WriteLine(pl.NoOfItems);
+            Console.WriteLine(pl.NoOfPages);
+
 
             Console.Read();
 

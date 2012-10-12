@@ -91,6 +91,7 @@
     <Compile Include="Generic\Comparer\ComparableExtension.cs" />
     <Compile Include="Generic\Comparer\ComparisonComparer.cs" />
     <Compile Include="Generic\DictionaryExtension.cs" />
+    <Compile Include="Pageable.cs" />
     <Compile Include="Generic\ReadOnlyPropertyList.cs" />
     <Compile Include="Generic\RedBlackTree.cs" />
     <Compile Include="Generic\RedBlackTreeNode.cs" />

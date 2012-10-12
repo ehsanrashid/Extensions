@@ -32,8 +32,10 @@
         /// <param name="newName"> The new name. </param>
         /// <returns> The renamed file </returns>
         /// <example>
-        ///   <code>var file = new FileInfo(@"c:\test.txt");
-        ///     file.RenameFileWithoutExtension("test3");</code>
+        ///   <code>
+        ///     var file = new FileInfo(@"c:\test.txt");
+        ///     file.RenameFileWithoutExtension("test3");
+        ///   </code>
         /// </example>
         public static FileInfo RenameWithoutExtension(this FileInfo fileInfo, String newName)
         {
@@ -52,8 +54,10 @@
         /// <param name="newExt"> The new extension. </param>
         /// <returns> The renamed file </returns>
         /// <example>
-        ///   <code>var file = new FileInfo(@"c:\test.txt");
-        ///     file.ChangeExtension("xml");</code>
+        ///   <code>
+        ///     var file = new FileInfo(@"c:\test.txt");
+        ///     file.ChangeExtension("xml");
+        ///   </code>
         /// </example>
         public static FileInfo ChangeExtension(this FileInfo fileInfo, String newExt)
         {

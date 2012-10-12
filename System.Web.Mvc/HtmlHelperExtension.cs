@@ -1,5 +1,4 @@
-﻿
-namespace System.Web.Mvc
+﻿namespace System.Web.Mvc
 {
     using Collections.Generic;
     using Html;
@@ -7,12 +6,15 @@ namespace System.Web.Mvc
     using Linq;
     using Linq.Expressions;
     using Routing;
+    using Ajax;
 
     ///<summary>
     /// A bunch of HTML helper extensions
     ///</summary>
     public static class HtmlHelperExtension
     {
+        #region Controls
+
         ///<summary>
         /// Returns an HTML image element for the given image options
         ///</summary>
@@ -199,9 +201,10 @@ namespace System.Web.Mvc
                        : html.DropDownList(name, selectList, htmlAttributes);
         }
 
+        #endregion
 
         // --------------------------------------------------------------------
-        
+
         #region CheckBoxList
 
         /// <summary>
@@ -344,7 +347,7 @@ namespace System.Web.Mvc
         //    return list.ToArray();
         //}
         #endregion
-        
+
         #region CheckBoxFor
 
         /// <summary>
@@ -400,7 +403,7 @@ namespace System.Web.Mvc
         {
             return CheckBoxFor(htmlHelper, expression, new RouteDirection());
         }
-        
+
         #endregion
 
         public static MvcHtmlString CheckBoxListFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty[]>> expression, MultiSelectList multiSelectList, Object htmlAttributes = null)
@@ -439,6 +442,256 @@ namespace System.Web.Mvc
         //{
         //    return new HtmlString(value == null ? null : value.ToString());
         //}
+
+
+        #region Pager
+        #region Html Pager
+        public static String Pager(this HtmlHelper htmlHelper, int noOfPages, int pageIndex, String actionName, String controllerName, PagerOptions pagerOptions, String routeName, object routeValues, object htmlAttributes)
+        {
+            var builder = new PagerBuilder
+                (
+                    htmlHelper,
+                    actionName,
+                    controllerName,
+                    noOfPages,
+                    pageIndex,
+                    pagerOptions,
+                    routeName,
+                    new RouteValueDictionary(routeValues),
+                    new RouteValueDictionary(htmlAttributes)
+                );
+            return builder.RenderPager();
+        }
+
+        public static String Pager(this HtmlHelper htmlHelper, int noOfPages, int pageIndex, String actionName, String controllerName, PagerOptions pagerOptions, String routeName, RouteValueDictionary routeValues, IDictionary<String, object> htmlAttributes)
+        {
+            var builder = new PagerBuilder
+                (
+                    htmlHelper,
+                    actionName,
+                    controllerName,
+                    noOfPages,
+                    pageIndex,
+                    pagerOptions,
+                    routeName,
+                    routeValues,
+                    htmlAttributes
+                );
+            return builder.RenderPager();
+        }
+
+        // ---
+
+        static String Pager(HtmlHelper htmlHelper, PagerOptions pagerOptions, IDictionary<String, object> htmlAttributes)
+        {
+            return new PagerBuilder(htmlHelper, null, pagerOptions, htmlAttributes).RenderPager();
+        }
+
+        // ---
+
+        public static String Pager<T>(this HtmlHelper htmlHelper, PagedList<T> pagedList)
+        {
+            return (default(PagedList<T>) == pagedList)
+                    ? Pager(htmlHelper, null, null)
+                    : Pager(htmlHelper, pagedList.NoOfPages, pagedList.PageIndex, null, null, null, null, null, null);
+        }
+
+        public static String Pager<T>(this HtmlHelper htmlHelper, PagedList<T> pagedList, PagerOptions pagerOptions)
+        {
+            return (default(PagedList<T>) == pagedList)
+                    ? Pager(htmlHelper, pagerOptions, null)
+                    : Pager(htmlHelper, pagedList.NoOfPages, pagedList.PageIndex, null, null, pagerOptions, null, null, null);
+        }
+
+        public static String Pager<T>(this HtmlHelper htmlHelper, PagedList<T> pagedList, PagerOptions pagerOptions, object htmlAttributes)
+        {
+            return (default(PagedList<T>) == pagedList)
+                    ? Pager(htmlHelper, pagerOptions, new RouteValueDictionary(htmlAttributes))
+                    : Pager(htmlHelper, pagedList.NoOfPages, pagedList.PageIndex, null, null, pagerOptions, null, null, htmlAttributes);
+        }
+
+        public static String Pager<T>(this HtmlHelper htmlHelper, PagedList<T> pagedList, PagerOptions pagerOptions, IDictionary<String, object> htmlAttributes)
+        {
+            return (default(PagedList<T>) == pagedList)
+                    ? Pager(htmlHelper, pagerOptions, htmlAttributes)
+                    : Pager(htmlHelper, pagedList.NoOfPages, pagedList.PageIndex, null, null, pagerOptions, null, null, htmlAttributes);
+        }
+
+
+        public static String Pager<T>(this HtmlHelper htmlHelper, PagedList<T> pagedList, String actionName, String controllerName, PagerOptions pagerOptions, object htmlAttributes)
+        {
+            return (default(PagedList<T>) == pagedList)
+                    ? Pager(htmlHelper, 0, 1, actionName, controllerName, pagerOptions, null, null, htmlAttributes)
+                    : Pager(htmlHelper, pagedList.NoOfPages, pagedList.PageIndex, actionName, controllerName, pagerOptions, null, null, htmlAttributes);
+        }
+
+        public static String Pager<T>(this HtmlHelper htmlHelper, PagedList<T> pagedList, String actionName, String controllerName, PagerOptions pagerOptions, IDictionary<String, object> htmlAttributes)
+        {
+            return (default(PagedList<T>) == pagedList)
+                    ? Pager(htmlHelper, 0, 1, actionName, controllerName, pagerOptions, null, null, htmlAttributes)
+                    : Pager(htmlHelper, pagedList.NoOfPages, pagedList.PageIndex, actionName, controllerName, pagerOptions, null, null, htmlAttributes);
+        }
+
+
+        public static String Pager<T>(this HtmlHelper htmlHelper, PagedList<T> pagedList, PagerOptions pagerOptions, String routeName, object routeValues)
+        {
+            return (default(PagedList<T>) == pagedList)
+                    ? Pager(htmlHelper, pagerOptions, null)
+                    : Pager(htmlHelper, pagedList.NoOfPages, pagedList.PageIndex, null, null, pagerOptions, routeName, routeValues, null);
+        }
+
+        public static String Pager<T>(this HtmlHelper htmlHelper, PagedList<T> pagedList, PagerOptions pagerOptions, String routeName, RouteValueDictionary routeValues)
+        {
+            return (default(PagedList<T>) == pagedList)
+                    ? Pager(htmlHelper, pagerOptions, null)
+                    : Pager(htmlHelper, pagedList.NoOfPages, pagedList.PageIndex, null, null, pagerOptions, routeName, routeValues, null);
+        }
+
+        public static String Pager<T>(this HtmlHelper htmlHelper, PagedList<T> pagedList, PagerOptions pagerOptions, String routeName, object routeValues, object htmlAttributes)
+        {
+            return (default(PagedList<T>) == pagedList)
+                    ? Pager(htmlHelper, pagerOptions, new RouteValueDictionary(htmlAttributes))
+                    : Pager(htmlHelper, pagedList.NoOfPages, pagedList.PageIndex, null, null, pagerOptions, routeName, routeValues, htmlAttributes);
+        }
+
+        public static String Pager<T>(this HtmlHelper htmlHelper, PagedList<T> pagedList, PagerOptions pagerOptions, String routeName, RouteValueDictionary routeValues, IDictionary<String, object> htmlAttributes)
+        {
+            return (default(PagedList<T>) == pagedList)
+                    ? Pager(htmlHelper, pagerOptions, htmlAttributes)
+                    : Pager(htmlHelper, pagedList.NoOfPages, pagedList.PageIndex, null, null, pagerOptions, routeName, routeValues, htmlAttributes);
+        }
+
+        public static String Pager<T>(this HtmlHelper htmlHelper, PagedList<T> pagedList, String routeName, object routeValues, object htmlAttributes)
+        {
+            return (default(PagedList<T>) == pagedList)
+                    ? Pager(htmlHelper, null, new RouteValueDictionary(htmlAttributes))
+                    : Pager(htmlHelper, pagedList.NoOfPages, pagedList.PageIndex, null, null, null, routeName, routeValues, htmlAttributes);
+        }
+
+        public static String Pager<T>(this HtmlHelper htmlHelper, PagedList<T> pagedList, String routeName, RouteValueDictionary routeValues, IDictionary<String, object> htmlAttributes)
+        {
+            return (default(PagedList<T>) == pagedList)
+                    ? Pager(htmlHelper, null, htmlAttributes)
+                    : Pager(htmlHelper, pagedList.NoOfPages, pagedList.PageIndex, null, null, null, routeName, routeValues, htmlAttributes);
+        }
+
+        #endregion
+
+        #region jQuery Ajax Pager
+        public static String AjaxPager(this HtmlHelper htmlHelper, int totalPageCount, int pageIndex, String actionName, String controllerName, String routeName, PagerOptions pagerOptions, object routeValues, AjaxOptions ajaxOptions, object htmlAttributes)
+        {
+            if (null == pagerOptions) pagerOptions = new PagerOptions();
+            pagerOptions.UseJqueryAjax = true;
+            var builder = new PagerBuilder
+                (
+                    htmlHelper,
+                    actionName,
+                    controllerName,
+                    totalPageCount,
+                    pageIndex,
+                    pagerOptions,
+                    routeName,
+                    new RouteValueDictionary(routeValues),
+                    ajaxOptions,
+                    new RouteValueDictionary(htmlAttributes)
+                );
+            return builder.RenderPager();
+        }
+
+        public static String AjaxPager(this HtmlHelper htmlHelper, int totalPageCount, int pageIndex, String actionName, String controllerName, String routeName, PagerOptions pagerOptions, RouteValueDictionary routeValues, AjaxOptions ajaxOptions, IDictionary<String, object> htmlAttributes)
+        {
+            if (null == pagerOptions) pagerOptions = new PagerOptions();
+            pagerOptions.UseJqueryAjax = true;
+            var builder = new PagerBuilder
+                (
+                    htmlHelper,
+                    actionName,
+                    controllerName,
+                    totalPageCount,
+                    pageIndex,
+                    pagerOptions,
+                    routeName,
+                    routeValues,
+                    ajaxOptions,
+                    htmlAttributes
+                );
+            return builder.RenderPager();
+        }
+
+        // ---
+
+        static String AjaxPager(HtmlHelper htmlHelper, PagerOptions pagerOptions, IDictionary<String, object> htmlAttributes)
+        {
+            return new PagerBuilder(htmlHelper, null, pagerOptions, htmlAttributes).RenderPager();
+        }
+
+        // ---
+
+        public static String AjaxPager<T>(this HtmlHelper htmlHelper, PagedList<T> pagedList, AjaxOptions ajaxOptions)
+        {
+            return (default(PagedList<T>) == pagedList)
+                    ? AjaxPager(htmlHelper, null, null)
+                    : AjaxPager(htmlHelper, pagedList.NoOfPages, pagedList.PageIndex, null, null, null, null, null, ajaxOptions, null);
+        }
+
+        public static String AjaxPager<T>(this HtmlHelper htmlHelper, PagedList<T> pagedList, String routeName, AjaxOptions ajaxOptions)
+        {
+            return (default(PagedList<T>) == pagedList)
+                    ? AjaxPager(htmlHelper, null, null)
+                    : AjaxPager(htmlHelper, pagedList.NoOfPages, pagedList.PageIndex, null, null, routeName, null, null, ajaxOptions, null);
+        }
+
+        public static String AjaxPager<T>(this HtmlHelper htmlHelper, PagedList<T> pagedList, PagerOptions pagerOptions, AjaxOptions ajaxOptions)
+        {
+            return (default(PagedList<T>) == pagedList)
+                    ? AjaxPager(htmlHelper, pagerOptions, null)
+                    : AjaxPager(htmlHelper, pagedList.NoOfPages, pagedList.PageIndex, null, null, null, pagerOptions, null, ajaxOptions, null);
+        }
+
+        public static String AjaxPager<T>(this HtmlHelper htmlHelper, PagedList<T> pagedList, PagerOptions pagerOptions, AjaxOptions ajaxOptions, object htmlAttributes)
+        {
+            return (default(PagedList<T>) == pagedList)
+                    ? AjaxPager(htmlHelper, pagerOptions, new RouteValueDictionary(htmlAttributes))
+                    : AjaxPager(htmlHelper, pagedList.NoOfPages, pagedList.PageIndex, null, null, null, pagerOptions, null, ajaxOptions, htmlAttributes);
+        }
+
+        public static String AjaxPager<T>(this HtmlHelper htmlHelper, PagedList<T> pagedList, PagerOptions pagerOptions, AjaxOptions ajaxOptions, IDictionary<String, object> htmlAttributes)
+        {
+            return (default(PagedList<T>) == pagedList)
+                    ? AjaxPager(htmlHelper, pagerOptions, htmlAttributes)
+                    : AjaxPager(htmlHelper, pagedList.NoOfPages, pagedList.PageIndex, null, null, null, pagerOptions, null, ajaxOptions, htmlAttributes);
+        }
+
+        public static String AjaxPager<T>(this HtmlHelper htmlHelper, PagedList<T> pagedList, String routeName, object routeValues, PagerOptions pagerOptions, AjaxOptions ajaxOptions)
+        {
+            return (default(PagedList<T>) == pagedList)
+                    ? AjaxPager(htmlHelper, pagerOptions, null)
+                    : AjaxPager(htmlHelper, pagedList.NoOfPages, pagedList.PageIndex, null, null, routeName, pagerOptions, routeValues, ajaxOptions, null);
+        }
+
+        public static String AjaxPager<T>(this HtmlHelper htmlHelper, PagedList<T> pagedList, String routeName, object routeValues, PagerOptions pagerOptions, AjaxOptions ajaxOptions, object htmlAttributes)
+        {
+            return (default(PagedList<T>) == pagedList)
+                    ? AjaxPager(htmlHelper, pagerOptions, new RouteValueDictionary(htmlAttributes))
+                    : AjaxPager(htmlHelper, pagedList.NoOfPages, pagedList.PageIndex, null, null, routeName, pagerOptions, routeValues, ajaxOptions, htmlAttributes);
+        }
+
+        public static String AjaxPager<T>(this HtmlHelper htmlHelper, PagedList<T> pagedList, String routeName, RouteValueDictionary routeValues, PagerOptions pagerOptions, AjaxOptions ajaxOptions, IDictionary<String, object> htmlAttributes)
+        {
+            return (default(PagedList<T>) == pagedList)
+                    ? AjaxPager(htmlHelper, pagerOptions, htmlAttributes)
+                    : AjaxPager(htmlHelper, pagedList.NoOfPages, pagedList.PageIndex, null, null, routeName, pagerOptions, routeValues, ajaxOptions, htmlAttributes);
+        }
+
+        public static String AjaxPager<T>(this HtmlHelper htmlHelper, PagedList<T> pagedList, String actionName, String controllerName, PagerOptions pagerOptions, AjaxOptions ajaxOptions)
+        {
+            return (default(PagedList<T>) == pagedList)
+                    ? AjaxPager(htmlHelper, pagerOptions, null)
+                    : AjaxPager(htmlHelper, pagedList.NoOfPages, pagedList.PageIndex, actionName, controllerName, null, pagerOptions, null, ajaxOptions, null);
+        }
+
+        #endregion
+        #endregion
 
     }
 }

@@ -47,8 +47,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AjaxHelperExtension.cs" />
     <Compile Include="HtmlHelperExtension.cs" />
     <Compile Include="Pager.cs" />
+    <Compile Include="PagerBuilder.cs" />
+    <Compile Include="PagerItem.cs" />
+    <Compile Include="PagerItemType.cs" />
+    <Compile Include="PagerOptions.cs" />
     <Compile Include="TempDataDictionaryExtension.cs" />
     <Compile Include="ViewDataDictionaryExtension.cs" />
     <Compile Include="ViewExtension.cs" />

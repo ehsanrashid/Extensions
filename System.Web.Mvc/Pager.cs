@@ -1,10 +1,10 @@
 ﻿namespace System.Web.Mvc
 {
+    using Collections.Generic;
     using Collections.Generic.Interface;
     using Text;
     using Html;
 
-    // todo::
     public class Pager<T>
     {
         readonly StringBuilder htmlText;
@@ -62,4 +62,5 @@
             }
         }
     }
+
 }
