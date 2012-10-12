@@ -51,8 +51,7 @@
         public static double GetCanvasLeft<T>(T control)
         {
             var uiElement = control as UIElement;
-            if (uiElement == null)
-                throw new ArgumentNullException("control");
+            if (null == uiElement) throw new ArgumentNullException("control");
             return (double) uiElement.GetValue(Canvas.LeftProperty);
         }
 
@@ -65,8 +64,7 @@
         public static double GetCanvasTop<T>(T control)
         {
             var uiElement = control as UIElement;
-            if (uiElement == null)
-                throw new ArgumentNullException("control");
+            if (null == uiElement) throw new ArgumentNullException("control");
             return (double) uiElement.GetValue(Canvas.TopProperty);
         }
 
@@ -79,9 +77,8 @@
         public static Point GetCanvasPosition<T>(T control)
         {
             var uiElement = control as UIElement;
-            if (uiElement == null)
-                throw new ArgumentNullException("control");
-
+            if (null == uiElement) throw new ArgumentNullException("control");
+            
             return new Point(
                 (double) uiElement.GetValue(Canvas.LeftProperty),
                 (double) uiElement.GetValue(Canvas.TopProperty));
@@ -96,8 +93,7 @@
         public static void SetCanvasLeft<T>(T control, double length)
         {
             var uiElement = control as UIElement;
-            if (uiElement == null)
-                throw new ArgumentNullException("control");
+            if (null == uiElement) throw new ArgumentNullException("control");
             uiElement.SetValue(Canvas.LeftProperty, length);
         }
 
@@ -106,8 +102,7 @@
         public static void SetCanvasTop<T>(T control, double length)
         {
             var uiElement = control as UIElement;
-            if (uiElement == null)
-                throw new ArgumentNullException("control");
+            if (null == uiElement) throw new ArgumentNullException("control");
             uiElement.SetValue(Canvas.TopProperty, length);
         }
 
@@ -116,8 +111,7 @@
         public static void SetCanvasPosition<T>(T control, Point value)
         {
             var uiElement = control as UIElement;
-            if (uiElement == null)
-                throw new ArgumentNullException("control");
+            if (null == uiElement) throw new ArgumentNullException("control");
             uiElement.SetValue(Canvas.LeftProperty, value.X);
             uiElement.SetValue(Canvas.TopProperty, value.Y);
         }

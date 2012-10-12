@@ -40,6 +40,16 @@ namespace System.Algorithm
             return FibonacciR(n - 1) + FibonacciR(n - 2);
         }
 
+        // Program to compute x^n
+        public static int Power(int x, int n)
+        {
+            if (n == 0) return 1;
+            else if (n % 2 == 0) // n is even
+                return Power(x * x, n / 2);
+            else // n is odd
+                return x * Power(x * x, n / 2);
+        }
+
         public static double Gamma()
         {
             double gamma = 0;

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace System.Algorithm
 {
     public static class Series
@@ -74,7 +69,7 @@ namespace System.Algorithm
         // Program to compute Σ x^n using the closed-form expression
         public static int SumGeometricSeriesC(int x, int n)
         {
-            return (Power(x, n + 1) - 1) / (x - 1);
+            return (Numeric.Power(x, n + 1) - 1) / (x - 1);
         }
 
 

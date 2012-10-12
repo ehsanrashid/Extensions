@@ -26,13 +26,13 @@ namespace System.Algorithm
                 y = tmp;
             }
 
-            return FindGreatestCommonDivisorInternal(x, y);
+            return FindGreatestCommonDivisorR(x, y);
         }
 
 
-        private static int FindGreatestCommonDivisorInternal(int x, int y)
+        private static int FindGreatestCommonDivisorR(int x, int y)
         {
-            return (y == 0) ? x : FindGreatestCommonDivisorInternal(y, x % y);
+            return (y == 0) ? x : FindGreatestCommonDivisorR(y, x % y);
         }
 
 

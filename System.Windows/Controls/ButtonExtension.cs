@@ -12,14 +12,15 @@ namespace System.Windows.Controls
         /// <param name="button"></param>
         public static void RemoveClickEvent(this Button button)
         {
-            var f1 = typeof(Control).GetField("EventClick", BindingFlags.Static | BindingFlags.NonPublic);
-            if (f1 != null)
+            var fieldInfo = typeof(Control).GetField("EventClick", BindingFlags.Static | BindingFlags.NonPublic);
+            if (fieldInfo != null)
             {
-                var obj = f1.GetValue(button);
-                var pi = button.GetType().GetProperty("Events", BindingFlags.NonPublic | BindingFlags.Instance);
-                var list = (EventHandlerList) pi.GetValue(button, null);
-                list.RemoveHandler(obj, list[obj]);
+                var key = fieldInfo.GetValue(button);
+                var propInfo = button.GetType().GetProperty("Events", BindingFlags.NonPublic | BindingFlags.Instance);
+                var list = (EventHandlerList) propInfo.GetValue(button, null);
+                list.RemoveHandler(key, list[key]);
             }
         }
+
     }
 }

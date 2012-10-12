@@ -1,9 +1,9 @@
-﻿using System.Text;
-using System.Windows.Markup;
-using System.Xml;
-
-namespace System.Windows.Controls
+﻿namespace System.Windows.Controls
 {
+    using Xml;
+    using Markup;
+    using Text;
+
     public static class ControlExtension
     {
         /// <summary>
@@ -19,10 +19,12 @@ namespace System.Windows.Controls
                 NewLineOnAttributes = true
             };
 
-            var strbuild = new StringBuilder();
-            XmlWriter xmlwrite = XmlWriter.Create(strbuild, settings);
+            var sbOutput = new StringBuilder();
+            var xmlwrite = XmlWriter.Create(sbOutput, settings);
             XamlWriter.Save(control.Template, xmlwrite);
-            return strbuild.ToString();
+            return sbOutput.ToString();
         }
+
+
     }
 }

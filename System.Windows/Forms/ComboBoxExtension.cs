@@ -25,9 +25,6 @@ namespace System.Windows.Forms
         ///         comboBox1.Anchor |= AnchorStyles.Right;
         /// 	</code>
         /// </example>
-        /// <remarks>
-        /// 	Contributed by nagits, http://about.me/AlekseyNagovitsyn
-        /// </remarks>
         public static void MeasureDropDownWidth(this ComboBox comboBox, int rightSpaceWidth = 15, int minDropDownWidth = -1)
         {
             if (comboBox.Items.Count == 0)
@@ -38,11 +35,11 @@ namespace System.Windows.Forms
 
             var graphics = comboBox.CreateGraphics();
 
-            float measureWidth = 0;
-            foreach (object item in comboBox.Items)
+            var measureWidth = 0.0f;
+            foreach (var item in comboBox.Items)
             {
                 string text;
-                if (comboBox.DataSource == null || string.IsNullOrEmpty(comboBox.DisplayMember))
+                if (comboBox.DataSource == null || comboBox.DisplayMember.IsNullOrEmpty())
                 {
                     text = item.ToString();
                 }

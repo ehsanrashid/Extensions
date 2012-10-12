@@ -1,7 +1,9 @@
-﻿using System.Windows.Input;
-
-namespace System.Windows.Controls
+﻿namespace System.Windows.Controls
 {
+    using Input;
+    using Threading;
+    
+
     public static class TextBoxExtension
     {
 
@@ -13,5 +15,25 @@ namespace System.Windows.Controls
             };
         }
 
+
+        ///
+        /// usage:  control.SetText(text);
+        ///
+        // Delegates to enable async calls for setting controls properties
+        private delegate void SetTextCallback(TextBox textBox, String text);
+
+        // Thread safe updating of control's text property
+        public static void SetText(this TextBox textBox, String text)
+        {
+            if (textBox.Dispatcher.CheckAccess())
+            {
+                textBox.Text = text;
+            }
+            else
+            {
+                SetTextCallback method = new SetTextCallback(SetText);
+                textBox.Dispatcher.Invoke(method, new Object[] { textBox, text });
+            }
+        }
     }
 }

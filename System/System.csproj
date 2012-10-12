@@ -58,6 +58,8 @@
   <ItemGroup>
     <Compile Include="Algorithm\Euclid.cs" />
     <Compile Include="Algorithm\Fibonacci.cs" />
+    <Compile Include="Algorithm\Numeric.cs" />
+    <Compile Include="Algorithm\Series.cs" />
     <Compile Include="ArrayExtension.cs" />
     <Compile Include="ByteArrayExtension.cs" />
     <Compile Include="CancelEventArgs.cs" />
