@@ -34,7 +34,13 @@
 
         public static MvcForm BeginForm(this HtmlHelper htmlHelper, Object routeValues, FormMethod method, Object htmlAttributes)
         {
-            return htmlHelper.BeginForm(htmlHelper.CurrentAction().ToString(), htmlHelper.CurrentController().ToString(), routeValues, method, htmlAttributes);
+            return htmlHelper.BeginForm
+                            (
+                                htmlHelper.CurrentAction().ToString(),
+                                htmlHelper.CurrentController().ToString(),
+                                routeValues, method,
+                                htmlAttributes
+                            );
         }
 
         public static MvcHtmlString Truncate(this HtmlHelper helper, String input, int length)
@@ -45,6 +51,7 @@
         }
 
         #region Label
+
         /// <summary>
         /// Returns an HTML label element for the given target and text.
         /// </summary>
@@ -55,15 +62,29 @@
         /// <returns></returns>
         public static MvcHtmlString LabelFor(this HtmlHelper htmlHelper, String target, String text, IDictionary<String, Object> htmlAttributes = null)
         {
-            var tbLbl = new TagBuilder("label");
-            tbLbl.MergeAttribute("for", target);
-            tbLbl.MergeAttributes(htmlAttributes, true);
-            tbLbl.SetInnerText(text);
-            return MvcHtmlString.Create(tbLbl.ToString());
+            using (var stringWriter = new StringWriter())
+            using (var htmlWriter = new HtmlTextWriter(stringWriter))
+            {
+                htmlWriter.AddAttribute(HtmlTextWriterAttribute.For, target);
+                if (null != htmlAttributes)
+                    foreach (var attrib in htmlAttributes)
+                        htmlWriter.AddAttribute(attrib.Key, attrib.Value.ToString());
+                htmlWriter.RenderBeginTag(HtmlTextWriterTag.Label);
+                htmlWriter.Write(text);
+                htmlWriter.RenderEndTag();
+                return MvcHtmlString.Create(stringWriter.ToString());
+            }
         }
+
         public static MvcHtmlString LabelFor(this HtmlHelper htmlHelper, String target, String text, Object htmlAttributes = null)
         {
-            return LabelFor(htmlHelper, target, text, HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
+            return LabelFor
+                    (
+                        htmlHelper,
+                        target,
+                        text,
+                        HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes)
+                    );
         }
 
         #endregion
@@ -73,25 +94,25 @@
         ///<summary>
         /// Returns an HTML image element for the given source and alt text.
         ///</summary>
-        public static MvcHtmlString Image(this HtmlHelper htmlHelper, String src, String alt = null, IDictionary<String, Object> htmlAttributes = null)
+        public static MvcHtmlString Image(this HtmlHelper htmlHelper, String srcUrl, String altText = null, IDictionary<String, Object> htmlAttributes = null)
         {
-            var stringWriter = new StringWriter();
-            using (HtmlTextWriter writer = new HtmlTextWriter(stringWriter))
+            using (var stringWriter = new StringWriter())
+            using (var htmlWriter = new HtmlTextWriter(stringWriter))
             {
-                if (src.IsNotNullOrEmpty()) writer.AddAttribute(HtmlTextWriterAttribute.Src, htmlHelper.Encode(src));
-                if (alt.IsNotNullOrEmpty()) writer.AddAttribute(HtmlTextWriterAttribute.Alt, htmlHelper.Encode(alt));
+                if (srcUrl.IsNotNullOrEmpty()) htmlWriter.AddAttribute(HtmlTextWriterAttribute.Src, htmlHelper.Encode(srcUrl));
+                if (altText.IsNotNullOrEmpty()) htmlWriter.AddAttribute(HtmlTextWriterAttribute.Alt, htmlHelper.Encode(altText));
                 if (null != htmlAttributes)
                     foreach (var attrib in htmlAttributes)
-                        writer.AddAttribute(attrib.Key, attrib.Value.ToString());
-                writer.RenderBeginTag(HtmlTextWriterTag.Img);
-                writer.RenderEndTag();
+                        htmlWriter.AddAttribute(attrib.Key, attrib.Value.ToString());
+                htmlWriter.RenderBeginTag(HtmlTextWriterTag.Img);
+                htmlWriter.RenderEndTag();
+                return MvcHtmlString.Create(stringWriter.ToString());
             }
-            return MvcHtmlString.Create(stringWriter.ToString());
         }
 
-        public static MvcHtmlString Image(this HtmlHelper htmlHelper, String src, String alt = null, Object htmlAttributes = null)
+        public static MvcHtmlString Image(this HtmlHelper htmlHelper, String srcUrl, String altText = null, Object htmlAttributes = null)
         {
-            return Image(htmlHelper, src, alt, HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
+            return Image(htmlHelper, srcUrl, altText, HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
         }
 
         public static MvcHtmlString Image(this HtmlHelper htmlHelper, String actionName = null, String controllerName = null, Object routeValues = null, String alt = null, IDictionary<String, Object> htmlAttributes = null)
@@ -124,18 +145,19 @@
             var urlHelper = ((Controller) htmlHelper.ViewContext.Controller).Url;
             var url = urlHelper.Action(actionName, controllerName, routeValues);
 
-            var stringWriter = new StringWriter();
-            using (HtmlTextWriter writer = new HtmlTextWriter(stringWriter))
+            using (var stringWriter = new StringWriter())
+            using (var htmlWriter = new HtmlTextWriter(stringWriter))
             {
-                if (url.IsNotNullOrEmpty()) writer.AddAttribute(HtmlTextWriterAttribute.Href, url);
+                if (url.IsNotNullOrEmpty()) htmlWriter.AddAttribute(HtmlTextWriterAttribute.Href, url);
                 if (null != aHtmlAttributes)
                     foreach (var attrib in aHtmlAttributes)
-                        writer.AddAttribute(attrib.Key, attrib.Value.ToString());
-                writer.RenderBeginTag(HtmlTextWriterTag.A);
-                writer.Write(htmlHelper.Image(imgSrc, imgAlt, imgHtmlAttributes));
-                writer.RenderEndTag();
+                        htmlWriter.AddAttribute(attrib.Key, attrib.Value.ToString());
+                htmlWriter.RenderBeginTag(HtmlTextWriterTag.A);
+                htmlWriter.Write(htmlHelper.Image(imgSrc, imgAlt, imgHtmlAttributes));
+                htmlWriter.RenderEndTag();
+                return MvcHtmlString.Create(stringWriter.ToString());
             }
-            return MvcHtmlString.Create(stringWriter.ToString());
+
         }
         public static MvcHtmlString ImageLink(this HtmlHelper htmlHelper, String actionName = null, String controllerName = null, Object routeValues = null, String imgSrc = null, String imgAlt = null, IDictionary<String, Object> aHtmlAttributes = null, IDictionary<String, Object> imgHtmlAttributes = null)
         {
@@ -303,32 +325,33 @@
         public static MvcHtmlString CheckBoxFor<TModel, TValue>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TValue>> expression, IDictionary<String, Object> htmlAttributes, String checkedValue = null)
         {
             if (null == expression) throw new ArgumentNullException("expression");
-            var stringWriter = new StringWriter();
-            using (HtmlTextWriter writer = new HtmlTextWriter(stringWriter))
+            using (var stringWriter = new StringWriter())
+            using (var htmlWriter = new HtmlTextWriter(stringWriter))
             {
-                writer.AddAttribute(HtmlTextWriterAttribute.Type, "checkBox");
+                htmlWriter.AddAttribute(HtmlTextWriterAttribute.Type, "checkBox");
 
                 var metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
                 if (null != metadata.Model)
                 {
                     String value = metadata.Model.ToString();
-                    writer.AddAttribute(HtmlTextWriterAttribute.Value, checkedValue.IsNullOrEmpty() ? value : checkedValue);
-                    if (value == checkedValue) writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
+                    htmlWriter.AddAttribute(HtmlTextWriterAttribute.Value, checkedValue.IsNullOrEmpty() ? value : checkedValue);
+                    if (value == checkedValue) htmlWriter.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
                 }
                 else
                 {
-                    writer.AddAttribute(HtmlTextWriterAttribute.Value, checkedValue ?? String.Empty);
+                    htmlWriter.AddAttribute(HtmlTextWriterAttribute.Value, checkedValue ?? String.Empty);
                 }
                 var name = ExpressionHelper.GetExpressionText(expression); // metadata.PropertyName
-                writer.AddAttribute(HtmlTextWriterAttribute.Name, name);
+                htmlWriter.AddAttribute(HtmlTextWriterAttribute.Name, name);
 
                 if (null != htmlAttributes)
                     foreach (var attrib in htmlAttributes)
-                        writer.AddAttribute(attrib.Key, attrib.Value.ToString());
-                writer.RenderBeginTag(HtmlTextWriterTag.Input);
-                writer.RenderEndTag();
+                        htmlWriter.AddAttribute(attrib.Key, attrib.Value.ToString());
+                htmlWriter.RenderBeginTag(HtmlTextWriterTag.Input);
+                htmlWriter.RenderEndTag();
+
+                return MvcHtmlString.Create(stringWriter.ToString());
             }
-            return MvcHtmlString.Create(stringWriter.ToString());
         }
 
         public static MvcHtmlString CheckBoxFor<TModel, TValue>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TValue>> expression, Object htmlAttributes, String checkedValue = null)
@@ -362,57 +385,43 @@
         ///     ViewData.Model.Categories.ToDictionary(c => c.Name, c => c.Id.ToString()),
         ///     ViewData.Model.Product.Categories.Select(c => c.Id.ToString()))}
         /// </code>
-        public static MvcHtmlString CheckBoxList(this HtmlHelper htmlHelper, String name, IEnumerable<SelectListItem> selectList, IDictionary<String, Object> htmlAttributes)
+        public static MvcHtmlString CheckBoxList(this HtmlHelper htmlHelper, String name, IEnumerable<SelectListItem> selectList, IDictionary<String, Object> htmlAttributes = null)
         {
-            /*
-            var sb = new StringBuilder();
-            foreach (var item in selectList)
-            {
-                sb.Append("<div class=\"checkBox\"><label>");
-                var tagInput = new TagBuilder("input");
-                tagInput.MergeAttribute("type", "checkbox");
-                tagInput.MergeAttribute("name", name);
-                tagInput.MergeAttribute("value", item.Value);
-                if (item.Selected) tagInput.MergeAttribute("checked", "checked");//, true);
-                if (null != htmlAttributes) tagInput.MergeAttributes(htmlAttributes);
-                tagInput.SetInnerText(item.Text);
-                sb.Append(tagInput.ToString(TagRenderMode.SelfClosing));
-                sb.Append("&nbsp; " + item.Text + "</label></div>");
-            }
-            return MvcHtmlString.Create(sb.ToString());
-            */
-
-            var stringWriter = new StringWriter();
-            using (HtmlTextWriter writer = new HtmlTextWriter(stringWriter))
+            using (var stringWriter = new StringWriter())
+            using (var htmlWriter = new HtmlTextWriter(stringWriter))
             {
                 foreach (var item in selectList)
                 {
-                    writer.AddAttribute(HtmlTextWriterAttribute.Class, "checkBox");
-                    writer.RenderBeginTag(HtmlTextWriterTag.Div);
+                    htmlWriter.AddAttribute(HtmlTextWriterAttribute.Class, "checkBox");
+                    htmlWriter.RenderBeginTag(HtmlTextWriterTag.Div);
 
-                    writer.AddAttribute(HtmlTextWriterAttribute.Type, "checkBox");
-                    writer.AddAttribute(HtmlTextWriterAttribute.Name, name);
-                    writer.AddAttribute(HtmlTextWriterAttribute.Value, item.Value);
-                    if (item.Selected) writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
+                    htmlWriter.AddAttribute(HtmlTextWriterAttribute.Type, "checkBox");
+                    htmlWriter.AddAttribute(HtmlTextWriterAttribute.Name, name);
+                    htmlWriter.AddAttribute(HtmlTextWriterAttribute.Value, item.Value);
+                    if (item.Selected) htmlWriter.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
                     if (null != htmlAttributes)
-                        foreach (var attrib in htmlAttributes as IDictionary<String, Object>)
-                            writer.AddAttribute(attrib.Key, attrib.Value.ToString());
-                    writer.RenderBeginTag(HtmlTextWriterTag.Input);
-                    //writer.Write("&nbsp;");
-                    writer.WriteEncodedText(item.Text);
-                    writer.RenderEndTag();
-                    writer.RenderEndTag();
+                        foreach (var attrib in htmlAttributes)
+                            htmlWriter.AddAttribute(attrib.Key, attrib.Value.ToString());
+                    htmlWriter.RenderBeginTag(HtmlTextWriterTag.Input);
+                    //htmlWriter.Write("&nbsp;");
+                    htmlWriter.WriteEncodedText(item.Text);
+                    htmlWriter.RenderEndTag();
+                    htmlWriter.RenderEndTag();
                 }
+                return MvcHtmlString.Create(stringWriter.ToString());
             }
-            return MvcHtmlString.Create(stringWriter.ToString());
-        }
 
+        }
+        public static MvcHtmlString CheckBoxList(this HtmlHelper htmlHelper, String name, IEnumerable<SelectListItem> selectList, Object htmlAttributes)
+        {
+            return CheckBoxList(htmlHelper, name, selectList, HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
+        }
         public static MvcHtmlString CheckBoxList(this HtmlHelper htmlHelper, String name, IEnumerable<SelectListItem> selectList)
         {
             return CheckBoxList(htmlHelper, name, selectList, null);
         }
 
-        public static MvcHtmlString CheckBoxList(this HtmlHelper htmlHelper, String name, IDictionary<String, String> selectList, IEnumerable<String> selectedValues, IDictionary<String, Object> htmlAttributes)
+        public static MvcHtmlString CheckBoxList(this HtmlHelper htmlHelper, String name, IDictionary<String, String> selectList, IEnumerable<String> selectedValues, IDictionary<String, Object> htmlAttributes = null)
         {
             var selectLists = from item in selectList
                               select new SelectListItem
@@ -424,17 +433,23 @@
 
             return CheckBoxList(htmlHelper, name, selectLists, htmlAttributes);
         }
-
+        public static MvcHtmlString CheckBoxList(this HtmlHelper htmlHelper, String name, IDictionary<String, String> selectList, IEnumerable<String> selectedValues, Object htmlAttributes)
+        {
+            return CheckBoxList(htmlHelper, name, selectList, selectedValues, HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
+        }
         public static MvcHtmlString CheckBoxList(this HtmlHelper htmlHelper, String name, IDictionary<String, String> selectList, IEnumerable<String> selectedValues)
         {
             return CheckBoxList(htmlHelper, name, selectList, selectedValues, null);
         }
 
-        public static MvcHtmlString CheckBoxList(this HtmlHelper htmlHelper, String name, IDictionary<String, String> selectList, IDictionary<String, Object> htmlAttributes)
+        public static MvcHtmlString CheckBoxList(this HtmlHelper htmlHelper, String name, IDictionary<String, String> selectList, IDictionary<String, Object> htmlAttributes = null)
         {
             return CheckBoxList(htmlHelper, name, selectList, null, htmlAttributes);
         }
-
+        public static MvcHtmlString CheckBoxList(this HtmlHelper htmlHelper, String name, IDictionary<String, String> selectList, Object htmlAttributes)
+        {
+            return CheckBoxList(htmlHelper, name, selectList, null, HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
+        }
         public static MvcHtmlString CheckBoxList(this HtmlHelper htmlHelper, String name, IDictionary<String, String> selectList)
         {
             return CheckBoxList(htmlHelper, name, selectList, null, null);
@@ -546,10 +561,9 @@
         public static MvcHtmlString CheckBoxListFor<TModel, TProperty, TItem, TValue, TKey>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> listNameExpr, Expression<Func<TModel, IEnumerable<TItem>>> sourceDataExpr, Expression<Func<TItem, TValue>> valueExpr, Expression<Func<TItem, TKey>> textToDisplayExpr, Expression<Func<TModel, IEnumerable<TItem>>> selectedValuesExpr, object htmlAttributes, Expression<Func<TItem, TKey>> htmlAttributesExpr = null)
         {
             var modelMetadata = ModelMetadata.FromLambdaExpression(listNameExpr, htmlHelper.ViewData);
-            return ListBuilder.CheckBoxList
-              (htmlHelper, modelMetadata, listNameExpr.ToProperty(), sourceDataExpr, valueExpr,
-               textToDisplayExpr, htmlAttributesExpr, selectedValuesExpr, htmlAttributes, null, null);
+            return ListBuilder.CheckBoxList(htmlHelper, modelMetadata, listNameExpr.ToProperty(), sourceDataExpr, valueExpr, textToDisplayExpr, htmlAttributesExpr, selectedValuesExpr, htmlAttributes, null, null);
         }
+
         /// <summary>
         /// Generates Model-based list of checkboxes
         /// </summary>
@@ -613,9 +627,7 @@
         /// <returns>HTML string containing checkbox list</returns>
         public static MvcHtmlString CheckBoxList<TModel, TItem, TValue, TKey>(this HtmlHelper<TModel> htmlHelper, string listName, Expression<Func<TModel, IEnumerable<TItem>>> sourceDataExpr, Expression<Func<TItem, TValue>> valueExpr, Expression<Func<TItem, TKey>> textToDisplayExpr, Expression<Func<TModel, IEnumerable<TItem>>> selectedValuesExpr, object htmlAttributes, Position position, Expression<Func<TItem, TKey>> htmlAttributesExpr = null)
         {
-            return ListBuilder.CheckBoxList
-              (htmlHelper, null, listName, sourceDataExpr, valueExpr, textToDisplayExpr, htmlAttributesExpr,
-               selectedValuesExpr, htmlAttributes, null, null, position);
+            return ListBuilder.CheckBoxList(htmlHelper, null, listName, sourceDataExpr, valueExpr, textToDisplayExpr, htmlAttributesExpr, selectedValuesExpr, htmlAttributes, null, null, position);
         }
 
         /// <summary>
@@ -640,9 +652,7 @@
         public static MvcHtmlString CheckBoxListFor<TModel, TProperty, TItem, TValue, TKey>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> listNameExpr, Expression<Func<TModel, IEnumerable<TItem>>> sourceDataExpr, Expression<Func<TItem, TValue>> valueExpr, Expression<Func<TItem, TKey>> textToDisplayExpr, Expression<Func<TModel, IEnumerable<TItem>>> selectedValuesExpr, object htmlAttributes, string[] disabledValues, Position position, Expression<Func<TItem, TKey>> htmlAttributesExpr = null)
         {
             var modelMetadata = ModelMetadata.FromLambdaExpression(listNameExpr, htmlHelper.ViewData);
-            return ListBuilder.CheckBoxList
-              (htmlHelper, modelMetadata, listNameExpr.ToProperty(), sourceDataExpr, valueExpr, textToDisplayExpr,
-               htmlAttributesExpr, selectedValuesExpr, htmlAttributes, null, disabledValues, position);
+            return ListBuilder.CheckBoxList(htmlHelper, modelMetadata, listNameExpr.ToProperty(), sourceDataExpr, valueExpr, textToDisplayExpr, htmlAttributesExpr, selectedValuesExpr, htmlAttributes, null, disabledValues, position);
         }
         /// <summary>
         /// Generates Model-based list of checkboxes
@@ -664,9 +674,7 @@
         /// <returns>HTML string containing checkbox list</returns>
         public static MvcHtmlString CheckBoxList<TModel, TItem, TValue, TKey>(this HtmlHelper<TModel> htmlHelper, string listName, Expression<Func<TModel, IEnumerable<TItem>>> sourceDataExpr, Expression<Func<TItem, TValue>> valueExpr, Expression<Func<TItem, TKey>> textToDisplayExpr, Expression<Func<TModel, IEnumerable<TItem>>> selectedValuesExpr, object htmlAttributes, string[] disabledValues, Position position, Expression<Func<TItem, TKey>> htmlAttributesExpr = null)
         {
-            return ListBuilder.CheckBoxList
-              (htmlHelper, null, listName, sourceDataExpr, valueExpr, textToDisplayExpr, htmlAttributesExpr,
-               selectedValuesExpr, htmlAttributes, null, disabledValues, position);
+            return ListBuilder.CheckBoxList(htmlHelper, null, listName, sourceDataExpr, valueExpr, textToDisplayExpr, htmlAttributesExpr, selectedValuesExpr, htmlAttributes, null, disabledValues, position);
         }
 
         /// <summary>
@@ -689,9 +697,7 @@
         public static MvcHtmlString CheckBoxListFor<TModel, TProperty, TItem, TValue, TKey>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> listNameExpr, Expression<Func<TModel, IEnumerable<TItem>>> sourceDataExpr, Expression<Func<TItem, TValue>> valueExpr, Expression<Func<TItem, TKey>> textToDisplayExpr, Expression<Func<TModel, IEnumerable<TItem>>> selectedValuesExpr, HtmlListInfo wrapInfo, Expression<Func<TItem, TKey>> htmlAttributesExpr = null)
         {
             var modelMetadata = ModelMetadata.FromLambdaExpression(listNameExpr, htmlHelper.ViewData);
-            return ListBuilder.CheckBoxList
-              (htmlHelper, modelMetadata, listNameExpr.ToProperty(), sourceDataExpr, valueExpr, textToDisplayExpr,
-               htmlAttributesExpr, selectedValuesExpr, null, wrapInfo, null);
+            return ListBuilder.CheckBoxList(htmlHelper, modelMetadata, listNameExpr.ToProperty(), sourceDataExpr, valueExpr, textToDisplayExpr, htmlAttributesExpr, selectedValuesExpr, null, wrapInfo, null);
         }
         /// <summary>
         /// Generates Model-based list of checkboxes
@@ -711,9 +717,7 @@
         /// <returns>HTML string containing checkbox list</returns>
         public static MvcHtmlString CheckBoxList<TModel, TItem, TValue, TKey>(this HtmlHelper<TModel> htmlHelper, string listName, Expression<Func<TModel, IEnumerable<TItem>>> sourceDataExpr, Expression<Func<TItem, TValue>> valueExpr, Expression<Func<TItem, TKey>> textToDisplayExpr, Expression<Func<TModel, IEnumerable<TItem>>> selectedValuesExpr, HtmlListInfo wrapInfo, Expression<Func<TItem, TKey>> htmlAttributesExpr = null)
         {
-            return ListBuilder.CheckBoxList
-              (htmlHelper, null, listName, sourceDataExpr, valueExpr, textToDisplayExpr, htmlAttributesExpr,
-               selectedValuesExpr, null, wrapInfo, null);
+            return ListBuilder.CheckBoxList(htmlHelper, null, listName, sourceDataExpr, valueExpr, textToDisplayExpr, htmlAttributesExpr, selectedValuesExpr, null, wrapInfo, null);
         }
 
         /// <summary>
@@ -737,9 +741,7 @@
         public static MvcHtmlString CheckBoxListFor<TModel, TProperty, TItem, TValue, TKey>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> listNameExpr, Expression<Func<TModel, IEnumerable<TItem>>> sourceDataExpr, Expression<Func<TItem, TValue>> valueExpr, Expression<Func<TItem, TKey>> textToDisplayExpr, Expression<Func<TModel, IEnumerable<TItem>>> selectedValuesExpr, HtmlListInfo wrapInfo, string[] disabledValues, Expression<Func<TItem, TKey>> htmlAttributesExpr = null)
         {
             var modelMetadata = ModelMetadata.FromLambdaExpression(listNameExpr, htmlHelper.ViewData);
-            return ListBuilder.CheckBoxList
-              (htmlHelper, modelMetadata, listNameExpr.ToProperty(), sourceDataExpr, valueExpr, textToDisplayExpr,
-               htmlAttributesExpr, selectedValuesExpr, null, wrapInfo, disabledValues);
+            return ListBuilder.CheckBoxList(htmlHelper, modelMetadata, listNameExpr.ToProperty(), sourceDataExpr, valueExpr, textToDisplayExpr, htmlAttributesExpr, selectedValuesExpr, null, wrapInfo, disabledValues);
         }
         /// <summary>
         /// Generates Model-based list of checkboxes
@@ -760,9 +762,7 @@
         /// <returns>HTML string containing checkbox list</returns>
         public static MvcHtmlString CheckBoxList<TModel, TItem, TValue, TKey>(this HtmlHelper<TModel> htmlHelper, string listName, Expression<Func<TModel, IEnumerable<TItem>>> sourceDataExpr, Expression<Func<TItem, TValue>> valueExpr, Expression<Func<TItem, TKey>> textToDisplayExpr, Expression<Func<TModel, IEnumerable<TItem>>> selectedValuesExpr, HtmlListInfo wrapInfo, string[] disabledValues, Expression<Func<TItem, TKey>> htmlAttributesExpr = null)
         {
-            return ListBuilder.CheckBoxList
-              (htmlHelper, null, listName, sourceDataExpr, valueExpr, textToDisplayExpr, htmlAttributesExpr,
-               selectedValuesExpr, null, wrapInfo, disabledValues);
+            return ListBuilder.CheckBoxList(htmlHelper, null, listName, sourceDataExpr, valueExpr, textToDisplayExpr, htmlAttributesExpr, selectedValuesExpr, null, wrapInfo, disabledValues);
         }
 
         /// <summary>
@@ -787,9 +787,7 @@
         public static MvcHtmlString CheckBoxListFor<TModel, TProperty, TItem, TValue, TKey>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> listNameExpr, Expression<Func<TModel, IEnumerable<TItem>>> sourceDataExpr, Expression<Func<TItem, TValue>> valueExpr, Expression<Func<TItem, TKey>> textToDisplayExpr, Expression<Func<TModel, IEnumerable<TItem>>> selectedValuesExpr, object htmlAttributes, HtmlListInfo wrapInfo, string[] disabledValues, Expression<Func<TItem, TKey>> htmlAttributesExpr = null)
         {
             var modelMetadata = ModelMetadata.FromLambdaExpression(listNameExpr, htmlHelper.ViewData);
-            return ListBuilder.CheckBoxList
-              (htmlHelper, modelMetadata, listNameExpr.ToProperty(), sourceDataExpr, valueExpr, textToDisplayExpr,
-               htmlAttributesExpr, selectedValuesExpr, htmlAttributes, wrapInfo, disabledValues);
+            return ListBuilder.CheckBoxList(htmlHelper, modelMetadata, listNameExpr.ToProperty(), sourceDataExpr, valueExpr, textToDisplayExpr, htmlAttributesExpr, selectedValuesExpr, htmlAttributes, wrapInfo, disabledValues);
         }
         /// <summary>
         /// Generates Model-based list of checkboxes
@@ -812,8 +810,19 @@
         public static MvcHtmlString CheckBoxList<TModel, TItem, TValue, TKey>(this HtmlHelper<TModel> htmlHelper, string listName, Expression<Func<TModel, IEnumerable<TItem>>> sourceDataExpr, Expression<Func<TItem, TValue>> valueExpr, Expression<Func<TItem, TKey>> textToDisplayExpr, Expression<Func<TModel, IEnumerable<TItem>>> selectedValuesExpr, object htmlAttributes, HtmlListInfo wrapInfo, string[] disabledValues, Expression<Func<TItem, TKey>> htmlAttributesExpr = null)
         {
             return ListBuilder.CheckBoxList
-              (htmlHelper, null, listName, sourceDataExpr, valueExpr, textToDisplayExpr, htmlAttributesExpr,
-               selectedValuesExpr, htmlAttributes, wrapInfo, disabledValues);
+                                (
+                                    htmlHelper,
+                                    null,
+                                    listName,
+                                    sourceDataExpr,
+                                    valueExpr,
+                                    textToDisplayExpr,
+                                    htmlAttributesExpr,
+                                    selectedValuesExpr,
+                                    htmlAttributes,
+                                    wrapInfo,
+                                    disabledValues
+                                );
         }
 
         #endregion
@@ -832,37 +841,38 @@
         /// <param name="actionName">Name of the action on the controller.</param>
         public static MvcHtmlString Pager<T>(this HtmlHelper htmlHelper, IPagedList<T> pagedList, String controllerName, String actionName)
         {
-            var stringWriter = new StringWriter();
-            using (HtmlTextWriter writer = new HtmlTextWriter(stringWriter))
+            using (var stringWriter = new StringWriter())
+            using (var htmlWriter = new HtmlTextWriter(stringWriter))
             {
                 for (var pageIndex = 1; pageIndex <= pagedList.NoOfPages; ++pageIndex)
                 {
-                    if (pageIndex != pagedList.PageIndex)
+                    bool isCurrentPage = (pageIndex == pagedList.PageIndex);
+                    if (!isCurrentPage)
                     {
-                        writer.AddAttribute(HtmlTextWriterAttribute.Href, "/" + controllerName + "/" + actionName + "/" + pageIndex);
-                        writer.AddAttribute(HtmlTextWriterAttribute.Alt, "Page " + pageIndex);
-                        writer.RenderBeginTag(HtmlTextWriterTag.A);
+                        htmlWriter.AddAttribute(HtmlTextWriterAttribute.Href, "/" + controllerName + "/" + actionName + "/" + pageIndex);
+                        htmlWriter.AddAttribute(HtmlTextWriterAttribute.Alt, "Page " + pageIndex);
+                        htmlWriter.RenderBeginTag(HtmlTextWriterTag.A);
                     }
 
-                    writer.AddAttribute(HtmlTextWriterAttribute.Class,
+                    htmlWriter.AddAttribute(HtmlTextWriterAttribute.Class,
                                         pageIndex == pagedList.PageIndex
                                             ? "pageLinkCurrent"
                                             : "pageLink");
 
-                    writer.RenderBeginTag(HtmlTextWriterTag.Span);
-                    writer.Write(pageIndex);
-                    writer.RenderEndTag();
+                    htmlWriter.RenderBeginTag(HtmlTextWriterTag.Span);
+                    htmlWriter.Write(pageIndex);
+                    htmlWriter.RenderEndTag();
 
-                    if (pageIndex != pagedList.PageIndex)
+                    if (!isCurrentPage)
                     {
-                        writer.RenderEndTag();
+                        htmlWriter.RenderEndTag();
                     }
-                    writer.Write("&nbsp;");
+                    htmlWriter.Write("&nbsp;");
                 }
 
-                writer.Write(String.Concat("(", pagedList.NoOfItems, " items in all)"));
+                htmlWriter.Write(String.Concat("(", pagedList.NoOfItems, " items in all)"));
+                return MvcHtmlString.Create(stringWriter.ToString());
             }
-            return MvcHtmlString.Create(stringWriter.ToString());
         }
 
         #region Html Pager
@@ -1122,9 +1132,8 @@
                                                     };
 
         public static MvcHtmlString Tag(this HtmlHelper htmlHelper,
-                                        String tag = null, String src = null, String href = null,
-                                        String type = null, String id = null, String name = null,
-                                        String style = null, String @class = null, String attribs = null)
+                                        String tag = null, String src = null, String href = null, String type = null,
+                                        String id = null, String name = null, String style = null, String @class = null, String attribs = null)
         {
             var sb = new StringBuilder();
             sb.Append("<");
@@ -1147,11 +1156,8 @@
             return MvcHtmlString.Create(sb.ToString());
         }
 
-        private static void AppendOptionalAttrib(HtmlHelper htmlHelper,
-                                                 StringBuilder sb, String attribName, String attribValue,
-                                                 bool? encode = null,
-                                                 bool? resolveAbsUrl = null, bool? validateScriptableIdent = null,
-                                                 bool? validateClass = null)
+        private static void AppendOptionalAttrib(HtmlHelper htmlHelper, StringBuilder sb, String attribName, String attribValue,
+                                                 bool? encode = null, bool? resolveAbsUrl = null, bool? validateScriptableIdent = null, bool? validateClass = null)
         {
             if (attribValue.IsNullOrEmpty()) return;
             if (attribName.IsNullOrEmpty()) throw new ArgumentException("attribName is required.", "attribName");

@@ -302,7 +302,8 @@
                         : _ajaxHelper.RouteLink(item.Text, _routeName, routeValues, _ajaxOptions).ToString();
 
             }
-            String url = GenerateUrl(item.PageIndex);
+
+            var url = GenerateUrl(item.PageIndex);
             if (_pagerOptions.UseJqueryAjax)
             {
                 var ehBuilder = new StringBuilder();
@@ -516,7 +517,9 @@
             {
                 var strAlign = "text-align:" + _pagerOptions.HorizontalAlign.ToLower();
                 if (_htmlAttributes == null)
+                {
                     _htmlAttributes = new RouteValueDictionary { { "style", strAlign } };
+                }
                 else
                 {
                     if (_htmlAttributes.Keys.Contains("style"))
@@ -541,7 +544,7 @@
 
             if (scriptPager.IsNotNullOrEmpty())
                 scriptPager = String.Concat("<script language=\"javascript\" type=\"text/javascript\">", scriptPager, "</script>");
-            return CopyrightText + scriptPager + tb.ToString(TagRenderMode.Normal) + CopyrightText;
+            return String.Concat(CopyrightText, scriptPager, tb.ToString(TagRenderMode.Normal), CopyrightText);
         }
 
     }

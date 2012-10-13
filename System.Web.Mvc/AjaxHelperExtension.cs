@@ -5,31 +5,69 @@
     using Ajax;
     using Routing;
     using System.Text;
+    using UI;
+    using IO;
 
     public static class AjaxHelperExtension
     {
+        #region DeleteLink
 
-        public static MvcHtmlString TextBox(this AjaxHelper ajaxHelper, String name, AjaxOptions ajaxOptions, Object htmlAttributes)
+        public static MvcHtmlString DeleteLink<TModel>(this AjaxHelper<TModel> ajaxHelper, String linkText, String actionName, String controllerName = null, Object routeValues = null, IDictionary<String, Object> htmlAttributes = null)
         {
-            var tag = new TagBuilder("input");
-            tag.MergeAttribute("name", name);
-            tag.MergeAttribute("type", "text");
-
-            tag.MergeAttributes(HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
-            tag.MergeAttributes((ajaxOptions ?? new AjaxOptions()).ToUnobtrusiveHtmlAttributes());
-
-            return MvcHtmlString.Create(tag.ToString(TagRenderMode.Normal));
+            var ajaxOptDelete = new AjaxOptions
+                                {
+                                    Confirm = "Are you sure you want to delete this item?",
+                                    HttpMethod = "DELETE",
+                                    OnSuccess = "function() { window.location.reload(); }"
+                                };
+            return ajaxHelper.ActionLink(linkText, actionName, controllerName, routeValues, ajaxOptDelete, htmlAttributes);
         }
+
+        public static MvcHtmlString DeleteLink<TModel>(this AjaxHelper<TModel> ajaxHelper, String linkText, String actionName, String controllerName, Object routeValues, Object htmlAttributes)
+        {
+            return DeleteLink(ajaxHelper, linkText, actionName, controllerName, routeValues, HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
+        }
+
+        #endregion
 
         #region Input
 
+        public static MvcHtmlString TextBox(this AjaxHelper ajaxHelper, String name, AjaxOptions ajaxOptions, IDictionary<String, Object> htmlAttributes)
+        {
+            using (var stringWriter = new StringWriter())
+            using (var htmlWriter = new HtmlTextWriter(stringWriter))
+            {
+                htmlWriter.AddAttribute(HtmlTextWriterAttribute.Name, name);
+                htmlWriter.AddAttribute(HtmlTextWriterAttribute.Type, "Text");
+                foreach (var attrib in (ajaxOptions ?? new AjaxOptions()).ToUnobtrusiveHtmlAttributes())
+                    htmlWriter.AddAttribute(attrib.Key, attrib.Value.ToString());
+                if (null != htmlAttributes)
+                    foreach (var attrib in htmlAttributes)
+                        htmlWriter.AddAttribute(attrib.Key, attrib.Value.ToString());
+                htmlWriter.RenderBeginTag(HtmlTextWriterTag.Input);
+                htmlWriter.RenderEndTag();
+                return MvcHtmlString.Create(stringWriter.ToString());
+            }
+        }
+
+        public static MvcHtmlString TextBox(this AjaxHelper ajaxHelper, String name, AjaxOptions ajaxOptions, Object htmlAttributes)
+        {
+            return TextBox(ajaxHelper, name, ajaxOptions, HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
+        }
+
+
         public static MvcHtmlString ImageActionLink(this AjaxHelper ajaxHelper, String imageUrl, String altText, String actionName, Object routeValues, AjaxOptions ajaxOptions)
         {
-            var builder = new TagBuilder("img");
-            builder.MergeAttribute("src", imageUrl);
-            builder.MergeAttribute("alt", altText);
-            var link = ajaxHelper.ActionLink("[replaceme]", actionName, routeValues, ajaxOptions).ToHtmlString();
-            return MvcHtmlString.Create(link.Replace("[replaceme]", builder.ToString(TagRenderMode.SelfClosing)));
+            using (var stringWriter = new StringWriter())
+            using (var htmlWriter = new HtmlTextWriter(stringWriter))
+            {
+                var linkHtml = ajaxHelper.ActionLink("[LinkText]", actionName, routeValues, ajaxOptions).ToHtmlString();
+                htmlWriter.AddAttribute(HtmlTextWriterAttribute.Src, imageUrl);
+                htmlWriter.AddAttribute(HtmlTextWriterAttribute.Alt, altText);
+                htmlWriter.RenderBeginTag(HtmlTextWriterTag.Img);
+                htmlWriter.RenderEndTag();
+                return MvcHtmlString.Create(linkHtml.Replace("[LinkText]", stringWriter.ToString()));
+            }
         }
 
         #endregion
@@ -137,24 +175,5 @@
         #endregion
         #endregion
 
-        #region Link
-        
-        public static MvcHtmlString DeleteLink<TModel>(this AjaxHelper<TModel> ajaxHelper, String linkText, String actionName, String controllerName = null, Object routeValues = null, IDictionary<String, Object> htmlAttributes = null)
-        {
-            return ajaxHelper.ActionLink(linkText, actionName, controllerName, routeValues,
-                                new AjaxOptions
-                                {
-                                    Confirm = "Are you sure you want to delete this item?",
-                                    HttpMethod = "DELETE",
-                                    OnSuccess = "function() { window.location.reload(); }"
-                                }, htmlAttributes);
-        }
-
-        public static MvcHtmlString DeleteLink<TModel>(this AjaxHelper<TModel> ajaxHelper, String linkText, String actionName, String controllerName = null, Object routeValues = null, Object htmlAttributes = null)
-        {
-            return DeleteLink(ajaxHelper, linkText, actionName, controllerName, routeValues, HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
-        }
-
-        #endregion
     }
 }
