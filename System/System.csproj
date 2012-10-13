@@ -118,7 +118,10 @@
     <Compile Include="MultiException.cs" />
     <Compile Include="Net\HttpListenerContextExtension.cs" />
     <Compile Include="Net\Sockets\SocketExtension.cs" />
+    <Compile Include="Net\Sockets\TcpClientEx.cs" />
     <Compile Include="Net\Sockets\TcpClientExtension.cs" />
+    <Compile Include="Net\Sockets\TcpListenerEx.cs" />
+    <Compile Include="Net\Sockets\UdpSocket.cs" />
     <Compile Include="ObjectExtension.cs">
       <SubType>Code</SubType>
     </Compile>
