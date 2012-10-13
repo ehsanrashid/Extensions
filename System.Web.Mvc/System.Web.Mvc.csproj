@@ -48,6 +48,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionOutputCacheAttribute.cs" />
     <Compile Include="AjaxHelperExtension.cs" />
     <Compile Include="ExpressionExtension.cs" />
     <Compile Include="HtmlElementTag.cs" />

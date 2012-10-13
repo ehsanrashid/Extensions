@@ -144,7 +144,7 @@
         /// 
         ///   Contributed by tencokacistromy, http://www.codeplex.com/site/users/view/tencokacistromy
         /// </remarks>
-        /// <returns>Enumerable object with child controls of specified type.</returns>
+        /// <returns>Enumerable Object with child controls of specified type.</returns>
         public static IEnumerable<T> FindChildsOfType<T>(this Control control) where T : class
         {
             return FindChildsOfType<T>(control, false);
@@ -161,7 +161,7 @@
         /// 
         ///   Contributed by tencokacistromy, http://www.codeplex.com/site/users/view/tencokacistromy
         /// </remarks>
-        /// <returns>Enumerable object with child controls of specified type.</returns>
+        /// <returns>Enumerable Object with child controls of specified type.</returns>
         public static IEnumerable<T> FindChildsOfType<T>(this Control control, bool searchChildren) where T : class
         {
             foreach (Control child in control.Controls)
@@ -192,7 +192,7 @@
             var pointStop = Point.Empty;
             var size = Size.Empty;
 
-            control.MouseDown += delegate(object sender, MouseEventArgs entMouse)
+            control.MouseDown += delegate(Object sender, MouseEventArgs entMouse)
             {
                 pointStart = pointStop = entMouse.Location;
                 size = control.Parent.ClientSize;
@@ -206,7 +206,7 @@
                 }
             };
 
-            control.MouseMove += delegate(object sender, MouseEventArgs entMouse)
+            control.MouseMove += delegate(Object sender, MouseEventArgs entMouse)
             {
                 var X = control.Left + entMouse.X;
                 var Y = control.Top + entMouse.Y;
@@ -232,11 +232,11 @@
                 }
             };
 
-            control.MouseLeave += delegate(object sender, EventArgs ent)
+            control.MouseLeave += delegate(Object sender, EventArgs ent)
             {
             };
 
-            control.MouseUp += delegate(object sender, MouseEventArgs entMouse)
+            control.MouseUp += delegate(Object sender, MouseEventArgs entMouse)
             {
                 control.Capture = false;
                 isSizing = false;
@@ -249,14 +249,14 @@
             var isDragging = false;
             var pointDrag = Point.Empty;
 
-            control.MouseDown += delegate(object sender, MouseEventArgs entMouse)
+            control.MouseDown += delegate(Object sender, MouseEventArgs entMouse)
             {
                 isDragging = true;
                 pointDrag = entMouse.Location;
                 control.Capture = true;
             };
 
-            control.MouseMove += delegate(object sender, MouseEventArgs entMouse)
+            control.MouseMove += delegate(Object sender, MouseEventArgs entMouse)
             {
                 if (isDragging)
                 {
@@ -268,7 +268,7 @@
                 }
             };
 
-            control.MouseUp += delegate(object sender, MouseEventArgs entMouse)
+            control.MouseUp += delegate(Object sender, MouseEventArgs entMouse)
             {
                 control.Capture = false;
                 isDragging = false;
