@@ -17,6 +17,33 @@
     ///</summary>
     public static class HtmlHelperExtension
     {
+        public static MvcHtmlString Render(this HtmlHelper htmlHelper, String content)
+        {
+            return MvcHtmlString.Create(content);
+        }
+
+        public static MvcHtmlString CurrentAction(this HtmlHelper htmlHelper)
+        {
+            return MvcHtmlString.Create(htmlHelper.ViewContext.RouteData.Values["action"].ToString());
+        }
+
+        public static MvcHtmlString CurrentController(this HtmlHelper htmlHelper)
+        {
+            return MvcHtmlString.Create(htmlHelper.ViewContext.RouteData.Values["controller"].ToString());
+        }
+
+        public static MvcForm BeginForm(this HtmlHelper htmlHelper, Object routeValues, FormMethod method, Object htmlAttributes)
+        {
+            return htmlHelper.BeginForm(htmlHelper.CurrentAction().ToString(), htmlHelper.CurrentController().ToString(), routeValues, method, htmlAttributes);
+        }
+
+        public static MvcHtmlString Truncate(this HtmlHelper helper, String input, int length)
+        {
+            return MvcHtmlString.Create((input.Length <= length)
+                                            ? input
+                                            : input.Substring(0, length) + "...");
+        }
+
         #region Label
         /// <summary>
         /// Returns an HTML label element for the given target and text.
@@ -788,9 +815,9 @@
               (htmlHelper, null, listName, sourceDataExpr, valueExpr, textToDisplayExpr, htmlAttributesExpr,
                selectedValuesExpr, htmlAttributes, wrapInfo, disabledValues);
         }
-        
+
         #endregion
-        
+
         #endregion
         #endregion
 
@@ -808,25 +835,25 @@
             var stringWriter = new StringWriter();
             using (HtmlTextWriter writer = new HtmlTextWriter(stringWriter))
             {
-                for (var pageNum = 1; pageNum <= pagedList.NoOfPages; ++pageNum)
+                for (var pageIndex = 1; pageIndex <= pagedList.NoOfPages; ++pageIndex)
                 {
-                    if (pageNum != pagedList.PageIndex)
+                    if (pageIndex != pagedList.PageIndex)
                     {
-                        writer.AddAttribute(HtmlTextWriterAttribute.Href, "/" + controllerName + "/" + actionName + "/" + pageNum);
-                        writer.AddAttribute(HtmlTextWriterAttribute.Alt, "Page " + pageNum);
+                        writer.AddAttribute(HtmlTextWriterAttribute.Href, "/" + controllerName + "/" + actionName + "/" + pageIndex);
+                        writer.AddAttribute(HtmlTextWriterAttribute.Alt, "Page " + pageIndex);
                         writer.RenderBeginTag(HtmlTextWriterTag.A);
                     }
 
                     writer.AddAttribute(HtmlTextWriterAttribute.Class,
-                                        pageNum == pagedList.PageIndex
+                                        pageIndex == pagedList.PageIndex
                                             ? "pageLinkCurrent"
                                             : "pageLink");
 
                     writer.RenderBeginTag(HtmlTextWriterTag.Span);
-                    writer.Write(pageNum);
+                    writer.Write(pageIndex);
                     writer.RenderEndTag();
 
-                    if (pageNum != pagedList.PageIndex)
+                    if (pageIndex != pagedList.PageIndex)
                     {
                         writer.RenderEndTag();
                     }
@@ -1140,6 +1167,7 @@
             if (validateScriptableIdent.Value && !IsScriptableIdValue(attribValue)) throw new FormatException("Attrib value has invalid characters: " + attribNameLcase + "=" + attribValue);
             if (validateClass.Value && !IsValidClassValue(attribValue)) throw new FormatException("Attrib value has invalid characters: " + attribNameLcase + "=" + attribValue);
             if (resolveAbsUrl.Value)
+            {
                 try
                 {
                     sb.Append(VirtualPathUtility.ToAbsolute(attribValue));
@@ -1147,14 +1175,21 @@
                 catch (ArgumentException e)
                 {
                     if (e.Message.Contains("is not allowed here"))
-                        throw new ArgumentException(e.Message + " (Try prefixing the app root, i.e. \"~/\".)",
-                                                    e.ParamName);
+                        throw new ArgumentException(e.Message + " (Try prefixing the app root, i.e. \"~/\".)", e.ParamName);
                     throw;
                 }
-            else if (encode.Value) sb.Append(htmlHelper.Encode(attribValue));
-            else sb.Append(attribValue);
+            }
+            else if (encode.Value)
+            {
+                sb.Append(htmlHelper.Encode(attribValue));
+            }
+            else
+            {
+                sb.Append(attribValue);
+            }
             sb.Append("\"");
         }
+
 
         private static bool IsValidClassValue(String value)
         {
@@ -1178,25 +1213,6 @@
             return !numeric.Contains(value[0]) && value.All(c => alphanumeric.Contains(c));
         }
 
-        public static MvcHtmlString CurrentAction(this HtmlHelper htmlHelper)
-        {
-            return MvcHtmlString.Create(htmlHelper.ViewContext.RouteData.Values["action"].ToString());
-        }
-
-        public static MvcHtmlString CurrentController(this HtmlHelper htmlHelper)
-        {
-            return MvcHtmlString.Create(htmlHelper.ViewContext.RouteData.Values["controller"].ToString());
-        }
-
-        //public static MvcForm BeginForm(this HtmlHelper htmlHelper, Object routeValues, FormMethod method, Object htmlAttributes)
-        //{
-        //  return htmlHelper.BeginForm(Html.CurrentAction, Html.CurrentController, routeValues, method, htmlAttributes);
-        //}
-
-        public static MvcHtmlString Render(this HtmlHelper htmlHelper, String content)
-        {
-            return MvcHtmlString.Create(content);
-        }
 
 
         #endregion

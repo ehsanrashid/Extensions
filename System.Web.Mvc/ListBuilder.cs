@@ -102,7 +102,7 @@
 
             // create checkbox list
             var sb = new StringBuilder();
-            sb.Append(htmlWrapper.wrap_open);
+            sb.Append(htmlWrapper.WrapOpen);
             htmlwrapRowbreakCount = 0;
 
             // create list of checkboxes based on data
@@ -115,7 +115,7 @@
                 // create checkbox element
                 sb = CreateCheckBoxListElement(sb, htmlHelper, modelMetadata, htmlWrapper, _valueHtmlAttributesFunc(item, htmlAttributes), selectedValues, disabledValues, listName, itemValue, itemText, textLayout);
             }
-            sb.Append(htmlWrapper.wrap_close);
+            sb.Append(htmlWrapper.WrapClose);
 
             // return checkbox list
             return MvcHtmlString.Create(sb.ToString());
@@ -135,7 +135,7 @@
             if (htmlListInfo != null)
             {
                 // creating custom layouts
-                switch (htmlListInfo.htmlTag)
+                switch (htmlListInfo.HtmlTag)
                 {
                 // creates user selected number of float sections with
                 // vertically sorted checkboxes
@@ -148,12 +148,12 @@
                         if (numberOfItems <= 4 &&
                             (numberOfItems <= htmlListInfo.Columns || numberOfItems - htmlListInfo.Columns == 1))
                             rows = numberOfItems;
-                        htmlWrapInfo.separator_max_counter = rows;
+                        htmlWrapInfo.SeparatorMaxCount = rows;
 
                         // create wrapped raw html tag
                         var wrapRow = HtmlElementTag.Div;
                         var wrapHtml_builder = new TagBuilder(wrapRow.ToString());
-                        var user_html_attributes = htmlListInfo.htmlAttributes.ToDictionary();
+                        var user_html_attributes = htmlListInfo.HtmlAttributes.ToDictionary();
 
                         // create raw style and merge it with user provided style (if applicable)
                         var defaultSectionStyle = "float:left;"; // margin-right:30px; line-height:25px;
@@ -172,30 +172,30 @@
                         wrapHtml_builder.MergeAttributes(user_html_attributes);
 
                         // build wrapped raw html tag 
-                        htmlWrapInfo.wrap_open = wrapHtml_builder.ToString(TagRenderMode.StartTag);
-                        htmlWrapInfo.wrap_rowbreak = "</" + wrapRow + "> " +
+                        htmlWrapInfo.WrapOpen = wrapHtml_builder.ToString(TagRenderMode.StartTag);
+                        htmlWrapInfo.WrapRowbreak = "</" + wrapRow + "> " +
                                           wrapHtml_builder.ToString(TagRenderMode.StartTag);
-                        htmlWrapInfo.wrap_close = wrapHtml_builder.ToString(TagRenderMode.EndTag) +
+                        htmlWrapInfo.WrapClose = wrapHtml_builder.ToString(TagRenderMode.EndTag) +
                                        " <div style=\"clear:both;\"></div>";
-                        htmlWrapInfo.append_to_element = "<br/>";
+                        htmlWrapInfo.AppendToElement = "<br/>";
                     }
                     break;
                 // creates an html <table> with checkboxes sorted horizontally
                 case HtmlTag.Table:
                     {
                         if (htmlListInfo.Columns <= 0) htmlListInfo.Columns = 1;
-                        htmlWrapInfo.separator_max_counter = htmlListInfo.Columns;
+                        htmlWrapInfo.SeparatorMaxCount = htmlListInfo.Columns;
 
                         var wrapHtml_builder = new TagBuilder(HtmlElementTag.Table.ToString());
-                        wrapHtml_builder.MergeAttributes(htmlListInfo.htmlAttributes.ToDictionary());
+                        wrapHtml_builder.MergeAttributes(htmlListInfo.HtmlAttributes.ToDictionary());
                         wrapHtml_builder.MergeAttribute("cellspacing", "0"); // for IE7 compatibility
 
                         var wrapRow = HtmlElementTag.Tr;
-                        htmlWrapInfo.wrap_element = HtmlElementTag.Td;
-                        htmlWrapInfo.wrap_open = wrapHtml_builder.ToString(TagRenderMode.StartTag) +
+                        htmlWrapInfo.WrapElement = HtmlElementTag.Td;
+                        htmlWrapInfo.WrapOpen = wrapHtml_builder.ToString(TagRenderMode.StartTag) +
                                       "<" + wrapRow + ">";
-                        htmlWrapInfo.wrap_rowbreak = "</" + wrapRow + "><" + wrapRow + ">";
-                        htmlWrapInfo.wrap_close = "</" + wrapRow + ">" +
+                        htmlWrapInfo.WrapRowbreak = "</" + wrapRow + "><" + wrapRow + ">";
+                        htmlWrapInfo.WrapClose = "</" + wrapRow + ">" +
                                        wrapHtml_builder.ToString(TagRenderMode.EndTag);
                     }
                     break;
@@ -217,18 +217,18 @@
             else
             {
                 if (position == Position.Horizontal || position == Position.Horizontal_RightToLeft)
-                    htmlWrapInfo.append_to_element = " &nbsp; ";
+                    htmlWrapInfo.AppendToElement = " &nbsp; ";
                 if (position == Position.Vertical || position == Position.Vertical_RightToLeft)
-                    htmlWrapInfo.append_to_element = "<br/>";
+                    htmlWrapInfo.AppendToElement = "<br/>";
 
                 if (textLayout == TextLayout.RightToLeft)
                 {
                     // lean text to right for right-to-left languages
                     var defaultSectionStyle = "style=\"text-align: right;\"";
                     var wrapRow = HtmlElementTag.Div;
-                    htmlWrapInfo.wrap_open = "<" + wrapRow + " " + defaultSectionStyle + ">";
-                    htmlWrapInfo.wrap_rowbreak = string.Empty;
-                    htmlWrapInfo.wrap_close = "</" + wrapRow + ">";
+                    htmlWrapInfo.WrapOpen = "<" + wrapRow + " " + defaultSectionStyle + ">";
+                    htmlWrapInfo.WrapRowbreak = string.Empty;
+                    htmlWrapInfo.WrapClose = "</" + wrapRow + ">";
                 }
             }
 
@@ -284,14 +284,14 @@
             {
                 // then set style for displaying checkbox for right-to-left languages
                 var defaultSectionStyle = "style=\"text-align: right;\"";
-                sb.Append(htmlWrapper.wrap_element != HtmlElementTag.None
-                            ? "<" + htmlWrapper.wrap_element + " " + defaultSectionStyle + ">"
+                sb.Append(htmlWrapper.WrapElement != HtmlElementTag.None
+                            ? "<" + htmlWrapper.WrapElement + " " + defaultSectionStyle + ">"
                             : "");
             }
             else
             {
-                sb.Append(htmlWrapper.wrap_element != HtmlElementTag.None
-                            ? "<" + htmlWrapper.wrap_element + ">"
+                sb.Append(htmlWrapper.WrapElement != HtmlElementTag.None
+                            ? "<" + htmlWrapper.WrapElement + ">"
                             : "");
             }
 
@@ -327,18 +327,18 @@
             }
 
             // close checkbox tag wrapper
-            sb.Append(htmlWrapper.wrap_element != HtmlElementTag.None
-                        ? "</" + htmlWrapper.wrap_element + ">"
+            sb.Append(htmlWrapper.WrapElement != HtmlElementTag.None
+                        ? "</" + htmlWrapper.WrapElement + ">"
                         : "");
 
             // add element ending
-            sb.Append(htmlWrapper.append_to_element);
+            sb.Append(htmlWrapper.AppendToElement);
 
             // add table column break, if applicable
             htmlwrapRowbreakCount += 1;
-            if (htmlwrapRowbreakCount == htmlWrapper.separator_max_counter)
+            if (htmlwrapRowbreakCount == htmlWrapper.SeparatorMaxCount)
             {
-                sb.Append(htmlWrapper.wrap_rowbreak);
+                sb.Append(htmlWrapper.WrapRowbreak);
                 htmlwrapRowbreakCount = 0;
             }
 

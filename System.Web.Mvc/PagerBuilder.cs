@@ -232,11 +232,12 @@
                                                                       _pagerOptions.InvalidPageIndexErrorMessage).Replace("%PageIndexOutOfRangeErrorMessage%",
                                                        _pagerOptions.PageIndexOutOfRangeErrorMessage).Replace("%ClickHandler%", linkClickTrigger);
             }
-            String onChangeScript = null;
+        
+            String scriptOnChange = null;
             if (!_pagerOptions.ShowGoButton)
-                onChangeScript = " onchange=\"_MvcPager_GoToPage(this," + _NoOfPages + ")\"";
+                scriptOnChange = " onchange=\"_MvcPager_GoToPage(this," + _NoOfPages + ")\"";
 
-            StringBuilder piBuilder = new StringBuilder();
+            var piBuilder = new StringBuilder();
             if (_pagerOptions.PageIndexBoxType == PageIndexBoxType.DropDownList)
             {
                 // start page index
@@ -248,7 +249,7 @@
                 // end page index
                 var endIndex = startIndex + _pagerOptions.MaximumPageIndexItems - 1;
                 if (endIndex > _NoOfPages) endIndex = _NoOfPages;
-                piBuilder.AppendFormat("<select id=\"{0}\"{1}>", controlId + "_pib", onChangeScript);
+                piBuilder.AppendFormat("<select id=\"{0}\"{1}>", controlId + "_pib", scriptOnChange);
                 for (var i = startIndex; i <= endIndex; i++)
                 {
                     piBuilder.AppendFormat("<option value=\"{0}\"", i);
@@ -261,7 +262,7 @@
             else
                 piBuilder.AppendFormat(
                     "<input type=\"text\" id=\"{0}\" value=\"{1}\" onkeydown=\"_MvcPager_Keydown(event)\"{2}/>",
-                    controlId + "_pib", _pageIndex, onChangeScript);
+                    controlId + "_pib", _pageIndex, scriptOnChange);
             String outHtml;
             if (_pagerOptions.PageIndexBoxWrapperFormatString.IsNotNullOrEmpty())
             {
@@ -304,7 +305,7 @@
             String url = GenerateUrl(item.PageIndex);
             if (_pagerOptions.UseJqueryAjax)
             {
-                StringBuilder ehBuilder = new StringBuilder();
+                var ehBuilder = new StringBuilder();
                 //ignore OnSuccess property
                 if (_ajaxOptions.OnFailure.IsNotNullOrEmpty() || _ajaxOptions.OnBegin.IsNotNullOrEmpty())
                 {
@@ -342,7 +343,7 @@
         String GeneratePagerElement(PagerItem item)
         {
             //pager item link
-            String url = GenerateUrl(item.PageIndex);
+            var url = GenerateUrl(item.PageIndex);
             if (item.Disabled) //first,last,next or previous page
                 return CreateWrappedPagerElement(item, String.Format("<a disabled=\"disabled\">{0}</a>", item.Text));
             return CreateWrappedPagerElement(item, url.IsNullOrEmpty()
@@ -373,7 +374,7 @@
 
         String CreateWrappedPagerElement(PagerItem item, String el)
         {
-            String navStr = el;
+            var navStr = el;
             switch (item.Type)
             {
             case PagerItemType.FirstPage:
@@ -523,24 +524,24 @@
                 }
             }
             tb.MergeAttributes(_htmlAttributes, true);
-            String pagerScript = String.Empty;
+            var scriptPager = String.Empty;
             if (_pagerOptions.UseJqueryAjax &&
                 (String) _htmlHelper.ViewContext.HttpContext.Items[JqueryScriptCheckItemKey] != "1")
             {
-                pagerScript = JqCheckScript;
+                scriptPager = JqCheckScript;
                 _htmlHelper.ViewContext.HttpContext.Items[JqueryScriptCheckItemKey] = "1";
             }
             if (_pagerOptions.ShowPageIndexBox)
             {
-                sb.Append(BuildGoToPageSection(ref pagerScript));
+                sb.Append(BuildGoToPageSection(ref scriptPager));
             }
             else
                 sb.Length -= _pagerOptions.SeparatorHtml.Length;
             tb.InnerHtml = sb.ToString();
 
-            if (pagerScript.IsNotNullOrEmpty())
-                pagerScript = String.Concat("<script language=\"javascript\" type=\"text/javascript\">", pagerScript, "</script>");
-            return CopyrightText + pagerScript + tb.ToString(TagRenderMode.Normal) + CopyrightText;
+            if (scriptPager.IsNotNullOrEmpty())
+                scriptPager = String.Concat("<script language=\"javascript\" type=\"text/javascript\">", scriptPager, "</script>");
+            return CopyrightText + scriptPager + tb.ToString(TagRenderMode.Normal) + CopyrightText;
         }
 
     }

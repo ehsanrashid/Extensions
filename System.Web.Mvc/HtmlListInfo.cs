@@ -7,15 +7,15 @@
     {
         public HtmlListInfo(HtmlTag htmlTag, int columns = 0, object htmlAttributes = null, TextLayout textLayout = TextLayout.Default)
         {
-            this.htmlTag = htmlTag;
+            HtmlTag = htmlTag;
             Columns = columns;
-            this.htmlAttributes = htmlAttributes;
+            HtmlAttributes = htmlAttributes;
             TextLayout = textLayout;
         }
 
-        public HtmlTag htmlTag { get; set; }
+        public HtmlTag HtmlTag { get; set; }
         public int Columns { get; set; }
-        public object htmlAttributes { get; set; }
+        public object HtmlAttributes { get; set; }
         public TextLayout TextLayout { get; set; }
     }
 }

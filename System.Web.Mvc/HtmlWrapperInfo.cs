@@ -5,12 +5,12 @@
     /// </summary>
     public class HtmlWrapperInfo
     {
-        public string wrap_open = String.Empty;
-        public string wrap_rowbreak = String.Empty;
-        public string wrap_close = String.Empty;
-        public HtmlElementTag wrap_element = HtmlElementTag.None;
-        public string append_to_element = String.Empty;
-        public int separator_max_counter;
+        public String WrapOpen = String.Empty;
+        public String WrapRowbreak = String.Empty;
+        public String WrapClose = String.Empty;
+        public HtmlElementTag WrapElement = HtmlElementTag.None;
+        public String AppendToElement = String.Empty;
+        public int SeparatorMaxCount;
     }
 
 }

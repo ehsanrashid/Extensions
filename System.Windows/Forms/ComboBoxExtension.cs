@@ -59,5 +59,7 @@ namespace System.Windows.Forms
             comboBox.DropDownWidth = Math.Max(newWidth, minDropDownWidth == -1 ? comboBox.Width : minDropDownWidth);
             graphics.Dispose();
         }
+
+
     }
 }
