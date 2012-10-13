@@ -14,14 +14,11 @@
 
         public static MvcHtmlString ImageActionLink(this AjaxHelper ajaxHelper, string imageUrl, string altText, string actionName, object routeValues, AjaxOptions ajaxOptions)
         {
-            
             var builder = new TagBuilder("img");
             builder.MergeAttribute("src", imageUrl);
             builder.MergeAttribute("alt", altText);
             var link = ajaxHelper.ActionLink("[replaceme]", actionName, routeValues, ajaxOptions).ToHtmlString();
             return MvcHtmlString.Create(link.Replace("[replaceme]", builder.ToString(TagRenderMode.SelfClosing)));
-            
-
         }
 
         #endregion

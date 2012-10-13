@@ -1121,5 +1121,27 @@
         }
 
 
+
+        /// <summary>
+        /// Convert object to Dictionary of strings and objects
+        /// </summary>
+        /// <param name="_object">Object of Dictionary of strings and objects (e.g. 'new { name="value" }')</param>
+        /// <returns>Dictionary of strings and objects</returns>
+        public static IDictionary<string, object> ToDictionary(this Object obj)
+        {
+            if (obj == null) return new Dictionary<string, object>();
+            if (obj is IDictionary<string, object>) return (IDictionary<string, object>) obj;
+            var propInfo = TypeDescriptor.GetProperties(obj);
+            var dictionary = new Dictionary<string, object>(propInfo.Count);
+            foreach (PropertyDescriptor property in propInfo)
+            {
+                var name = property.Name.Replace("_", "-");
+                // JRR - Added the Replace call. This is the standard used by MVC http://www.asp.net/whitepapers/mvc3-release-notes#0.1__Toc274034227
+                var value = property.GetValue(obj);
+                dictionary.Add(name, value ?? "");
+            }
+            return dictionary;
+        }
+
     }
 }

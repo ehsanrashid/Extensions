@@ -36,6 +36,7 @@
       <HintPath>..\System.Collections\bin\System.CollectionsEx.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -48,13 +49,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AjaxHelperExtension.cs" />
+    <Compile Include="ExpressionExtension.cs" />
+    <Compile Include="htmlElementTag.cs" />
     <Compile Include="HtmlHelperExtension.cs" />
+    <Compile Include="HtmlListInfo.cs" />
+    <Compile Include="HtmlTag.cs" />
+    <Compile Include="htmlWrapperInfo.cs" />
+    <Compile Include="ListBuilder.cs" />
     <Compile Include="Pager.cs" />
     <Compile Include="PagerBuilder.cs" />
     <Compile Include="PagerItem.cs" />
     <Compile Include="PagerItemType.cs" />
     <Compile Include="PagerOptions.cs" />
+    <Compile Include="Position.cs" />
     <Compile Include="TempDataDictionaryExtension.cs" />
+    <Compile Include="TextLayout.cs" />
     <Compile Include="ViewDataDictionaryExtension.cs" />
     <Compile Include="ViewExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
