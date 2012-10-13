@@ -226,11 +226,6 @@
 
         #endregion
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
         public static Int64 Factorial(this Int64 value)
         {
             if (value < 0) value = -value;

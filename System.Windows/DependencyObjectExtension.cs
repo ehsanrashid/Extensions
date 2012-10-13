@@ -15,7 +15,7 @@
         public static T FindParent<T>(this DependencyObject child) where T : DependencyObject
         {
             //get parent item
-            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
+            var parentObject = VisualTreeHelper.GetParent(child);
 
             //we've reached the end of the tree
             if (null == parentObject) return null;
@@ -40,32 +40,32 @@
             var childrenCount = VisualTreeHelper.GetChildrenCount(parent);
             for (var i = 0; i < childrenCount; i++)
             {
-                DependencyObject child = VisualTreeHelper.GetChild(parent, i);
+                var childObject = VisualTreeHelper.GetChild(parent, i);
 
                 // If the child is not of the request child type child  
-                var childType = child as T;
-                if (null == childType)
+                var child = childObject as T;
+                if (null == child)
                 {
                     // recursively drill down the tree  
-                    foundChild = FindChild<T>(child, childName);
+                    foundChild = FindChild<T>(childObject, childName);
                     // If the child is found, break so we do not overwrite the found child.    
-                    if (foundChild != null) break;
+                    if (null != foundChild) break;
                 }
                 else if (childName.IsNotNullOrEmpty())
                 {
-                    var frameworkElement = child as FrameworkElement;
+                    var frameworkElement = childObject as FrameworkElement;
                     // If the child's name is set for search    
                     if (null != frameworkElement && frameworkElement.Name == childName)
                     {
                         // if the child's name is of the request name  
-                        foundChild = (T) child;
+                        foundChild = (T) childObject;
                         break;
                     }
                 }
                 else
                 {
                     // child control found.
-                    foundChild = (T) child;
+                    foundChild = (T) childObject;
                     break;
                 }
             }
@@ -85,21 +85,20 @@
             return lstVisualChild;
         }
 
-
         private static void GetVisualChildList<T>(DependencyObject parent, List<T> lstVisualChild)
             where T : DependencyObject
         {
             var count = VisualTreeHelper.GetChildrenCount(parent);
-            for (var i = 0; i < count; i++)
+            for (var i = 0; i < count; ++i)
             {
-                var child = VisualTreeHelper.GetChild(parent, i);
-                if (child is T)
+                var childObject = VisualTreeHelper.GetChild(parent, i);
+                if (childObject is T)
                 {
-                    lstVisualChild.Add(child as T);
+                    lstVisualChild.Add(childObject as T);
                 }
-                else if (child != null)
+                else if (null != childObject)
                 {
-                    GetVisualChildList(child, lstVisualChild);
+                    GetVisualChildList(childObject, lstVisualChild);
                 }
             }
         }

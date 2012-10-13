@@ -25,7 +25,7 @@
 
             var drawingVisual = new DrawingVisual();
 
-            using (DrawingContext drawingContext = drawingVisual.RenderOpen())
+            using (var drawingContext = drawingVisual.RenderOpen())
             {
                 drawingContext.PushTransform(new ScaleTransform(scale, scale));
                 drawingContext.DrawRectangle(sourceBrush, null, new Rect(new Point(0, 0), new Point(element.RenderSize.Width, element.RenderSize.Height)));

@@ -13,11 +13,11 @@
         /// <returns> </returns>
         public static object GetProperty(this Principal principal, String name)
         {
-            var directoryEntry = (principal.GetUnderlyingObject() as DirectoryEntry);
+            var directoryEntry = principal.GetUnderlyingObject() as DirectoryEntry;
             if (null != directoryEntry && directoryEntry.Properties.Contains(name))
             {
-                var property = directoryEntry.Properties[name];
-                if (null != property) return property.Value;
+                var propName = directoryEntry.Properties[name];
+                if (null != propName) return propName.Value;
             }
             return null;
         }

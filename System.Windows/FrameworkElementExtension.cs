@@ -3,7 +3,6 @@
     using Linq;
     using Controls;
 
-
     public static class FrameworkElementExtension
     {
 
@@ -19,9 +18,10 @@
             if (null == parent) return;
 
             var maxZ = parent.Children.OfType<UIElement>()
-                .Where(x => !x.Equals(control))
-                .Select(Panel.GetZIndex)
-                .Max();
+                             .Where(x => !x.Equals(control))
+                             .Select(Panel.GetZIndex)
+                             .Max();
+
             Panel.SetZIndex(control, maxZ + 1);
         }
 

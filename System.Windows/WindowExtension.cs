@@ -12,14 +12,14 @@
         /// <param name="controlFocus">Control to set the focus on</param>
         public static void SetInitialFocus(this Window window, Control controlFocus)
         {
-            RoutedEventHandler routedHandler = null; // set to null to prevent unassigned compiler error
+            var routedHandler = default(RoutedEventHandler); // set to null to prevent unassigned compiler error
             routedHandler = delegate
                             {
                                 controlFocus.Focus();
-                                var txtBox = controlFocus as TextBox;
-                                if (txtBox != null)
+                                var textBox = controlFocus as TextBox;
+                                if (null != textBox)
                                 {
-                                    txtBox.SelectAll();
+                                    textBox.SelectAll();
                                 }
                                 // unsubscribe after first execute
                                 window.GotFocus -= routedHandler;

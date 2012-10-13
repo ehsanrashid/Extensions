@@ -1,7 +1,10 @@
-﻿using System.Drawing.Drawing2D;
-
-namespace System.Drawing
+﻿namespace System.Drawing
 {
+    using Drawing2D;
+    using Imaging;
+    using Windows.Media.Imaging;
+    using IO;
+
     /// <summary>
     ///   Extension methods for the System.Drawing.Bitmap class
     /// </summary>
@@ -173,6 +176,19 @@ namespace System.Drawing
         public static Bitmap ScaleToSizeProportional(this Bitmap bitmap, Size size)
         {
             return ScaleToSizeProportional(bitmap, size.Width, size.Height);
+        }
+
+        public static BitmapImage ToBitmapImage(this Bitmap bitmap)
+        {
+            var bitmapImage = new BitmapImage();
+            bitmapImage.BeginInit();
+            using (var stream = new MemoryStream())
+            {
+                bitmap.Save(stream, ImageFormat.Png);
+                bitmapImage.StreamSource = stream;
+            }
+            bitmapImage.EndInit();
+            return bitmapImage;
         }
     }
 }

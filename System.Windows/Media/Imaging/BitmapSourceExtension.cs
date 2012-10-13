@@ -18,28 +18,13 @@
         {
             var encoder = new BmpBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
-
             using (var stream = new MemoryStream())
             {
                 encoder.Save(stream);
                 // Nested construction required to prevent issues from closing the underlying stream
-                return new Bitmap(new Bitmap(stream));
+                return new Bitmap(stream);
             }
         }
-
-        public static BitmapImage ToBitmapImage(this Bitmap bitmap)
-        {
-            var bitmapImage = new BitmapImage();
-            bitmapImage.BeginInit();
-            using (var stream = new MemoryStream())
-            {
-                bitmap.Save(stream, ImageFormat.Png);
-                bitmapImage.StreamSource = stream;
-            }
-            bitmapImage.EndInit();
-            return bitmapImage;
-        }
-
 
     }
 }

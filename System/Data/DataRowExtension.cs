@@ -5,17 +5,6 @@
     /// </summary>
     public static class DataRowExtension
     {
-        /// <summary>
-        ///   Gets the record value casted to the specified data type or the data types default value.
-        /// </summary>
-        /// <typeparam name="T"> The return data type </typeparam>
-        /// <param name="row"> The data row. </param>
-        /// <param name="field"> The name of the record field. </param>
-        /// <returns> The record value </returns>
-        public static T Get<T>(this DataRow row, String field)
-        {
-            return row.Get(field, default(T));
-        }
 
         /// <summary>
         ///   Gets the record value casted to the specified data type or the specified default value.
@@ -32,6 +21,18 @@
         }
 
         /// <summary>
+        ///   Gets the record value casted to the specified data type or the data types default value.
+        /// </summary>
+        /// <typeparam name="T"> The return data type </typeparam>
+        /// <param name="row"> The data row. </param>
+        /// <param name="field"> The name of the record field. </param>
+        /// <returns> The record value </returns>
+        public static T Get<T>(this DataRow row, String field)
+        {
+            return Get(row, field, default(T));
+        }
+
+        /// <summary>
         ///   Gets the record value casted as byte array.
         /// </summary>
         /// <param name="row"> The data row. </param>
@@ -39,20 +40,10 @@
         /// <returns> The record value </returns>
         public static byte[] GetBytes(this DataRow row, String field)
         {
-            return (null != row) ? row[field] as byte[] : new byte[] {};
+            return (null != row) ? row[field] as byte[] : new byte[] { };
         }
 
         #region GetString
-        /// <summary>
-        ///   Gets the record value casted as String or null.
-        /// </summary>
-        /// <param name="row"> The data row. </param>
-        /// <param name="field"> The name of the record field. </param>
-        /// <returns> The record value </returns>
-        public static String GetString(this DataRow row, String field)
-        {
-            return row.GetString(field, null);
-        }
 
         /// <summary>
         ///   Gets the record value casted as String or the specified default value.
@@ -65,6 +56,17 @@
         {
             var value = row[field];
             return (value is String) ? (String) value : defaultValue;
+        }
+
+        /// <summary>
+        ///   Gets the record value casted as String or null.
+        /// </summary>
+        /// <param name="row"> The data row. </param>
+        /// <param name="field"> The name of the record field. </param>
+        /// <returns> The record value </returns>
+        public static String GetString(this DataRow row, String field)
+        {
+            return GetString(row, field, null);
         }
         #endregion
 
@@ -83,16 +85,6 @@
         #endregion
 
         #region GetDateTime
-        /// <summary>
-        ///   Gets the record value casted as DateTime or DateTime.MinValue.
-        /// </summary>
-        /// <param name="row"> The data row. </param>
-        /// <param name="field"> The name of the record field. </param>
-        /// <returns> The record value </returns>
-        public static DateTime GetDateTime(this DataRow row, String field)
-        {
-            return row.GetDateTime(field, DateTime.MinValue);
-        }
 
         /// <summary>
         ///   Gets the record value casted as DateTime or the specified default value.
@@ -106,19 +98,20 @@
             var value = row[field];
             return (value is DateTime) ? (DateTime) value : defaultValue;
         }
-        #endregion
 
-        #region GetDateTimeOffset
         /// <summary>
-        ///   Gets the record value casted as DateTimeOffset (UTC) or DateTime.MinValue.
+        ///   Gets the record value casted as DateTime or DateTime.MinValue.
         /// </summary>
         /// <param name="row"> The data row. </param>
         /// <param name="field"> The name of the record field. </param>
         /// <returns> The record value </returns>
-        public static DateTimeOffset GetDateTimeOffset(this DataRow row, String field)
+        public static DateTime GetDateTime(this DataRow row, String field)
         {
-            return new DateTimeOffset(row.GetDateTime(field), TimeSpan.Zero);
+            return GetDateTime(row, field, DateTime.MinValue);
         }
+        #endregion
+
+        #region GetDateTimeOffset
 
         /// <summary>
         ///   Gets the record value casted as DateTimeOffset (UTC) or the specified default value.
@@ -132,18 +125,18 @@
             var datetime = row.GetDateTime(field);
             return (datetime != DateTime.MinValue) ? new DateTimeOffset(datetime, TimeSpan.Zero) : defaultValue;
         }
-        #endregion
 
         /// <summary>
-        ///   Gets the record value casted as int or 0.
+        ///   Gets the record value casted as DateTimeOffset (UTC) or DateTime.MinValue.
         /// </summary>
         /// <param name="row"> The data row. </param>
         /// <param name="field"> The name of the record field. </param>
         /// <returns> The record value </returns>
-        public static int GetInt32(this DataRow row, String field)
+        public static DateTimeOffset GetDateTimeOffset(this DataRow row, String field)
         {
-            return row.GetInt32(field, 0);
+            return new DateTimeOffset(GetDateTime(row, field), TimeSpan.Zero);
         }
+        #endregion
 
         /// <summary>
         ///   Gets the record value casted as int or the specified default value.
@@ -159,14 +152,14 @@
         }
 
         /// <summary>
-        ///   Gets the record value casted as long or 0.
+        ///   Gets the record value casted as int or 0.
         /// </summary>
         /// <param name="row"> The data row. </param>
         /// <param name="field"> The name of the record field. </param>
         /// <returns> The record value </returns>
-        public static long GetInt64(this DataRow row, String field)
+        public static int GetInt32(this DataRow row, String field)
         {
-            return row.GetInt64(field, 0);
+            return GetInt32(row, field, 0);
         }
 
         /// <summary>
@@ -183,14 +176,14 @@
         }
 
         /// <summary>
-        ///   Gets the record value casted as decimal or 0.
+        ///   Gets the record value casted as long or 0.
         /// </summary>
         /// <param name="row"> The data row. </param>
         /// <param name="field"> The name of the record field. </param>
         /// <returns> The record value </returns>
-        public static decimal GetDecimal(this DataRow row, String field)
+        public static long GetInt64(this DataRow row, String field)
         {
-            return row.GetDecimal(field, 0);
+            return GetInt64(row, field, 0);
         }
 
         /// <summary>
@@ -207,14 +200,14 @@
         }
 
         /// <summary>
-        ///   Gets the record value casted as bool or false.
+        ///   Gets the record value casted as decimal or 0.
         /// </summary>
         /// <param name="row"> The data row. </param>
         /// <param name="field"> The name of the record field. </param>
         /// <returns> The record value </returns>
-        public static bool GetBoolean(this DataRow row, String field)
+        public static decimal GetDecimal(this DataRow row, String field)
         {
-            return row.GetBoolean(field, false);
+            return GetDecimal(row, field, 0);
         }
 
         /// <summary>
@@ -231,14 +224,14 @@
         }
 
         /// <summary>
-        ///   Gets the record value as Type class instance or null.
+        ///   Gets the record value casted as bool or false.
         /// </summary>
         /// <param name="row"> The data row. </param>
         /// <param name="field"> The name of the record field. </param>
         /// <returns> The record value </returns>
-        public static Type GetType(this DataRow row, String field)
+        public static bool GetBoolean(this DataRow row, String field)
         {
-            return row.GetType(field, null);
+            return GetBoolean(row, field, false);
         }
 
         /// <summary>
@@ -260,14 +253,14 @@
         }
 
         /// <summary>
-        ///   Gets the record value as class instance from a type name or null.
+        ///   Gets the record value as Type class instance or null.
         /// </summary>
         /// <param name="row"> The data row. </param>
         /// <param name="field"> The name of the record field. </param>
         /// <returns> The record value </returns>
-        public static object GetTypeInstance(this DataRow row, String field)
+        public static Type GetType(this DataRow row, String field)
         {
-            return row.GetTypeInstance(field, null);
+            return GetType(row, field, null);
         }
 
         /// <summary>
@@ -286,13 +279,12 @@
         /// <summary>
         ///   Gets the record value as class instance from a type name or null.
         /// </summary>
-        /// <typeparam name="T"> The type to be casted to </typeparam>
         /// <param name="row"> The data row. </param>
         /// <param name="field"> The name of the record field. </param>
         /// <returns> The record value </returns>
-        public static T GetTypeInstance<T>(this DataRow row, String field) where T : class
+        public static object GetTypeInstance(this DataRow row, String field)
         {
-            return row.GetTypeInstance(field, null) as T;
+            return GetTypeInstance(row, field, null);
         }
 
         /// <summary>
@@ -307,6 +299,18 @@
         {
             var instance = row.GetTypeInstance(field, null) as T;
             return instance ?? Activator.CreateInstance(type) as T;
+        }
+
+        /// <summary>
+        ///   Gets the record value as class instance from a type name or null.
+        /// </summary>
+        /// <typeparam name="T"> The type to be casted to </typeparam>
+        /// <param name="row"> The data row. </param>
+        /// <param name="field"> The name of the record field. </param>
+        /// <returns> The record value </returns>
+        public static T GetTypeInstance<T>(this DataRow row, String field) where T : class
+        {
+            return GetTypeInstance(row, field, null) as T;
         }
 
         /// <summary>
@@ -333,5 +337,6 @@
             var value = row[field];
             return (value == DBNull.Value);
         }
+
     }
 }
