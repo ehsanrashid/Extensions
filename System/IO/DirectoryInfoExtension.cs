@@ -263,7 +263,7 @@ namespace System.IO
         //}
 
 
-        //internal static void CopyDirectory(String source, String dest, bool subdirs, bool removeIfExists)
+        //public static void CopyDirectory(String source, String dest, bool subdirs, bool removeIfExists)
         //{
         //    var dir = new DirectoryInfo(source);
         //    // If the source directory does not exist, throw an exception.
@@ -301,7 +301,7 @@ namespace System.IO
         //}
 
 
-        //internal static void Delete(String directory)
+        //public static void Delete(String directory)
         //{
         //    if (!Directory.Exists(directory)) return;
 
@@ -341,19 +341,19 @@ namespace System.IO
     
     }
 
-    class RecursiveSearchHelper
+    public class RecursiveSearchHelper
     {
         readonly List<string> excludeList;
 
         readonly List<string> fileList;
 
-        internal RecursiveSearchHelper()
+        public RecursiveSearchHelper()
         {
             fileList = new List<string>();
             excludeList = new List<string>();
         }
 
-        internal string[] GetFiles(string initialDirectory, string filePattern)
+        public string[] GetFiles(string initialDirectory, string filePattern)
         {
             fileList.Clear();
 
@@ -362,7 +362,7 @@ namespace System.IO
             return fileList.ToArray();
         }
 
-        internal string[] GetFiles(string initialDirectory, string[] filePatterns, string[] excludePatterns)
+        public string[] GetFiles(string initialDirectory, string[] filePatterns, string[] excludePatterns)
         {
             fileList.Clear();
             excludeList.Clear();
@@ -375,8 +375,6 @@ namespace System.IO
 
             return fileList.ToArray();
         }
-
-
 
         void Search(string initialDirectory, string filePattern)
         {

@@ -205,7 +205,7 @@
         /// <summary>
         /// whether or not use jQuery ajax, as opposed to MicrosoftAjax
         /// </summary>
-        internal bool UseJqueryAjax { get; set; }
+        public bool UseJqueryAjax { get; set; }
     }
 
     public enum PageIndexBoxType

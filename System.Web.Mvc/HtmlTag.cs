@@ -6,7 +6,7 @@
     public enum HtmlTag
     {
         //ul,
-        table,
-        vertical_columns
+        Table,
+        VerticalColumns
     }
 }

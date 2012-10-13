@@ -1,6 +1,8 @@
 ﻿namespace System.Web.Mvc
 {
     using Collections.Generic;
+    using Collections.Generic.Interface;
+
     using Html;
     using Text;
     using Linq;
@@ -155,7 +157,7 @@
             using (HtmlTextWriter writer = new HtmlTextWriter(stringWriter))
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Type, "checkBox");
-                
+
                 var metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
                 if (null != metadata.Model)
                 {
@@ -169,7 +171,7 @@
                 }
                 var name = ExpressionHelper.GetExpressionText(expression); // metadata.PropertyName
                 writer.AddAttribute(HtmlTextWriterAttribute.Name, name);
-                
+
                 if (null != htmlAttributes)
                     foreach (var attrib in htmlAttributes)
                         writer.AddAttribute(attrib.Key, attrib.Value.ToString());
@@ -404,19 +406,10 @@
         /// <param name="selectedValuesExpr">Data list of selected items (should be of same data type as a source list)</param>
         /// <param name="htmlAttributesExpr">Data list HTML tag attributes for each checkbox</param>
         /// <returns>HTML string containing checkbox list</returns>
-        public static MvcHtmlString CheckBoxListFor<TModel, TProperty, TItem, TValue, TKey>
-          (this HtmlHelper<TModel> htmlHelper,
-           Expression<Func<TModel, TProperty>> listNameExpr,
-           Expression<Func<TModel, IEnumerable<TItem>>> sourceDataExpr,
-           Expression<Func<TItem, TValue>> valueExpr,
-           Expression<Func<TItem, TKey>> textToDisplayExpr,
-           Expression<Func<TModel, IEnumerable<TItem>>> selectedValuesExpr,
-           Expression<Func<TItem, TKey>> htmlAttributesExpr = null)
+        public static MvcHtmlString CheckBoxListFor<TModel, TProperty, TItem, TValue, TKey>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> listNameExpr, Expression<Func<TModel, IEnumerable<TItem>>> sourceDataExpr, Expression<Func<TItem, TValue>> valueExpr, Expression<Func<TItem, TKey>> textToDisplayExpr, Expression<Func<TModel, IEnumerable<TItem>>> selectedValuesExpr, Expression<Func<TItem, TKey>> htmlAttributesExpr = null)
         {
             var modelMetadata = ModelMetadata.FromLambdaExpression(listNameExpr, htmlHelper.ViewData);
-            return ListBuilder.CheckBoxList
-              (htmlHelper, modelMetadata, listNameExpr.ToProperty(), sourceDataExpr, valueExpr,
-               textToDisplayExpr, htmlAttributesExpr, selectedValuesExpr, null, null, null);
+            return ListBuilder.CheckBoxList(htmlHelper, modelMetadata, listNameExpr.ToProperty(), sourceDataExpr, valueExpr, textToDisplayExpr, htmlAttributesExpr, selectedValuesExpr, null, null, null);
         }
         /// <summary>
         /// Generates Model-based list of checkboxes
@@ -433,18 +426,9 @@
         /// <param name="selectedValuesExpr">Data list of selected items (should be of same data type as a source list)</param>
         /// <param name="htmlAttributesExpr">Data list HTML tag attributes for each checkbox</param>
         /// <returns>HTML string containing checkbox list</returns>
-        public static MvcHtmlString CheckBoxList<TModel, TItem, TValue, TKey>
-          (this HtmlHelper<TModel> htmlHelper,
-           string listName,
-           Expression<Func<TModel, IEnumerable<TItem>>> sourceDataExpr,
-           Expression<Func<TItem, TValue>> valueExpr,
-           Expression<Func<TItem, TKey>> textToDisplayExpr,
-           Expression<Func<TModel, IEnumerable<TItem>>> selectedValuesExpr,
-           Expression<Func<TItem, TKey>> htmlAttributesExpr = null)
+        public static MvcHtmlString CheckBoxList<TModel, TItem, TValue, TKey>(this HtmlHelper<TModel> htmlHelper, string listName, Expression<Func<TModel, IEnumerable<TItem>>> sourceDataExpr, Expression<Func<TItem, TValue>> valueExpr, Expression<Func<TItem, TKey>> textToDisplayExpr, Expression<Func<TModel, IEnumerable<TItem>>> selectedValuesExpr, Expression<Func<TItem, TKey>> htmlAttributesExpr = null)
         {
-            return ListBuilder.CheckBoxList
-              (htmlHelper, null, listName, sourceDataExpr, valueExpr, textToDisplayExpr,
-              htmlAttributesExpr, selectedValuesExpr, null, null, null);
+            return ListBuilder.CheckBoxList(htmlHelper, null, listName, sourceDataExpr, valueExpr, textToDisplayExpr, htmlAttributesExpr, selectedValuesExpr, null, null, null);
         }
 
         /// <summary>
@@ -904,7 +888,51 @@
         #endregion
 
         #region Pager
+
+        /// <summary>
+        /// Shows a pager control - Creates a list of links that jump to each page
+        /// </summary>
+        /// <param name="htmlHelper">The ViewPage instance this method executes on.</param>
+        /// <param name="pagedList">A PagedList instance containing the data for the paged control</param>
+        /// <param name="controllerName">Name of the controller.</param>
+        /// <param name="actionName">Name of the action on the controller.</param>
+        public static MvcHtmlString Pager<T>(this HtmlHelper htmlHelper, IPagedList<T> pagedList, String controllerName, String actionName)
+        {
+            var stringWriter = new StringWriter();
+            using (HtmlTextWriter writer = new HtmlTextWriter(stringWriter))
+            {
+                for (var pageNum = 1; pageNum <= pagedList.NoOfPages; ++pageNum)
+                {
+                    if (pageNum != pagedList.PageIndex)
+                    {
+                        writer.AddAttribute(HtmlTextWriterAttribute.Href, "/" + controllerName + "/" + actionName + "/" + pageNum);
+                        writer.AddAttribute(HtmlTextWriterAttribute.Alt, "Page " + pageNum);
+                        writer.RenderBeginTag(HtmlTextWriterTag.A);
+                    }
+
+                    writer.AddAttribute(HtmlTextWriterAttribute.Class,
+                                        pageNum == pagedList.PageIndex
+                                            ? "pageLinkCurrent"
+                                            : "pageLink");
+
+                    writer.RenderBeginTag(HtmlTextWriterTag.Span);
+                    writer.Write(pageNum);
+                    writer.RenderEndTag();
+
+                    if (pageNum != pagedList.PageIndex)
+                    {
+                        writer.RenderEndTag();
+                    }
+                    writer.Write("&nbsp;");
+                }
+
+                writer.Write(String.Concat("(", pagedList.NoOfItems, " items in all)"));
+            }
+            return MvcHtmlString.Create(stringWriter.ToString());
+        }
+
         #region Html Pager
+
         public static String Pager(this HtmlHelper htmlHelper, int noOfPages, int pageIndex, String actionName, String controllerName, PagerOptions pagerOptions, String routeName, Object routeValues, Object htmlAttributes)
         {
             var builder = new PagerBuilder

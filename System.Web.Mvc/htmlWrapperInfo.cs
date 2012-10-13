@@ -3,7 +3,7 @@
     /// <summary>
     /// Sets local settings of an HTML wrapper that is used on a checkbox list
     /// </summary>
-    internal class HtmlWrapperInfo
+    public class HtmlWrapperInfo
     {
         public string wrap_open = String.Empty;
         public string wrap_rowbreak = String.Empty;

@@ -10,7 +10,7 @@
     /// <summary>
     /// @Html.CheckBoxList(...) main methods
     /// </summary>
-    internal static class ListBuilder
+    public static class ListBuilder
     {
         static ListBuilder()
         {
@@ -20,15 +20,13 @@
         }
 
         // counter to count when to insert HTML code that breakes checkbox list
-        private static int htmlwrap_rowbreak_counter { get; set; }
+        static int htmlwrap_rowbreak_counter { get; set; }
         // counter to be used on a label linked to each checkbox in the list
-        private static int linked_label_counter { get; set; }
+        static int linked_label_counter { get; set; }
         // properties
-        internal static string no_data_message = "No Records...";
-        internal static string empty_model_message =
-          "View Model cannot be null! Please make sure your View Model is created and passed to this View";
-        internal static string empty_name_message = "Name of the CheckBoxList cannot be null or empty";
-
+        public static string no_data_message = "No Records...";
+        public static string empty_model_message = "View Model cannot be null! Please make sure your View Model is created and passed to this View";
+        public static string empty_name_message = "Name of the CheckBoxList cannot be null or empty";
 
         /// <summary>
         /// Model-Based main function
@@ -50,19 +48,7 @@
         /// <param name="disabledValues">String array of values to disable</param>
         /// <param name="position">Direction of the list (e.g. 'Position2.Horizontal' or 'Position2.Vertical')</param>
         /// <returns>HTML string containing checkbox list</returns>
-        internal static MvcHtmlString CheckBoxList<TModel, TItem, TValue, TKey>
-          (HtmlHelper<TModel> htmlHelper,
-           ModelMetadata modelMetadata,
-           string listName,
-           Expression<Func<TModel, IEnumerable<TItem>>> sourceDataExpr,
-           Expression<Func<TItem, TValue>> valueExpr,
-           Expression<Func<TItem, TKey>> textToDisplayExpr,
-           Expression<Func<TItem, TKey>> htmlAttributesExpr,
-           Expression<Func<TModel, IEnumerable<TItem>>> selectedValuesExpr,
-           object htmlAttributes,
-           HtmlListInfo htmlListInfo,
-           string[] disabledValues,
-           Position position = Position.Horizontal)
+        public static MvcHtmlString CheckBoxList<TModel, TItem, TValue, TKey>(HtmlHelper<TModel> htmlHelper, ModelMetadata modelMetadata, string listName, Expression<Func<TModel, IEnumerable<TItem>>> sourceDataExpr, Expression<Func<TItem, TValue>> valueExpr, Expression<Func<TItem, TKey>> textToDisplayExpr, Expression<Func<TItem, TKey>> htmlAttributesExpr, Expression<Func<TModel, IEnumerable<TItem>>> selectedValuesExpr, object htmlAttributes, HtmlListInfo htmlListInfo, string[] disabledValues, Position position = Position.Horizontal)
         {
             // validation
             if (sourceDataExpr == null || sourceDataExpr.Body.ToString() == "null")
@@ -112,7 +98,7 @@
 
             // set up table/list html wrapper, if applicable
             var numberOfItems = sourceData.Count;
-            var htmlWrapper = _createHtmlWrapper(htmlListInfo, numberOfItems, position, textLayout);
+            var htmlWrapper = CreateHtmlWrapper(htmlListInfo, numberOfItems, position, textLayout);
 
             // create checkbox list
             var sb = new StringBuilder();
@@ -127,10 +113,7 @@
                 var itemText = textToDisplayFunc(item).ToString();
 
                 // create checkbox element
-                sb = createCheckBoxListElement(sb, htmlHelper, modelMetadata, htmlWrapper,
-                                               _valueHtmlAttributesFunc(item, htmlAttributes),
-                                               selectedValues, disabledValues, listName,
-                                               itemValue, itemText, textLayout);
+                sb = CreateCheckBoxListElement(sb, htmlHelper, modelMetadata, htmlWrapper, _valueHtmlAttributesFunc(item, htmlAttributes), selectedValues, disabledValues, listName, itemValue, itemText, textLayout);
             }
             sb.Append(htmlWrapper.wrap_close);
 
@@ -146,11 +129,9 @@
         /// <param name="position">Direction of the list (e.g. 'Position2.Horizontal' or 'Position2.Vertical')</param>
         /// <param name="textLayout">Sets layout of a checkbox for right-to-left languages</param>
         /// <returns>HTML wrapper information</returns>
-        private static HtmlWrapperInfo _createHtmlWrapper
-          (HtmlListInfo wrapInfo, int numberOfItems, Position position, TextLayout textLayout)
+        private static HtmlWrapperInfo CreateHtmlWrapper(HtmlListInfo wrapInfo, int numberOfItems, Position position, TextLayout textLayout)
         {
             var w = new HtmlWrapperInfo();
-
             if (wrapInfo != null)
             {
                 // creating custom layouts
@@ -158,7 +139,7 @@
                 {
                 // creates user selected number of float sections with
                 // vertically sorted checkboxes
-                case HtmlTag.vertical_columns:
+                case HtmlTag.VerticalColumns:
                     {
                         if (wrapInfo.Columns <= 0) wrapInfo.Columns = 1;
                         // calculate number of rows
@@ -170,7 +151,7 @@
                         w.separator_max_counter = rows;
 
                         // create wrapped raw html tag
-                        var wrapRow = HtmlElementTag.div;
+                        var wrapRow = HtmlElementTag.Div;
                         var wrapHtml_builder = new TagBuilder(wrapRow.ToString());
                         var user_html_attributes = wrapInfo.htmlAttributes.ToDictionary();
 
@@ -200,17 +181,17 @@
                     }
                     break;
                 // creates an html <table> with checkboxes sorted horizontally
-                case HtmlTag.table:
+                case HtmlTag.Table:
                     {
                         if (wrapInfo.Columns <= 0) wrapInfo.Columns = 1;
                         w.separator_max_counter = wrapInfo.Columns;
 
-                        var wrapHtml_builder = new TagBuilder(HtmlElementTag.table.ToString());
+                        var wrapHtml_builder = new TagBuilder(HtmlElementTag.Table.ToString());
                         wrapHtml_builder.MergeAttributes(wrapInfo.htmlAttributes.ToDictionary());
                         wrapHtml_builder.MergeAttribute("cellspacing", "0"); // for IE7 compatibility
 
-                        var wrapRow = HtmlElementTag.tr;
-                        w.wrap_element = HtmlElementTag.td;
+                        var wrapRow = HtmlElementTag.Tr;
+                        w.wrap_element = HtmlElementTag.Td;
                         w.wrap_open = wrapHtml_builder.ToString(TagRenderMode.StartTag) +
                                       "<" + wrapRow + ">";
                         w.wrap_rowbreak = "</" + wrapRow + "><" + wrapRow + ">";
@@ -243,7 +224,7 @@
                 {
                     // lean text to right for right-to-left languages
                     var defaultSectionStyle = "style=\"text-align: right;\"";
-                    var wrapRow = HtmlElementTag.div;
+                    var wrapRow = HtmlElementTag.Div;
                     w.wrap_open = "<" + wrapRow + " " + defaultSectionStyle + ">";
                     w.wrap_rowbreak = string.Empty;
                     w.wrap_close = "</" + wrapRow + ">";
@@ -269,10 +250,7 @@
         /// <param name="htmlHelper">HtmlHelper passed from view model</param>
         /// <param name="textLayout">Sets layout of a checkbox for right-to-left languages</param>
         /// <returns>String builder of checkbox list</returns>
-        private static StringBuilder createCheckBoxListElement
-          (StringBuilder sb, HtmlHelper htmlHelper, ModelMetadata modelMetadata, HtmlWrapperInfo htmlWrapper,
-           object htmlAttributesForCheckBox, IEnumerable<string> selectedValues, IEnumerable<string> disabledValues,
-           string name, string itemValue, string itemText, TextLayout textLayout)
+        private static StringBuilder CreateCheckBoxListElement(StringBuilder sb, HtmlHelper htmlHelper, ModelMetadata modelMetadata, HtmlWrapperInfo htmlWrapper, object htmlAttributesForCheckBox, IEnumerable<string> selectedValues, IEnumerable<string> disabledValues, string name, string itemValue, string itemText, TextLayout textLayout)
         {
             // get full name from view model
             var fullName = htmlHelper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(name);
