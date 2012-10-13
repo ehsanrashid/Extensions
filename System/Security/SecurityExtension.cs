@@ -44,7 +44,7 @@ namespace System.Security
         ///   Decrypts a given String.
         /// </summary>
         /// <param name="strCipher"> A base64 encoded String that was created through the <see cref="Encrypt(String)" /> or <see
-        ///    cref="EncryptSecure(string)" /> extension methods. </param>
+        ///    cref="EncryptSecure(String)" /> extension methods. </param>
         /// <returns> The decrypted String. </returns>
         /// <remarks>
         ///   Keep in mind that the decrypted String remains in memory and makes your application vulnerable per se. If runtime protection is essential, <see
@@ -114,7 +114,7 @@ namespace System.Security
         ///   wrapped into a <see cref="SecureString" /> instance.
         /// </summary>
         /// <param name="strCipher"> A base64 encoded String that was created through the <see cref="Encrypt(String)" /> or <see
-        ///    cref="EncryptSecure(string)" /> extension methods. </param>
+        ///    cref="EncryptSecure(String)" /> extension methods. </param>
         /// <returns> The decrypted String, wrapped into a <see cref="SecureString" /> instance. </returns>
         /// <exception cref="ArgumentNullException">If
         ///   <paramref name="strCipher" />

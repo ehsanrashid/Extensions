@@ -50,7 +50,7 @@
         /// <param name="array"> The array to clear </param>
         /// <returns> Cleared array </returns>
         /// <example>
-        ///   <code>Array array = Array.CreateInstance(typeof(string), 2);
+        ///   <code>Array array = Array.CreateInstance(typeof(String), 2);
         ///     array.SetValue("One", 0); array.SetValue("Two", 1);
         ///     Array arrayToClear = array.ClearAll();</code>
         /// </example>
@@ -67,7 +67,7 @@
         /// <param name="at"> Which element to clear. </param>
         /// <returns> </returns>
         /// <example>
-        ///   <code>Array array = Array.CreateInstance(typeof(string), 2);
+        ///   <code>Array array = Array.CreateInstance(typeof(String), 2);
         ///     array.SetValue("One", 0); array.SetValue("Two", 1);
         ///     Array result = array.ClearAt(2);</code>
         /// </example>
@@ -110,8 +110,8 @@
         /// <param name="at"> Which element to clear. </param>
         /// <returns> </returns>
         /// <example>
-        ///   <code>string[] clearString = new[] { "A" }.ClearAt
-        ///     <string />
+        ///   <code>String[] clearString = new[] { "A" }.ClearAt
+        ///     <String />
         ///     (0);</code>
         /// </example>
         public static T[] ClearAt<T>(this T[] array, int at)

@@ -9,8 +9,8 @@ namespace System.Security
         /// <summary>
         ///   Checks whether a <see cref="SecureString" /> is either null or has a <see cref="SecureString.Length" /> of 0.
         /// </summary>
-        /// <param name="secureStr"> The secure string to be inspected. </param>
-        /// <returns> True if the string is either null or empty. </returns>
+        /// <param name="secureStr"> The secure String to be inspected. </param>
+        /// <returns> True if the String is either null or empty. </returns>
         public static bool IsNullOrEmpty(this SecureString secureStr)
         {
             return (null == secureStr) || (0 == secureStr.Length);
@@ -19,8 +19,8 @@ namespace System.Security
         /// <summary>
         ///   Checks whether a <see cref="SecureString" /> is either null or has a <see cref="SecureString.Length" /> of 0.
         /// </summary>
-        /// <param name="secureStr"> The secure string to be inspected. </param>
-        /// <returns> True if the string is either null or empty. </returns>
+        /// <param name="secureStr"> The secure String to be inspected. </param>
+        /// <returns> True if the String is either null or empty. </returns>
         public static bool IsNotNullOrEmpty(this SecureString secureStr)
         {
             return !IsNullOrEmpty(secureStr);
@@ -28,9 +28,9 @@ namespace System.Security
 
 
         /// <summary>
-        ///   Wraps a managed string into a <see cref="SecureString" /> instance.
+        ///   Wraps a managed String into a <see cref="SecureString" /> instance.
         /// </summary>
-        /// <param name="seqChar"> A string or char sequence that should be encapsulated. </param>
+        /// <param name="seqChar"> A String or char sequence that should be encapsulated. </param>
         /// <returns> A <see cref="SecureString" /> that encapsulates the submitted sequence of char. </returns>
         /// <exception cref="ArgumentNullException">If
         ///   <paramref name="seqChar" />
@@ -55,12 +55,12 @@ namespace System.Security
         }
 
         /// <summary>
-        ///   Unwraps the contents of a secured string and returns the contained value.
+        ///   Unwraps the contents of a secured String and returns the contained value.
         /// </summary>
         /// <param name="secureStr"> </param>
         /// <returns> </returns>
         /// <remarks>
-        ///   Be aware that the unwrapped managed string can be extracted from memory.
+        ///   Be aware that the unwrapped managed String can be extracted from memory.
         /// </remarks>
         /// <exception cref="ArgumentNullException">If
         ///   <paramref name="secureStr" />
@@ -142,10 +142,10 @@ namespace System.Security
         }
 
         /// <summary>
-        ///   Converts a regular string into SecureString
+        ///   Converts a regular String into SecureString
         /// </summary>
         /// <param name="str"> String value. </param>
-        /// <param name="makeReadOnly"> Makes the text value of this secure string read-only. </param>
+        /// <param name="makeReadOnly"> Makes the text value of this secure String read-only. </param>
         /// <returns> Returns a SecureString containing the value of a transformed object. </returns>
         public static SecureString ToSecureString(this String str, bool makeReadOnly = true)
         {
@@ -160,10 +160,10 @@ namespace System.Security
         }
 
         /// <summary>
-        ///   Coverts the SecureString to a regular string.
+        ///   Coverts the SecureString to a regular String.
         /// </summary>
         /// <param name="secureString"> Object value. </param>
-        /// <returns> Content of secured string. </returns>
+        /// <returns> Content of secured String. </returns>
         public static String ToUnsecureString(this SecureString secureString)
         {
             if (secureString.IsNull()) return default(String);

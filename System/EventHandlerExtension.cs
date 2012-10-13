@@ -16,13 +16,13 @@
         ///  //---------------------------------------------------------
         ///   public class MyEventArgs : EventArgs
         ///    {
-        ///        private string msg;
+        ///        private String msg;
         ///
-        ///        public MyEventArgs(string messageData)
+        ///        public MyEventArgs(String messageData)
         ///        {
         ///            msg = messageData;
         ///       }
-        ///        public string Message
+        ///        public String Message
         ///        {
         ///            get { return msg; }
         ///            set { msg = value; }
@@ -103,13 +103,13 @@
         ///  //---------------------------------------------------------
         ///   public class MyEventArgs : EventArgs
         ///    {
-        ///        private string msg;
+        ///        private String msg;
         ///
-        ///        public MyEventArgs(string messageData)
+        ///        public MyEventArgs(String messageData)
         ///        {
         ///            msg = messageData;
         ///       }
-        ///        public string Message
+        ///        public String Message
         ///        {
         ///            get { return msg; }
         ///            set { msg = value; }

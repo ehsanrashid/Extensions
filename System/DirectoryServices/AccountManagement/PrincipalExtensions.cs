@@ -11,7 +11,7 @@
         /// <param name="principal"> The principal. </param>
         /// <param name="name"> The name. </param>
         /// <returns> </returns>
-        public static object GetProperty(this Principal principal, string name)
+        public static object GetProperty(this Principal principal, String name)
         {
             var directoryEntry = (principal.GetUnderlyingObject() as DirectoryEntry);
             if (null != directoryEntry && directoryEntry.Properties.Contains(name))

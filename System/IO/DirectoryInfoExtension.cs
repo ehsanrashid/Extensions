@@ -343,17 +343,17 @@ namespace System.IO
 
     public class RecursiveSearchHelper
     {
-        readonly List<string> excludeList;
+        readonly List<String> excludeList;
 
-        readonly List<string> fileList;
+        readonly List<String> fileList;
 
         public RecursiveSearchHelper()
         {
-            fileList = new List<string>();
-            excludeList = new List<string>();
+            fileList = new List<String>();
+            excludeList = new List<String>();
         }
 
-        public string[] GetFiles(string initialDirectory, string filePattern)
+        public String[] GetFiles(String initialDirectory, String filePattern)
         {
             fileList.Clear();
 
@@ -362,7 +362,7 @@ namespace System.IO
             return fileList.ToArray();
         }
 
-        public string[] GetFiles(string initialDirectory, string[] filePatterns, string[] excludePatterns)
+        public String[] GetFiles(String initialDirectory, String[] filePatterns, String[] excludePatterns)
         {
             fileList.Clear();
             excludeList.Clear();
@@ -376,14 +376,14 @@ namespace System.IO
             return fileList.ToArray();
         }
 
-        void Search(string initialDirectory, string filePattern)
+        void Search(String initialDirectory, String filePattern)
         {
             foreach (var file in Directory.GetFiles(initialDirectory, filePattern).Where(file => !fileList.Contains(file))) fileList.Add(file);
 
             foreach (var item in Directory.GetDirectories(initialDirectory)) Search(item, filePattern);
         }
 
-        void SearchExclude(string initialDirectory, string excludePattern)
+        void SearchExclude(String initialDirectory, String excludePattern)
         {
             foreach (
                 var file in Directory.GetFiles(initialDirectory, excludePattern).Where(file => !excludeList.Contains(file))) excludeList.Add(file);

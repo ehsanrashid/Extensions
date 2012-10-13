@@ -25,7 +25,8 @@
                             filename, HDR);
                         break;
                 }
-            var set = new DataSet(Path.GetFileNameWithoutExtension(filename));
+
+            var dSet = new DataSet(Path.GetFileNameWithoutExtension(filename));
             using (var conOleDb = new OleDbConnection(connectionString))
             {
                 conOleDb.Open();
@@ -33,6 +34,7 @@
                 var arrRestrict = new Object[] {null, null, null, "TABLE"};
                 var dtSchema = conOleDb.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, arrRestrict);
                 if (null != dtSchema)
+                {
                     foreach (DataRow drSchema in dtSchema.Rows)
                     {
                         var nameSheet =
@@ -40,31 +42,41 @@
                             drSchema["TABLE_NAME"].ToString();
                         var selectQuery = String.Format("SELECT * FROM [{0}]", nameSheet);
                         var table = new DataTable(nameSheet);
-                        var cmdOleDb = new OleDbCommand(selectQuery, conOleDb) {CommandType = CommandType.Text};
+                        var cmdOleDb = new OleDbCommand(selectQuery, conOleDb) { CommandType = CommandType.Text };
                         new OleDbDataAdapter(cmdOleDb).Fill(table);
-                        set.Tables.Add(table);
+                        dSet.Tables.Add(table);
                     }
+                }
                 conOleDb.Close();
             }
-            RemoveNull(set);
-            return set;
+            RemoveNull(dSet);
+            return dSet;
         }
 
         public static DataSet ImportXML(this DataSet dataSet, String filename)
         {
             if (filename.IsNullOrWhiteSpace()) return default(DataSet);
-            var set = new DataSet(Path.GetFileNameWithoutExtension(filename));
-            //set.ReadXml(filename);
-            set.ReadXmlSchema(filename);
-            foreach (DataTable table in set.Tables)
+            var dSet = new DataSet(Path.GetFileNameWithoutExtension(filename));
+            //dSet.ReadXml(filename);
+            dSet.ReadXmlSchema(filename);
+            foreach (DataTable table in dSet.Tables)
                 table.BeginLoadData();
-            set.ReadXml(filename);
-            foreach (DataTable table in set.Tables)
+            dSet.ReadXml(filename);
+            foreach (DataTable table in dSet.Tables)
                 table.EndLoadData();
             //-----------------------------------------------------
-            ////xmlDocument is your XmlDocument instance
-            //set.ReadXml(XmlReader.Create(new StringReader(xmlDocument.InnerXml)));
-            return set;
+            //dSet.ReadXml(XmlReader.Create(new StringReader(xmlDocument.InnerXml)));
+            return dSet;
+        }
+
+        public static void RemoveNull(this DataSet dataSet)
+        {
+            for (var t = 0; t < dataSet.Tables.Count; ++t)
+                for (var r = 0; r < dataSet.Tables[t].Rows.Count; ++r)
+                    if (dataSet.Tables[t].Rows[r].IsNull(0))
+                        dataSet.Tables[t].Rows[r].Delete();
+
+            dataSet.AcceptChanges();
         }
 
         // ---
@@ -113,14 +125,6 @@
         //    }
         //}
 
-        static void RemoveNull(DataSet set)
-        {
-            for (var t = 0; t < set.Tables.Count; t++)
-                for (var r = 0; r < set.Tables[t].Rows.Count; r++)
-                    if (set.Tables[t].Rows[r].IsNull(0))
-                        set.Tables[t].Rows[r].Delete();
-            set.AcceptChanges();
-        }
 
         //public static DataSet GetExcel(String fileName)
         //{
@@ -174,5 +178,6 @@
         //        return null;
         //    }
         //}
+
     }
 }

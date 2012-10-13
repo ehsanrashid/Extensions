@@ -19,8 +19,7 @@ namespace System.Net
         /// <remarks>
         ///   Contributed by blaumeister, http://www.codeplex.com/site/users/view/blaumeiser
         /// </remarks>
-        public static Stream GetResponseStream(this HttpListenerContext context, bool allowZip = true, bool buffered = true,
-                                               bool allowCache = true)
+        public static Stream GetResponseStream(this HttpListenerContext context, bool allowZip = true, bool buffered = true, bool allowCache = true)
         {
             if (!allowCache)
             {

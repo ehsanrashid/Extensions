@@ -97,7 +97,7 @@
             return IsValidType(number, _cardTypes) && IsValidNumber(number);
         }
  
-        public override string FormatErrorMessage(string name)
+        public override String FormatErrorMessage(String name)
         {
             return "The " + name + " field contains an invalid credit card number.";
         }
@@ -115,7 +115,7 @@
             AllOrUnknown = Unknown | Visa | MasterCard | Amex | Diners
         }
  
-        private static bool IsValidType(string cardNumber, CardType cardType)
+        private static bool IsValidType(String cardNumber, CardType cardType)
         {
             // Visa
             if (Regex.IsMatch(cardNumber, "^(4)")
@@ -144,7 +144,7 @@
             return false;
         }
  
-        private static bool IsValidNumber(string number)
+        private static bool IsValidNumber(String number)
         {
             var deltas = new[] { 0, 1, 2, 3, 4, -4, -3, -2, -1, 0 };
             var checksum = 0;

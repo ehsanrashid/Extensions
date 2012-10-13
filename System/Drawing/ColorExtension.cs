@@ -6,9 +6,9 @@
         /// returns the RGB Value of a color.
         /// </summary>
         /// <param name="color">The color.</param>
-        /// <returns>string</returns>
+        /// <returns>String</returns>
         /// <remarks></remarks>
-        public static string ToHtmlColor(this Color color)
+        public static String ToHtmlColor(this Color color)
         {
             return ColorTranslator.ToHtml(color);
         }

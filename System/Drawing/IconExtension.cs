@@ -14,13 +14,14 @@ namespace System.Drawing
         {
             icon.ExceptionIfNull("Can't split the icon. Icon is null.", "icon");
             // Get multiple .ico file image.
-            byte[] srcBuf = null;
+            var srcBuf = default(byte[]);
             using (var stream = new MemoryStream())
             {
                 icon.Save(stream);
                 srcBuf = stream.ToArray();
             }
             var splitIcons = new List<Icon>();
+            
             const int sizeIconDir = 6; // sizeof(IconDir) 
             const int sizeIconDirEntry = 16; // sizeof(IconDirEntry)
             var count = BitConverter.ToInt16(srcBuf, 4); // ICONDIR.idCount

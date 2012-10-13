@@ -5,7 +5,7 @@ namespace System.ComponentModel.DataAnnotations
     [Serializable]
     public sealed class DateEndAttribute : ValidationAttribute
     {
-        public string DateStartProperty { get; set; }
+        public String DateStartProperty { get; set; }
 
         public override bool IsValid(object value)
         {

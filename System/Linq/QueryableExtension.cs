@@ -14,14 +14,16 @@
 
         public static IQueryable<T> Sort<T>(this IQueryable<T> query, String sortField, SortDirection direction)
         {
-            return direction == SortDirection.Ascending
-                       ? query.OrderBy(s => s.GetType().GetProperty(sortField))
-                       : query.OrderByDescending(s => s.GetType().GetProperty(sortField));
+            return (SortDirection.Ascending == direction)
+                    ? query.OrderBy(s => s.GetType().GetProperty(sortField))
+                    : query.OrderByDescending(s => s.GetType().GetProperty(sortField));
         }
 
         public static IQueryable<T> Skip<T>(this IQueryable<T> queryable, int? count)
         {
-            return (count.HasValue ? queryable.Skip(count.Value) : queryable);
+            return count.HasValue
+                    ? queryable.Skip(count.Value)
+                    : queryable;
         }
 
         public static IQueryable<T> WhereAny<T>(this IQueryable<T> queryable, params Expression<Func<T, bool>>[] predicates)
@@ -34,9 +36,8 @@
             var paramExpr = Expression.Parameter(typeof(T), "x");
             Expression body = Expression.Invoke(predicates[0], paramExpr);
             for (var i = 1; i < predicates.Length; ++i)
-            {
                 body = Expression.OrElse(body, Expression.Invoke(predicates[i], paramExpr));
-            }
+
             return queryable.Where(Expression.Lambda<Func<T, bool>>(body, paramExpr));
         }
 
@@ -139,5 +140,7 @@
         //{
         //    return new SelectList(query, dataValueField, dataTextField, selectedValue ?? -1);
         //}
+
+
     }
 }

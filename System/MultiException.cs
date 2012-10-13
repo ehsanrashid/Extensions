@@ -99,7 +99,7 @@ namespace System
             }
         }
 
-        public override string Message
+        public override String Message
         {
             get
             {

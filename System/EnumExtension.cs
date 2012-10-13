@@ -132,14 +132,14 @@ namespace System
         ///            Seven,
         ///         }
         ///         
-        ///         public string GetMyOSName()
+        ///         public String GetMyOSName()
         ///         {
         ///             var myOS = OperatingSystem.Seven;
         ///             return myOS.DisplayString();
         ///         }
         ///     </code>
         /// </example>
-        public static string DisplayString(this Enum value)
+        public static String DisplayString(this Enum value)
         {
             var info = value.GetType().GetField(value.ToString());
             var attributes = (DisplayStringAttribute[]) info.GetCustomAttributes(typeof (DisplayStringAttribute), false);

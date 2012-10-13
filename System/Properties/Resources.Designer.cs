@@ -61,324 +61,324 @@ namespace System.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Column and row count must be larger than 0..
+        ///   Looks up a localized String similar to Column and row count must be larger than 0..
         /// </summary>
-        internal static string ColumnAndRowCountBiggerThan0 {
+        internal static String ColumnAndRowCountBiggerThan0 {
             get {
                 return ResourceManager.GetString("ColumnAndRowCountBiggerThan0", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The object to compare against is null..
+        ///   Looks up a localized String similar to The object to compare against is null..
         /// </summary>
-        internal static string ComparingNullObject {
+        internal static String ComparingNullObject {
             get {
                 return ResourceManager.GetString("ComparingNullObject", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The deque is empty..
+        ///   Looks up a localized String similar to The deque is empty..
         /// </summary>
-        internal static string DequeIsEmpty {
+        internal static String DequeIsEmpty {
             get {
                 return ResourceManager.GetString("DequeIsEmpty", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The edge between the vertices specified allready exists..
+        ///   Looks up a localized String similar to The edge between the vertices specified allready exists..
         /// </summary>
-        internal static string EdgeAllreadyExists {
+        internal static String EdgeAllreadyExists {
             get {
                 return ResourceManager.GetString("EdgeAllreadyExists", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The edge specified was not found on this vertex..
+        ///   Looks up a localized String similar to The edge specified was not found on this vertex..
         /// </summary>
-        internal static string EdgeNotFoundOnVertex {
+        internal static String EdgeNotFoundOnVertex {
             get {
                 return ResourceManager.GetString("EdgeNotFoundOnVertex", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The graph is empty..
+        ///   Looks up a localized String similar to The graph is empty..
         /// </summary>
-        internal static string GraphIsEmpty {
+        internal static String GraphIsEmpty {
             get {
                 return ResourceManager.GetString("GraphIsEmpty", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The heap is empty..
+        ///   Looks up a localized String similar to The heap is empty..
         /// </summary>
-        internal static string HeapIsEmpty {
+        internal static String HeapIsEmpty {
             get {
                 return ResourceManager.GetString("HeapIsEmpty", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Incompatible matrices.  For this operation the matrices should be of the same size..
+        ///   Looks up a localized String similar to Incompatible matrices.  For this operation the matrices should be of the same size..
         /// </summary>
-        internal static string IncompatibleMatricesSameSize {
+        internal static String IncompatibleMatricesSameSize {
             get {
                 return ResourceManager.GetString("IncompatibleMatricesSameSize", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Incompatible matrices for this operation.  The rows of the input matrix must be equal to the columns of this matrix..
+        ///   Looks up a localized String similar to Incompatible matrices for this operation.  The rows of the input matrix must be equal to the columns of this matrix..
         /// </summary>
-        internal static string IncompatibleMatricesTimes {
+        internal static String IncompatibleMatricesTimes {
             get {
                 return ResourceManager.GetString("IncompatibleMatricesTimes", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Initial values can not be null..
+        ///   Looks up a localized String similar to Initial values can not be null..
         /// </summary>
-        internal static string InitialValuesNull {
+        internal static String InitialValuesNull {
             get {
                 return ResourceManager.GetString("InitialValuesNull", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This operation can not be done on the type of matrix specified..
+        ///   Looks up a localized String similar to This operation can not be done on the type of matrix specified..
         /// </summary>
-        internal static string InvalidOperationWrongMatrixType {
+        internal static String InvalidOperationWrongMatrixType {
             get {
                 return ResourceManager.GetString("InvalidOperationWrongMatrixType", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The probability must be between 0.1 and 0.9.
+        ///   Looks up a localized String similar to The probability must be between 0.1 and 0.9.
         /// </summary>
-        internal static string InvalidProbability {
+        internal static String InvalidProbability {
             get {
                 return ResourceManager.GetString("InvalidProbability", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The item is allready contained in the tree..
+        ///   Looks up a localized String similar to The item is allready contained in the tree..
         /// </summary>
-        internal static string ItemAllreadyInTree {
+        internal static String ItemAllreadyInTree {
             get {
                 return ResourceManager.GetString("ItemAllreadyInTree", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The item is allready in the list..
+        ///   Looks up a localized String similar to The item is allready in the list..
         /// </summary>
-        internal static string ItemAlreadyInList {
+        internal static String ItemAlreadyInList {
             get {
                 return ResourceManager.GetString("ItemAlreadyInList", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The item is not in the universe of the set..
+        ///   Looks up a localized String similar to The item is not in the universe of the set..
         /// </summary>
-        internal static string ItemNotInUniverse {
+        internal static String ItemNotInUniverse {
             get {
                 return ResourceManager.GetString("ItemNotInUniverse", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The key specified is allready in the collection..
+        ///   Looks up a localized String similar to The key specified is allready in the collection..
         /// </summary>
-        internal static string KeyAllreadyExists {
+        internal static String KeyAllreadyExists {
             get {
                 return ResourceManager.GetString("KeyAllreadyExists", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The key does not exist in the list..
+        ///   Looks up a localized String similar to The key does not exist in the list..
         /// </summary>
-        internal static string KeyDoesNotExist {
+        internal static String KeyDoesNotExist {
             get {
                 return ResourceManager.GetString("KeyDoesNotExist", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The lower bound must be larger or equal to zero..
+        ///   Looks up a localized String similar to The lower bound must be larger or equal to zero..
         /// </summary>
-        internal static string LowerBoundLargerThanZero {
+        internal static String LowerBoundLargerThanZero {
             get {
                 return ResourceManager.GetString("LowerBoundLargerThanZero", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Matrix is null..
+        ///   Looks up a localized String similar to Matrix is null..
         /// </summary>
-        internal static string MatrixIsNull {
+        internal static String MatrixIsNull {
             get {
                 return ResourceManager.GetString("MatrixIsNull", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The maximum level must be bigger than 0..
+        ///   Looks up a localized String similar to The maximum level must be bigger than 0..
         /// </summary>
-        internal static string MaximumLevelBiggerThan0 {
+        internal static String MaximumLevelBiggerThan0 {
             get {
                 return ResourceManager.GetString("MaximumLevelBiggerThan0", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The type of edge must be the same as the type of graph (Undirected / Directed).
+        ///   Looks up a localized String similar to The type of edge must be the same as the type of graph (Undirected / Directed).
         /// </summary>
-        internal static string MismatchedEdgeType {
+        internal static String MismatchedEdgeType {
             get {
                 return ResourceManager.GetString("MismatchedEdgeType", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not enough space in the target array..
+        ///   Looks up a localized String similar to Not enough space in the target array..
         /// </summary>
-        internal static string NotEnoughSpaceInTargetArray {
+        internal static String NotEnoughSpaceInTargetArray {
             get {
                 return ResourceManager.GetString("NotEnoughSpaceInTargetArray", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The number of values can not be greater than the number of columns..
+        ///   Looks up a localized String similar to The number of values can not be greater than the number of columns..
         /// </summary>
-        internal static string NumberOfValuesDoNotAgreeWithNumberOfColumns {
+        internal static String NumberOfValuesDoNotAgreeWithNumberOfColumns {
             get {
                 return ResourceManager.GetString("NumberOfValuesDoNotAgreeWithNumberOfColumns", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The number of values can not be greater than the number of rows..
+        ///   Looks up a localized String similar to The number of values can not be greater than the number of rows..
         /// </summary>
-        internal static string NumberOfValuesDoNotAgreeWithNumberOfRows {
+        internal static String NumberOfValuesDoNotAgreeWithNumberOfRows {
             get {
                 return ResourceManager.GetString("NumberOfValuesDoNotAgreeWithNumberOfRows", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Numbers provided must be greater than zero..
+        ///   Looks up a localized String similar to Numbers provided must be greater than zero..
         /// </summary>
-        internal static string NumbersGreaterThanZero {
+        internal static String NumbersGreaterThanZero {
             get {
                 return ResourceManager.GetString("NumbersGreaterThanZero", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You can only add 1 or more items..
+        ///   Looks up a localized String similar to You can only add 1 or more items..
         /// </summary>
-        internal static string OnlyAddPositiveAmount {
+        internal static String OnlyAddPositiveAmount {
             get {
                 return ResourceManager.GetString("OnlyAddPositiveAmount", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rows and columns must be nonnegative values..
+        ///   Looks up a localized String similar to Rows and columns must be nonnegative values..
         /// </summary>
-        internal static string RowsOrColumnsInvalid {
+        internal static String RowsOrColumnsInvalid {
             get {
                 return ResourceManager.GetString("RowsOrColumnsInvalid", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The search tree is empty..
+        ///   Looks up a localized String similar to The search tree is empty..
         /// </summary>
-        internal static string SearchTreeIsEmpty {
+        internal static String SearchTreeIsEmpty {
             get {
                 return ResourceManager.GetString("SearchTreeIsEmpty", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The index of an item in a set can not be negative..
+        ///   Looks up a localized String similar to The index of an item in a set can not be negative..
         /// </summary>
-        internal static string SetIndexMustBePostive {
+        internal static String SetIndexMustBePostive {
             get {
                 return ResourceManager.GetString("SetIndexMustBePostive", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This operation is only valid on a directed graph. For undirected graphs, rather test for weak connectedness..
+        ///   Looks up a localized String similar to This operation is only valid on a directed graph. For undirected graphs, rather test for weak connectedness..
         /// </summary>
-        internal static string UndirectedGraphStrongConnectedness {
+        internal static String UndirectedGraphStrongConnectedness {
             get {
                 return ResourceManager.GetString("UndirectedGraphStrongConnectedness", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The operation requested can only be done if the sets share the same universe..
+        ///   Looks up a localized String similar to The operation requested can only be done if the sets share the same universe..
         /// </summary>
-        internal static string UniverseNotTheSame {
+        internal static String UniverseNotTheSame {
             get {
                 return ResourceManager.GetString("UniverseNotTheSame", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The upper bound must be larger than the lower bound specified..
+        ///   Looks up a localized String similar to The upper bound must be larger than the lower bound specified..
         /// </summary>
-        internal static string UpperBoundMustBeLargerThanLowerBound {
+        internal static String UpperBoundMustBeLargerThanLowerBound {
             get {
                 return ResourceManager.GetString("UpperBoundMustBeLargerThanLowerBound", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The vertex already exists in the graph..
+        ///   Looks up a localized String similar to The vertex already exists in the graph..
         /// </summary>
-        internal static string VertexAlreadyExists {
+        internal static String VertexAlreadyExists {
             get {
                 return ResourceManager.GetString("VertexAlreadyExists", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The vertex specified could not be found in the graph..
+        ///   Looks up a localized String similar to The vertex specified could not be found in the graph..
         /// </summary>
-        internal static string VertexCouldNotBeFound {
+        internal static String VertexCouldNotBeFound {
             get {
                 return ResourceManager.GetString("VertexCouldNotBeFound", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The vertex specified does not form part of this edge..
+        ///   Looks up a localized String similar to The vertex specified does not form part of this edge..
         /// </summary>
-        internal static string VertexNotPartOfEdge {
+        internal static String VertexNotPartOfEdge {
             get {
                 return ResourceManager.GetString("VertexNotPartOfEdge", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to x must be larger than or equal to y..
+        ///   Looks up a localized String similar to x must be larger than or equal to y..
         /// </summary>
-        internal static string XMustBeLargerThanY {
+        internal static String XMustBeLargerThanY {
             get {
                 return ResourceManager.GetString("XMustBeLargerThanY", resourceCulture);
             }

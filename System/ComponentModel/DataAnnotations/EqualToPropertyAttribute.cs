@@ -3,12 +3,12 @@
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
     public class EqualToPropertyAttribute : ValidationAttribute
     {
-        public string CompareProperty { get; set; }
+        public String CompareProperty { get; set; }
 
-        public EqualToPropertyAttribute(string compareProperty)
+        public EqualToPropertyAttribute(String compareProperty)
         {
             CompareProperty = compareProperty;
-            ErrorMessage = ""; //string.Format(Messages.EqualToError, compareProperty);
+            ErrorMessage = ""; //String.Format(Messages.EqualToError, compareProperty);
         }
 
         public override bool IsValid(object value)

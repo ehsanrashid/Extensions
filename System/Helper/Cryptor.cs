@@ -39,16 +39,16 @@ namespace System.Helper
         /// from the required byte arrays to strings. Hash is returned as Base-64 encoded strings.
         /// </summary>
         /// <param name="sData">
-        /// A <see cref="System.String"/> string containing the data to hash
+        /// A <see cref="System.String"/> String containing the data to hash
         /// </param>
         /// <param name="sSalt">
-        /// A <see cref="System.String"/> base64 encoded string containing the generated salt
+        /// A <see cref="System.String"/> base64 encoded String containing the generated salt
         /// </param>
         /// <param name="encoding"> </param>
         public static String ComputeHashString(String sData, String sSalt, Encoding encoding = default(Encoding))
         {
             if (null == encoding) encoding = Encoding.UTF8;
-            // Obtain the Hash for the given string
+            // Obtain the Hash for the given String
             var bHash = ComputeHash(encoding.GetBytes(sData), encoding.GetBytes(sSalt));
             // Transform the byte[] to Base-64 encoded strings
             return Convert.ToBase64String(bHash);

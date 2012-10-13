@@ -24,9 +24,7 @@ namespace System.Data
         public static bool IsInState(this IDbConnection connection, ConnectionState state)
         {
             return (default(IDbConnection) != connection
-                && (connection.State & state) == state
-                //&& connection.State == state
-                );
+                && (connection.State & state) == state);
         }
 
         /// <summary>
@@ -35,10 +33,15 @@ namespace System.Data
         public static void OpenIfNot(this IDbConnection connection)
         {
             if (default(IDbConnection) == connection) return;
-
-            //if (!connection.IsInState(ConnectionState.Open))
-            if (connection.State != ConnectionState.Open)
+            if (!connection.IsInState(ConnectionState.Open))
                 connection.Open();
+        }
+
+        public static void CloseIfNot(this IDbConnection connection)
+        {
+            if (default(IDbConnection) == connection) return;
+            if (!connection.IsInState(ConnectionState.Closed))
+                connection.Close();
         }
 
 

@@ -233,7 +233,7 @@ namespace System
         {
             if (value.IsNullOrEmpty()) return String.Empty;
             if (separator.IsNull()) separator = String.Empty;
-            var converter = new Converter<T, string>((obj) => obj.ToString());
+            var converter = new Converter<T, String>((obj) => obj.ToString());
             return String.Join(separator, Array.ConvertAll(value, converter));
         }
 

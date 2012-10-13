@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace System.IO
+﻿namespace System.IO
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     /// <summary>
     ///   Extension methods for the FileInfo-Array class
     /// </summary>
     public static class FileInfoArrayExtension
     {
-
 
         /// <summary>
         ///   Deletes several arrFileInfo at once and optionally consolidates any exceptions.
@@ -63,8 +62,10 @@ namespace System.IO
                 }
             }
             else
+            {
                 foreach (var file in arrFileInfo)
                     file.Delete();
+            }
         }
 
 
@@ -82,8 +83,8 @@ namespace System.IO
         public static FileInfo[] CopyTo(this FileInfo[] arrFileInfo, String targetPath, bool consolidateExceptions = true)
         {
             var copiedfiles = new List<FileInfo>();
-            
-            List<Exception> exceptions = null;
+
+            var exceptions = default(List<Exception>);
             foreach (var file in arrFileInfo)
             {
                 try
@@ -91,12 +92,12 @@ namespace System.IO
                     var fileName = Path.Combine(targetPath, file.Name);
                     copiedfiles.Add(file.CopyTo(fileName));
                 }
-                catch (Exception e)
+                catch (Exception exp)
                 {
                     if (consolidateExceptions)
                     {
                         if (null == exceptions) exceptions = new List<Exception>();
-                        exceptions.Add(e);
+                        exceptions.Add(exp);
                     }
                     else throw;
                 }
@@ -126,7 +127,7 @@ namespace System.IO
         /// </example>
         public static FileInfo[] MoveTo(this FileInfo[] arrFileInfo, String targetPath, bool consolidateExceptions = true)
         {
-            List<Exception> exceptions = null;
+            var exceptions = default(List<Exception>);
             foreach (var file in arrFileInfo)
             {
                 try
@@ -134,12 +135,12 @@ namespace System.IO
                     var fileName = Path.Combine(targetPath, file.Name);
                     file.MoveTo(fileName);
                 }
-                catch (Exception e)
+                catch (Exception exp)
                 {
                     if (consolidateExceptions)
                     {
                         if (null == exceptions) exceptions = new List<Exception>();
-                        exceptions.Add(e);
+                        exceptions.Add(exp);
                     }
                     else throw;
                 }
@@ -166,7 +167,8 @@ namespace System.IO
         /// </example>
         public static FileInfo[] SetAttributes(this FileInfo[] arrFileInfo, FileAttributes attributes)
         {
-            foreach (var file in arrFileInfo) file.Attributes = attributes;
+            foreach (var file in arrFileInfo) 
+                file.Attributes = attributes;
             return arrFileInfo;
         }
 
@@ -182,7 +184,8 @@ namespace System.IO
         /// </example>
         public static FileInfo[] SetAttributesAdditive(this FileInfo[] arrFileInfo, FileAttributes attributes)
         {
-            foreach (var file in arrFileInfo) file.Attributes = (file.Attributes | attributes);
+            foreach (var file in arrFileInfo) 
+                file.Attributes = (file.Attributes | attributes);
             return arrFileInfo;
         }
 

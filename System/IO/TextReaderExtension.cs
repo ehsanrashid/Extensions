@@ -7,7 +7,7 @@ namespace System.IO
     /// </summary>
     public static class TextReaderExtension
     {
-        public static bool TryReadLine(this TextReader reader, out string line)
+        public static bool TryReadLine(this TextReader reader, out String line)
         {
             line = reader.ReadLine();
             return (null != line);

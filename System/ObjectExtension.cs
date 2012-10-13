@@ -1127,12 +1127,12 @@
         /// </summary>
         /// <param name="_object">Object of Dictionary of strings and objects (e.g. 'new { name="value" }')</param>
         /// <returns>Dictionary of strings and objects</returns>
-        public static IDictionary<string, object> ToDictionary(this Object obj)
+        public static IDictionary<String, object> ToDictionary(this Object obj)
         {
-            if (obj == null) return new Dictionary<string, object>();
-            if (obj is IDictionary<string, object>) return (IDictionary<string, object>) obj;
+            if (obj == null) return new Dictionary<String, object>();
+            if (obj is IDictionary<String, object>) return (IDictionary<String, object>) obj;
             var propInfo = TypeDescriptor.GetProperties(obj);
-            var dictionary = new Dictionary<string, object>(propInfo.Count);
+            var dictionary = new Dictionary<String, object>(propInfo.Count);
             foreach (PropertyDescriptor property in propInfo)
             {
                 var name = property.Name.Replace("_", "-");

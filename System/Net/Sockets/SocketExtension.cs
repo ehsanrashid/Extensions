@@ -47,25 +47,25 @@
             return socket.GetSocketData(4, buf => BitConverter.ToInt32(buf, 0));
         }
 
-        public static IObservable<string> GetMessageBody(this Socket socket,
+        public static IObservable<String> GetMessageBody(this Socket socket,
                                                          int messageSize)
         {
             return socket.GetSocketData(messageSize, buf =>
                                                      Encoding.UTF8.GetString(buf, 0, messageSize));
         }
 
-        public static IObservable<string> GetMessage(this Socket socket)
+        public static IObservable<String> GetMessage(this Socket socket)
         {
             return socket.GetMessageSize()
                     .SelectMany(
                         (size) => Observable.If(
                             () => 0 != size,
                             socket.GetMessageBody(size),
-                            Observable.Return<string>(null)));
+                            Observable.Return<String>(null)));
         }
 
 
-        public static IObservable<string> GetMessagesFromConnected(this Socket socket)
+        public static IObservable<String> GetMessagesFromConnected(this Socket socket)
         {
             return socket
                 .GetMessage()
@@ -73,7 +73,7 @@
                 .TakeWhile(msg => msg.IsNotNullOrEmpty());
         }
 
-        public static IObservable<string> GetMessages(this Socket socket, IPAddress addr, int port)
+        public static IObservable<String> GetMessages(this Socket socket, IPAddress addr, int port)
         {
             return Observable.Defer(
                 () =>

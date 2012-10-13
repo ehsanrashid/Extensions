@@ -51,8 +51,8 @@
         /// </summary>
         /// <param name="stream"> The stream. </param>
         /// <param name="encoding"> The encoding. </param>
-        /// <returns> The result string. </returns>
-        public static string ReadToEnd(this Stream stream, Encoding encoding)
+        /// <returns> The result String. </returns>
+        public static String ReadToEnd(this Stream stream, Encoding encoding)
         {
             if (!stream.CanRead) throw new InvalidOperationException("Stream does not support reading.");
             using (TextReader reader = stream.GetReader(encoding)) return reader.ReadToEnd();
@@ -62,8 +62,8 @@
         ///   Reads all text from the stream using the default encoding.
         /// </summary>
         /// <param name="stream"> The stream. </param>
-        /// <returns> The result string. </returns>
-        public static string ReadToEnd(this Stream stream) { return stream.ReadToEnd(null); }
+        /// <returns> The result String. </returns>
+        public static String ReadToEnd(this Stream stream) { return stream.ReadToEnd(null); }
 
         /// <summary>
         ///   Sets the stream cursor to the beginning of the stream.
@@ -164,12 +164,12 @@
 
         // ----------------------------------------
         /*
-        public static IObservable<string> LineReader(this Stream stream, int bufferSize, char seperator,
+        public static IObservable<String> LineReader(this Stream stream, int bufferSize, char seperator,
                                                      bool includeSeperator)
         {
             if (null == stream) throw new ArgumentNullException("stream");
             if (1 > bufferSize) throw new ArgumentOutOfRangeException("bufferSize");
-            var sub = new Subject<string>();
+            var sub = new Subject<String>();
             // Wrap a MessageReader to read newline delimited chunks from stream.
             var delimiter = (byte) seperator;
             var obs = MessageReader(stream, delimiter, bufferSize, includeSeperator);

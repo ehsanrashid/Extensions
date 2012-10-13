@@ -467,7 +467,7 @@
         /// <remarks>
         /// 	Contributed by Michael T, http://about.me/MichaelTran
         /// </remarks>
-        public static string GetPeriodOfDay(this DateTime datetime)
+        public static String GetPeriodOfDay(this DateTime datetime)
         {
             var hour = datetime.Hour;
             if (hour < EveningEnds) return "evening";
@@ -573,11 +573,11 @@
         /// </summary>
         /// <param name="datetime">The DateTime.</param>
         /// <param name="culture">Specific Culture</param>
-        /// <returns>string</returns>
+        /// <returns>String</returns>
         /// <remarks>
         ///     modified by jtolar to implement culture settings
         /// </remarks>/// <remarks></remarks>
-        public static string ToFriendlyDateString(this DateTime datetime, CultureInfo culture)
+        public static String ToFriendlyDateString(this DateTime datetime, CultureInfo culture)
         {
             var sb = new StringBuilder();
             if (datetime.Date == DateTime.Today) sb.Append("Today");
@@ -599,11 +599,11 @@
         /// show the date as "Today, 3:33 PM". Uses DefaultCulture from ExtensionMethodSetting.
         /// </summary>
         /// <param name="datetime">The DateTime.</param>
-        /// <returns>string</returns>
+        /// <returns>String</returns>
         /// <remarks>
         ///     modified by jtolar to implement culture settings
         /// </remarks>/// <remarks></remarks>
-        public static string ToFriendlyDateString(this DateTime datetime) { return ToFriendlyDateString(datetime, ExtensionMethodSetting.DefaultCulture); }
+        public static String ToFriendlyDateString(this DateTime datetime) { return ToFriendlyDateString(datetime, ExtensionMethodSetting.DefaultCulture); }
 
         /// <summary>
         /// Returns the date at 23:59.59.999 for the specified DateTime

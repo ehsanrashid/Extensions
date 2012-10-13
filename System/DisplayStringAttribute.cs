@@ -42,7 +42,7 @@ namespace System
         /// <summary>
         /// The value of this attribute
         /// </summary>
-        public string DisplayString { get; private set; }
+        public String DisplayString { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the class <c>DisplayStringAttribute</c> with specified value

@@ -63,7 +63,7 @@ namespace System.Drawing
         /// <returns> Base64 String of the Image </returns>
         /// <remarks>
         /// </remarks>
-        public static string GetImageInBase64(this Image image, ImageFormat format)
+        public static String GetImageInBase64(this Image image, ImageFormat format)
         {
             using (var stream = new MemoryStream())
             {
