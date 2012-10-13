@@ -17,6 +17,30 @@
     ///</summary>
     public static class HtmlHelperExtension
     {
+        #region Label
+        /// <summary>
+        /// Returns an HTML label element for the given target and text.
+        /// </summary>
+        /// <param name="htmlHelper"></param>
+        /// <param name="target"></param>
+        /// <param name="text"></param>
+        /// <param name="htmlAttributes"></param>
+        /// <returns></returns>
+        public static MvcHtmlString LabelFor(this HtmlHelper htmlHelper, String target, String text, IDictionary<String, Object> htmlAttributes = null)
+        {
+            var tbLbl = new TagBuilder("label");
+            tbLbl.MergeAttribute("for", target);
+            tbLbl.MergeAttributes(htmlAttributes, true);
+            tbLbl.SetInnerText(text);
+            return MvcHtmlString.Create(tbLbl.ToString());
+        }
+        public static MvcHtmlString LabelFor(this HtmlHelper htmlHelper, String target, String text, Object htmlAttributes = null)
+        {
+            return LabelFor(htmlHelper, target, text, HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
+        }
+
+        #endregion
+
         #region Image
 
         ///<summary>
@@ -1064,26 +1088,6 @@
 
         #region Controls
 
-        /// <summary>
-        /// Returns an HTML label element for the given target and text.
-        /// </summary>
-        /// <param name="htmlHelper"></param>
-        /// <param name="target"></param>
-        /// <param name="text"></param>
-        /// <param name="htmlAttributes"></param>
-        /// <returns></returns>
-        public static MvcHtmlString LabelFor(this HtmlHelper htmlHelper, String target, String text, IDictionary<String, Object> htmlAttributes = null)
-        {
-            var tbLbl = new TagBuilder("label");
-            tbLbl.MergeAttribute("for", target);
-            tbLbl.MergeAttributes(htmlAttributes, true);
-            tbLbl.SetInnerText(text);
-            return MvcHtmlString.Create(tbLbl.ToString());
-        }
-        public static MvcHtmlString LabelFor(this HtmlHelper htmlHelper, String target, String text, Object htmlAttributes = null)
-        {
-            return LabelFor(htmlHelper, target, text, HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
-        }
 
         private static readonly String[] HtmlTags = new[]
                                                     {
@@ -1200,8 +1204,6 @@
 
         // --------------------------------------------------------------------
 
-
-
         //public static IHtmlString Raw(this HtmlHelper htmlHelper, String value)
         //{
         //    return new HtmlString(value);
@@ -1211,9 +1213,6 @@
         //{
         //    return new HtmlString(value == null ? null : value.ToString());
         //}
-
-
-
 
     }
 }
