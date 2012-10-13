@@ -12,8 +12,7 @@
         /// <typeparam name="TItem">ViewModel Item</typeparam>
         /// <param name="propertyExpression">Lambda expression of property value</param>
         /// <returns>Property value string</returns>
-        public static string ToProperty<TModel, TItem>
-          (this Expression<Func<TModel, TItem>> propertyExpression)
+        public static string ToProperty<TModel, TItem>(this Expression<Func<TModel, TItem>> propertyExpression)
         {
             // v.1.4
             return ExpressionHelper.GetExpressionText(propertyExpression);

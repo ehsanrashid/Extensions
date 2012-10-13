@@ -7,55 +7,55 @@
 
     public class Pager<T>
     {
-        readonly StringBuilder htmlText;
-        readonly HtmlHelper htmlHelper;
-        readonly String controller;
-        readonly String action;
-        readonly IPagedList<T> pagedList;
+        readonly StringBuilder _htmlText;
+        readonly HtmlHelper _htmlHelper;
+        readonly String _controller;
+        readonly String _action;
+        readonly IPagedList<T> _pagedList;
 
         public Pager(HtmlHelper htmlHelper, String controller, String action, IPagedList<T> pagedList)
         {
-            htmlText = new StringBuilder();
-            this.htmlHelper = htmlHelper;
-            this.controller = controller;
-            this.action = action;
-            this.pagedList = pagedList;
+            _htmlText = new StringBuilder();
+            _htmlHelper = htmlHelper;
+            _controller = controller;
+            _action = action;
+            _pagedList = pagedList;
         }
 
         public String WriteHtml()
         {
-            htmlText.Append("<div class=\"pager\">");
+            _htmlText.Append("<div class=\"pager\">");
 
             WriteLink(0, "<<");
-            WriteLink(pagedList.PageIndex - 1, "<");
+            WriteLink(_pagedList.PageIndex - 1, "<");
 
-            for (int i = 0; i < pagedList.NoOfPages; i++)
+            for (var i = 0; i < _pagedList.NoOfPages; i++)
             {
                 WriteLink(i);
             }
 
-            WriteLink(pagedList.PageIndex + 1, ">");
-            WriteLink(pagedList.NoOfPages - 1, ">>");
+            WriteLink(_pagedList.PageIndex + 1, ">");
+            WriteLink(_pagedList.NoOfPages - 1, ">>");
 
-            htmlText.Append("</div>");
+            _htmlText.Append("</div>");
 
-            return htmlText.ToString();
+            return _htmlText.ToString();
         }
 
-        private void WriteLink(int pageNumber)
+        void WriteLink(int pageNumber)
         {
             WriteLink(pageNumber, (pageNumber + 1).ToString());
         }
 
-        private void WriteLink(int pageNumber, String text)
+        void WriteLink(int pageNumber, String text)
         {
-            if (pageNumber == pagedList.PageIndex || pageNumber < 0 || pageNumber > pagedList.NoOfPages - 1)
+            if (pageNumber == _pagedList.PageIndex || pageNumber < 0 || pageNumber > _pagedList.NoOfPages - 1)
             {
-                htmlText.AppendFormat("{0} ", text);
+                _htmlText.AppendFormat("{0} ", text);
             }
             else
             {
-                htmlText.AppendFormat("{0} ", htmlHelper.ActionLink(text, action, controller, new
+                _htmlText.AppendFormat("{0} ", _htmlHelper.ActionLink(text, _action, _controller, new
                 {
                     CurrentPage = pageNumber
                 }));

@@ -1088,7 +1088,6 @@
 
         #region Controls
 
-
         private static readonly String[] HtmlTags = new[]
                                                     {
                                                         "script", "div", "p", "a", "h1", "h2", "h3", "h4", "h5", "h6",

@@ -5,13 +5,8 @@
     /// </summary>
     public class HtmlListInfo
     {
-        public HtmlListInfo(
-        HtmlTag htmlTag,
-        int columns = 0,
-        object htmlAttributes = null,
-        TextLayout textLayout = TextLayout.Default)
+        public HtmlListInfo(HtmlTag htmlTag, int columns = 0, object htmlAttributes = null, TextLayout textLayout = TextLayout.Default)
         {
-
             this.htmlTag = htmlTag;
             Columns = columns;
             this.htmlAttributes = htmlAttributes;

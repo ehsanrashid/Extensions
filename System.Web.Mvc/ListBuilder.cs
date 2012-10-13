@@ -15,14 +15,14 @@
         static ListBuilder()
         {
             // reset internal counters
-            linked_label_counter = 0;
-            htmlwrap_rowbreak_counter = 0;
+            linkedLabelCount = 0;
+            htmlwrapRowbreakCount = 0;
         }
 
         // counter to count when to insert HTML code that breakes checkbox list
-        static int htmlwrap_rowbreak_counter { get; set; }
+        static int htmlwrapRowbreakCount { get; set; }
         // counter to be used on a label linked to each checkbox in the list
-        static int linked_label_counter { get; set; }
+        static int linkedLabelCount { get; set; }
 
         public const string No_Data_Message = "No Records...";
         public const string Empty_Model_Message = "View Model cannot be null! Please make sure your View Model is created and passed to this View";
@@ -103,7 +103,7 @@
             // create checkbox list
             var sb = new StringBuilder();
             sb.Append(htmlWrapper.wrap_open);
-            htmlwrap_rowbreak_counter = 0;
+            htmlwrapRowbreakCount = 0;
 
             // create list of checkboxes based on data
             foreach (var item in sourceData)
@@ -265,7 +265,7 @@
             checkbox_builder.MergeAttribute("name", fullName);
 
             // create linked label tag
-            var link_name = name + linked_label_counter++;
+            var link_name = name + linkedLabelCount++;
             checkbox_builder.GenerateId(link_name);
             var linked_label_builder = new TagBuilder("label");
             linked_label_builder.MergeAttribute("for", link_name.Replace(".", "_"));
@@ -335,11 +335,11 @@
             sb.Append(htmlWrapper.append_to_element);
 
             // add table column break, if applicable
-            htmlwrap_rowbreak_counter += 1;
-            if (htmlwrap_rowbreak_counter == htmlWrapper.separator_max_counter)
+            htmlwrapRowbreakCount += 1;
+            if (htmlwrapRowbreakCount == htmlWrapper.separator_max_counter)
             {
                 sb.Append(htmlWrapper.wrap_rowbreak);
-                htmlwrap_rowbreak_counter = 0;
+                htmlwrapRowbreakCount = 0;
             }
 
             // return string builder with checkbox html markup
