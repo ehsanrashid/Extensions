@@ -50,11 +50,9 @@
   <ItemGroup>
     <Compile Include="AjaxHelperExtension.cs" />
     <Compile Include="ExpressionExtension.cs" />
-    <Compile Include="HtmlElementTag.cs" />
     <Compile Include="HtmlHelperExtension.cs" />
     <Compile Include="HtmlListInfo.cs" />
     <Compile Include="HtmlTag.cs" />
-    <Compile Include="HtmlWrapperInfo.cs" />
     <Compile Include="ListBuilder.cs" />
     <Compile Include="Pager.cs" />
     <Compile Include="PagerBuilder.cs" />
