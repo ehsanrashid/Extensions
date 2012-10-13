@@ -17,6 +17,7 @@
     ///</summary>
     public static class HtmlHelperExtension
     {
+        #region Helpers
         public static MvcHtmlString Render(this HtmlHelper htmlHelper, String content)
         {
             return MvcHtmlString.Create(content);
@@ -49,6 +50,8 @@
                                             ? input
                                             : input.Substring(0, length) + "...");
         }
+        
+        #endregion
 
         #region Label
 

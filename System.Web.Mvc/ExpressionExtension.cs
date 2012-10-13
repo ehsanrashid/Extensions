@@ -10,23 +10,24 @@
         /// </summary>
         /// <typeparam name="TModel">Current ViewModel</typeparam>
         /// <typeparam name="TItem">ViewModel Item</typeparam>
-        /// <param name="propertyExpression">Lambda expression of property value</param>
+        /// <param name="expression">Lambda expression of property value</param>
         /// <returns>Property value string</returns>
-        public static string ToProperty<TModel, TItem>(this Expression<Func<TModel, TItem>> propertyExpression)
+        public static string ToProperty<TModel, TItem>(this Expression<Func<TModel, TItem>> expression)
         {
             // v.1.4
-            return ExpressionHelper.GetExpressionText(propertyExpression);
+            return ExpressionHelper.GetExpressionText(expression);
 
             // v.1.3c
-            //var lambda = propertyExpression as LambdaExpression;
+            //var lambda = expression as LambdaExpression;
             //var expression = lambda.Body.ToString();
             //return expression.Substring(expression.IndexOf('.') + 1);
 
             // v.1.2
             //// return property name only
-            //var lambda = propertyExpression as LambdaExpression;
+            //var lambda = expression as LambdaExpression;
             //MemberExpression memberExpression;
-            //if (lambda.Body is UnaryExpression) {
+            //if (lambda.Body is UnaryExpression) 
+            //{
             //  var unaryExpression = lambda.Body as UnaryExpression;
             //  memberExpression = unaryExpression.Operand as MemberExpression;
             //}

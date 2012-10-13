@@ -24,7 +24,7 @@
         {
             _cacheKey = ComputeCacheKey(filterContext);
             var cachedOutput = (String) filterContext.HttpContext.Cache[_cacheKey];
-            if (cachedOutput != null)
+            if (null != cachedOutput)
                 filterContext.Result = new ContentResult { Content = cachedOutput };
             else
                 _originalWriter = (TextWriter) _switchWriterMethod.Invoke(HttpContext.Current.Response, new object[] { new HtmlTextWriter(new StringWriter()) });
@@ -32,23 +32,23 @@
 
         public override void OnResultExecuted(ResultExecutedContext filterContext)
         {
-            if (_originalWriter != null) // Must complete the caching
+            if (null != _originalWriter) // Must complete the caching
             {
                 var cacheWriter = (HtmlTextWriter) _switchWriterMethod.Invoke(HttpContext.Current.Response, new object[] { _originalWriter });
-                var textWritten = ((StringWriter) cacheWriter.InnerWriter).ToString();
-                filterContext.HttpContext.Response.Write(textWritten);
+                var textCached = cacheWriter.InnerWriter.ToString();
+                filterContext.HttpContext.Response.Write(textCached);
 
-                filterContext.HttpContext.Cache.Add(_cacheKey, textWritten, null, DateTime.Now.AddSeconds(_cacheDuration), Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Normal, null);
+                filterContext.HttpContext.Cache.Add(_cacheKey, textCached, null, DateTime.Now.AddSeconds(_cacheDuration), Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Normal, null);
             }
         }
 
         String ComputeCacheKey(ActionExecutingContext filterContext)
         {
             var sbKey = new StringBuilder();
-            foreach (var pair in filterContext.RouteData.Values)
-                sbKey.AppendFormat("rd{0}_{1}_", pair.Key.GetHashCode(), pair.Value.GetHashCode());
-            foreach (var pair in filterContext.ActionParameters)
-                sbKey.AppendFormat("ap{0}_{1}_", pair.Key.GetHashCode(), pair.Value.GetHashCode());
+            foreach (var route in filterContext.RouteData.Values)
+                sbKey.AppendFormat("rd{0}_{1}_", route.Key.GetHashCode(), route.Value.GetHashCode());
+            foreach (var action in filterContext.ActionParameters)
+                sbKey.AppendFormat("ap{0}_{1}_", action.Key.GetHashCode(), action.Value.GetHashCode());
             return sbKey.ToString();
         }
     }
