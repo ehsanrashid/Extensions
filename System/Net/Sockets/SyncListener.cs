@@ -7,7 +7,7 @@
     using Text;
 
     /// <summary>
-    /// Simple Threaded TCP Server
+    /// Simple Threaded TCP Listener
     /// </summary>
     public class SyncListener
     {
