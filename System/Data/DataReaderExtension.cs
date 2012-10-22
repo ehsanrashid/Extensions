@@ -145,8 +145,7 @@
         /// <param name="field"> The name of the record field. </param>
         /// <param name="defaultValue"> The default value. </param>
         /// <returns> The record value </returns>
-        public static DateTimeOffset GetDateTimeOffset(this IDataReader reader, String field,
-                                                       DateTimeOffset defaultValue)
+        public static DateTimeOffset GetDateTimeOffset(this IDataReader reader, String field, DateTimeOffset defaultValue)
         {
             var datetime = reader.GetDateTime(field);
             return (datetime != DateTime.MinValue) ? new DateTimeOffset(datetime, TimeSpan.Zero) : defaultValue;

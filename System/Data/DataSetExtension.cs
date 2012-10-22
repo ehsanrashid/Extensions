@@ -26,7 +26,7 @@
                         break;
                 }
 
-            var dSet = new DataSet(Path.GetFileNameWithoutExtension(filename));
+            dataSet = new DataSet(Path.GetFileNameWithoutExtension(filename));
             using (var conOleDb = new OleDbConnection(connectionString))
             {
                 conOleDb.Open();
@@ -44,29 +44,29 @@
                         var table = new DataTable(nameSheet);
                         var cmdOleDb = new OleDbCommand(selectQuery, conOleDb) { CommandType = CommandType.Text };
                         new OleDbDataAdapter(cmdOleDb).Fill(table);
-                        dSet.Tables.Add(table);
+                        dataSet.Tables.Add(table);
                     }
                 }
                 conOleDb.Close();
             }
-            RemoveNull(dSet);
-            return dSet;
+            RemoveNull(dataSet);
+            return dataSet;
         }
 
         public static DataSet ImportXML(this DataSet dataSet, String filename)
         {
             if (filename.IsNullOrWhiteSpace()) return default(DataSet);
-            var dSet = new DataSet(Path.GetFileNameWithoutExtension(filename));
-            //dSet.ReadXml(filename);
-            dSet.ReadXmlSchema(filename);
-            foreach (DataTable table in dSet.Tables)
+            dataSet = new DataSet(Path.GetFileNameWithoutExtension(filename));
+            //dataSet.ReadXml(filename);
+            dataSet.ReadXmlSchema(filename);
+            foreach (DataTable table in dataSet.Tables)
                 table.BeginLoadData();
-            dSet.ReadXml(filename);
-            foreach (DataTable table in dSet.Tables)
+            dataSet.ReadXml(filename);
+            foreach (DataTable table in dataSet.Tables)
                 table.EndLoadData();
             //-----------------------------------------------------
-            //dSet.ReadXml(XmlReader.Create(new StringReader(xmlDocument.InnerXml)));
-            return dSet;
+            //dataSet.ReadXml(XmlReader.Create(new StringReader(xmlDocument.InnerXml)));
+            return dataSet;
         }
 
         public static void RemoveNull(this DataSet dataSet)
