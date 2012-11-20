@@ -38,7 +38,7 @@
                 ThreadListen = new Thread(new ThreadStart(DoListening))
                                     {
                                         Name = "Listener Thread",
-                                        Priority = ThreadPriority.AboveNormal
+                                        Priority = ThreadPriority.AboveNormal,
                                     };
                 ThreadListen.Start();
             }

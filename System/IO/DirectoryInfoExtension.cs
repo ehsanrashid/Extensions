@@ -343,51 +343,45 @@ namespace System.IO
 
     public class RecursiveSearchHelper
     {
-        readonly List<String> excludeList;
-
-        readonly List<String> fileList;
+        readonly List<String> _listExclude;
+        readonly List<String> _listInclude;
 
         public RecursiveSearchHelper()
         {
-            fileList = new List<String>();
-            excludeList = new List<String>();
+            _listInclude = new List<String>();
+            _listExclude = new List<String>();
         }
 
-        public String[] GetFiles(String initialDirectory, String filePattern)
+        public String[] GetFiles(String initialDirectory, String incluePattern)
         {
-            fileList.Clear();
-
-            Search(initialDirectory, filePattern);
-
-            return fileList.ToArray();
+            _listInclude.Clear();
+            Search(initialDirectory, incluePattern);
+            return _listInclude.ToArray();
         }
 
-        public String[] GetFiles(String initialDirectory, String[] filePatterns, String[] excludePatterns)
+        public String[] GetFiles(String initialDirectory, String[] incluePatterns, String[] excludePatterns)
         {
-            fileList.Clear();
-            excludeList.Clear();
+            _listInclude.Clear();
+            _listExclude.Clear();
 
-            foreach (var filePattern in filePatterns) Search(initialDirectory, filePattern);
+            foreach (var filePattern in incluePatterns) Search(initialDirectory, filePattern);
 
             if (excludePatterns != null) foreach (var excludePattern in excludePatterns) SearchExclude(initialDirectory, excludePattern);
 
-            foreach (var file in excludeList) fileList.RemoveAll(s => s == file);
+            foreach (var file in _listExclude) _listInclude.RemoveAll(s => s == file);
 
-            return fileList.ToArray();
+            return _listInclude.ToArray();
         }
 
-        void Search(String initialDirectory, String filePattern)
+        void Search(String initialDirectory, String incluePattern)
         {
-            foreach (var file in Directory.GetFiles(initialDirectory, filePattern).Where(file => !fileList.Contains(file))) fileList.Add(file);
-
-            foreach (var item in Directory.GetDirectories(initialDirectory)) Search(item, filePattern);
+            foreach (var file in Directory.GetFiles(initialDirectory, incluePattern).Where(file => !_listInclude.Contains(file))) _listInclude.Add(file);
+            foreach (var item in Directory.GetDirectories(initialDirectory)) Search(item, incluePattern);
         }
 
         void SearchExclude(String initialDirectory, String excludePattern)
         {
-            foreach (
-                var file in Directory.GetFiles(initialDirectory, excludePattern).Where(file => !excludeList.Contains(file))) excludeList.Add(file);
-
+            foreach (var file in Directory.GetFiles(initialDirectory, excludePattern).Where(file => !_listExclude.Contains(file))) _listExclude.Add(file);
             foreach (var item in Directory.GetDirectories(initialDirectory)) SearchExclude(item, excludePattern);
         }
 

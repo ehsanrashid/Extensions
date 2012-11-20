@@ -14,18 +14,11 @@
         /// <param name="stream"> The stream. </param>
         /// <param name="encoding"> The encoding. </param>
         /// <returns> The stream reader </returns>
-        public static StreamReader GetReader(this Stream stream, Encoding encoding)
+        public static StreamReader GetReader(this Stream stream, Encoding encoding = null)
         {
             if (!stream.CanRead) throw new InvalidOperationException("Stream does not support reading.");
             return new StreamReader(stream, encoding ?? Encoding.Default);
         }
-
-        /// <summary>
-        ///   Opens a StreamReader using the default encoding.
-        /// </summary>
-        /// <param name="stream"> The stream. </param>
-        /// <returns> The stream reader </returns>
-        public static StreamReader GetReader(this Stream stream) { return stream.GetReader(null); }
 
         /// <summary>
         ///   Opens a StreamWriter using the specified encoding.
@@ -33,18 +26,11 @@
         /// <param name="stream"> The stream. </param>
         /// <param name="encoding"> The encoding. </param>
         /// <returns> The stream writer </returns>
-        public static StreamWriter GetWriter(this Stream stream, Encoding encoding)
+        public static StreamWriter GetWriter(this Stream stream, Encoding encoding = null)
         {
             if (!stream.CanWrite) throw new InvalidOperationException("Stream does not support writing.");
             return new StreamWriter(stream, encoding ?? Encoding.Default);
         }
-
-        /// <summary>
-        ///   Opens a StreamWriter using the default encoding.
-        /// </summary>
-        /// <param name="stream"> The stream. </param>
-        /// <returns> The stream writer </returns>
-        public static StreamWriter GetWriter(this Stream stream) { return stream.GetWriter(null); }
 
         /// <summary>
         ///   Reads all text from the stream using a specified encoding.
@@ -52,18 +38,12 @@
         /// <param name="stream"> The stream. </param>
         /// <param name="encoding"> The encoding. </param>
         /// <returns> The result String. </returns>
-        public static String ReadToEnd(this Stream stream, Encoding encoding)
+        public static String ReadToEnd(this Stream stream, Encoding encoding = null)
         {
             if (!stream.CanRead) throw new InvalidOperationException("Stream does not support reading.");
-            using (TextReader reader = stream.GetReader(encoding)) return reader.ReadToEnd();
+            using (var reader = stream.GetReader(encoding)) 
+                return reader.ReadToEnd();
         }
-
-        /// <summary>
-        ///   Reads all text from the stream using the default encoding.
-        /// </summary>
-        /// <param name="stream"> The stream. </param>
-        /// <returns> The result String. </returns>
-        public static String ReadToEnd(this Stream stream) { return stream.ReadToEnd(null); }
 
         /// <summary>
         ///   Sets the stream cursor to the beginning of the stream.
@@ -151,7 +131,8 @@
                 var cnt = stream.Read(buffer, offset, sizeBuffer - offset);
                 if (cnt == 0) return null;
                 offset += cnt;
-            } while (offset < sizeBuffer);
+            } 
+            while (offset < sizeBuffer);
             return buffer;
         }
 
