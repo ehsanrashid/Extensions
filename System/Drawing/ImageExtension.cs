@@ -43,15 +43,15 @@ namespace System.Drawing
         /// </remarks>
         public static byte[] GetImageInBytes(this Image image, ImageFormat format)
         {
-            using (var ms = new MemoryStream())
+            using (var stream = new MemoryStream())
             {
                 if (null != format)
                 {
-                    image.Save(ms, format);
-                    return ms.ToArray();
+                    image.Save(stream, format);
+                    return stream.ToArray();
                 }
-                image.Save(ms, image.RawFormat);
-                return ms.ToArray();
+                image.Save(stream, image.RawFormat);
+                return stream.ToArray();
             }
         }
 
@@ -91,30 +91,30 @@ namespace System.Drawing
             if (null == image || height <= 0 || width <= 0) return null;
             var newWidth = (image.Width*height)/(image.Height);
             var newHeight = (image.Height*width)/(image.Width);
-            var bmp = new Bitmap(width, height);
-            using (var graph = Graphics.FromImage(bmp))
+            var bitmap = new Bitmap(width, height);
+            using (var graphics = Graphics.FromImage(bitmap))
             {
-                graph.InterpolationMode = InterpolationMode.HighQualityBilinear;
+                graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
                 // use this when debugging.
                 //g.FillRectangle(Brushes.Aqua, 0, 0, bmp.Width - 1, bmp.Height - 1);
                 if (newWidth > width)
                 {
                     // use new height
-                    var x = (bmp.Width - width)/2;
-                    var y = (bmp.Height - newHeight)/2;
-                    graph.DrawImage(image, x, y, width, newHeight);
+                    var x = (bitmap.Width - width)/2;
+                    var y = (bitmap.Height - newHeight)/2;
+                    graphics.DrawImage(image, x, y, width, newHeight);
                 }
                 else
                 {
                     // use new width
-                    var x = (bmp.Width/2) - (newWidth/2);
-                    var y = (bmp.Height/2) - (height/2);
-                    graph.DrawImage(image, x, y, newWidth, height);
+                    var x = (bitmap.Width/2) - (newWidth/2);
+                    var y = (bitmap.Height/2) - (height/2);
+                    graphics.DrawImage(image, x, y, newWidth, height);
                 }
                 // use this when debugging.
                 //g.DrawRectangle(new Pen(Color.Red, 1), 0, 0, bmp.Width - 1, bmp.Height - 1);
             }
-            return bmp;
+            return bitmap;
         }
 
         /// <summary>
@@ -135,28 +135,17 @@ namespace System.Drawing
             var targetWidth = (int) (image.Width*ratio);
             var targetHeight = (int) (image.Height*ratio);
             var bitmap = new Bitmap(newSize.Width, newSize.Height);
-            using (var graph = Graphics.FromImage(bitmap))
+            using (var graphics = Graphics.FromImage(bitmap))
             {
-                graph.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 var offsetX = ((double) (newSize.Width - targetWidth))/2;
                 var offsetY = ((double) (newSize.Height - targetHeight))/2;
-                graph.DrawImage(image, (int) offsetX, (int) offsetY, targetWidth, targetHeight);
-                graph.Dispose();
+                graphics.DrawImage(image, (int) offsetX, (int) offsetY, targetWidth, targetHeight);
+                graphics.Dispose();
             }
             return bitmap;
         }
 
-        /// <summary>
-        ///   Converts to image.
-        /// </summary>
-        /// <param name="byteArrayIn"> The byte array in. </param>
-        /// <returns> </returns>
-        /// <remarks>
-        /// </remarks>
-        public static Image ConvertToImage(this byte[] byteArrayIn)
-        {
-            return Image.FromStream(new MemoryStream(byteArrayIn));
-        }
 
     }
 }

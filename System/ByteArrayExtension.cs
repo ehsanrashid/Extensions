@@ -13,13 +13,13 @@ namespace System
     /// </summary>
     public static class ByteArrayExtension
     {
-        public static byte[] ConcatBuf(this byte[] buf1, byte[] buf2)
+        public static byte[] ConcatBuf(this byte[] buff1, byte[] buff2)
         {
-            if (null == buf1 || 0 == buf1.Length) return buf2;
-            if (null == buf2 || 0 == buf2.Length) return buf1;
-            var buffer = new byte[buf1.Length + buf2.Length];
-            Buffer.BlockCopy(buf1, 0, buffer, 0, buf1.Length);
-            Buffer.BlockCopy(buf2, 0, buffer, buf1.Length, buf2.Length);
+            if (null == buff1 || 0 == buff1.Length) return buff2;
+            if (null == buff2 || 0 == buff2.Length) return buff1;
+            var buffer = new byte[buff1.Length + buff2.Length];
+            Buffer.BlockCopy(buff1, 0, buffer, 0, buff1.Length);
+            Buffer.BlockCopy(buff2, 0, buffer, buff1.Length, buff2.Length);
             return buffer;
         }
 
@@ -31,9 +31,9 @@ namespace System
         public static IEnumerable<byte[]> Split(this byte[] buffer, int blockSize)
         {
             if (blockSize < 1) throw new ArgumentOutOfRangeException("blockSize");
-            
+
             if (null == buffer) yield break;
-            
+
             if (buffer.Length <= blockSize) yield return buffer;
             else
             {
@@ -194,7 +194,7 @@ namespace System
         {
             if (default(Byte[]) == buffer1) throw new ArgumentNullException("buffer1");
             if (default(Byte[]) == buffer2) throw new ArgumentNullException("buffer2");
-            
+
             if (buffer2.Length == 0) return 0; // by definition empty sets match immediately
             var j = -1;
             var end = buffer1.Length - buffer2.Length;
@@ -209,10 +209,13 @@ namespace System
         /// <summary>
         /// Converts to image.
         /// </summary>
-        /// <param name="buffer">The byte array in.</param>
+        /// <param name="byteArray">The byte array in.</param>
         /// <returns></returns>
         /// <remarks></remarks>
-        public static Image ConvertToImage(this Byte[] buffer) { return Image.FromStream(new MemoryStream(buffer)); }
+        public static Image ConvertToImage(this Byte[] byteArray)
+        {
+            return Image.FromStream(new MemoryStream(byteArray));
+        }
 
         public static BitmapImage ToBitmapImage(this Byte[] byteArray)
         {
@@ -235,6 +238,7 @@ namespace System
                 return bitmapSource;
             }
         }
+
 
     }
 }
