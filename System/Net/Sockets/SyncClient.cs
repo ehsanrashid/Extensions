@@ -27,9 +27,7 @@
             var hostName = Dns.GetHostName();
             var localAdd = Dns.GetHostEntry(hostName).AddressList[0];
             var localEP = new IPEndPoint(localAdd, 0);
-            TcpClient =
-                new TcpClient();
-            //new TcpClient(localEP);
+            TcpClient = new TcpClient(); //new TcpClient(localEP);
         }
 
         public void Connect(IPEndPoint remoteEP)
@@ -38,33 +36,40 @@
             {
                 EndPoint = remoteEP;
 
-                var thConnect = new Thread(new ThreadStart(DoConnection))
-                                {
-                                    Name = "Connection Thread",
-                                    Priority = ThreadPriority.Normal,
-                                };
-                thConnect.Start();
+                var threadConnect = new Thread(new ThreadStart(DoConnection))
+                                        {
+                                            Name = "Connection Thread",
+                                            Priority = ThreadPriority.Normal,
+                                        };
+                
+                threadConnect.Start();
             }
             catch (Exception) { }
         }
+
         public void Connect(IPAddress remoteIP, int port)
         {
             Connect(new IPEndPoint(remoteIP, port));
         }
+
         public void Connect(String hostName, int port)
         {
-            Connect(Dns.GetHostAddresses(hostName)[0], port);
+            var hostAddresses = Dns.GetHostAddresses(hostName);
+            if (hostAddresses.Length > 0)
+            {
+                Connect(hostAddresses[0], port);    
+            }
         }
 
         public void Disconnect()
         {
             if (TcpClient.Connected)
             {
-                using (var stream = TcpClient.GetStream())
-                {
-                    if (default(NetworkStream) != stream && (stream.CanRead || stream.CanWrite))
-                        stream.Close();
-                }
+                //using (var stream = TcpClient.GetStream())
+                //{
+                //    if (default(NetworkStream) != stream && (stream.CanRead || stream.CanWrite))
+                //        stream.Close();
+                //}
                 TcpClient.Close();
                 _isRunning = false;
             }
@@ -170,7 +175,7 @@
                     var data = Receive();
                     if (data.IsNotNullOrEmpty())
                     {
-                        if (Action != default(Action<String>))
+                        if (default(Action<String>) != Action)
                         {
                             Action(data);
                         }

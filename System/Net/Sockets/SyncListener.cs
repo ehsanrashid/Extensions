@@ -21,12 +21,10 @@
 
         public int Sleep = 100;
 
-        Thread thListen { get; set; }
-
+        public Thread ThreadListen { get; set; }
 
         public SyncListener(int port)
         {
-
             TcpListener = new TcpListener(IPAddress.Any, port);
             ClientList = new List<TcpClient>(5);
         }
@@ -37,12 +35,12 @@
             try
             {
                 // Listener Accept Clients Thread
-                thListen = new Thread(new ThreadStart(StartListening))
-                            {
-                                Name = "Listener Thread",
-                                Priority = ThreadPriority.AboveNormal
-                            };
-                thListen.Start();
+                ThreadListen = new Thread(new ThreadStart(DoListening))
+                                    {
+                                        Name = "Listener Thread",
+                                        Priority = ThreadPriority.AboveNormal
+                                    };
+                ThreadListen.Start();
             }
             catch (Exception)
             { }
@@ -67,7 +65,6 @@
                 {
                     if (tcpClient.Connected)
                     {
-                        tcpClient.Client.Close();
                         tcpClient.Close();
                     }
                 }
@@ -76,7 +73,7 @@
 
         // ------------------------
 
-        void StartListening()
+        void DoListening()
         {
             TcpListener.Start();
             IsRunning = true;
@@ -87,12 +84,12 @@
                     //blocks until a client has connected to the server
                     var tcpClient = TcpListener.AcceptTcpClient();
                     //create a thread to handle communication with connected client
-                    var thClient = new Thread(new ParameterizedThreadStart(HandleClientConnect))
-                                    {
-                                        Name = "Client Thread " + (ClientList.Count),
-                                        Priority = ThreadPriority.Normal,
-                                    };
-                    thClient.Start(tcpClient);
+                    var threadClient = new Thread(new ParameterizedThreadStart(HandleClientConnect))
+                                            {
+                                                Name = "Client Thread " + (ClientList.Count),
+                                                Priority = ThreadPriority.Normal,
+                                            };
+                    threadClient.Start(tcpClient);
                 }
                 catch { }
             }
@@ -151,12 +148,12 @@
             {
                 try
                 {
-                    var nwStream = tcpClient.GetStream();
-                    if (nwStream.CanWrite)
+                    var stream = tcpClient.GetStream();
+                    if (stream.CanWrite)
                     {
                         var buffer = Encoding.ASCII.GetBytes(data);
-                        nwStream.Write(buffer, 0, buffer.Length);
-                        nwStream.Flush();
+                        stream.Write(buffer, 0, buffer.Length);
+                        stream.Flush();
                     }
                 }
                 catch (Exception)
@@ -169,8 +166,8 @@
             var sbData = new StringBuilder();
             if (tcpClient != default(TcpClient) && tcpClient.Connected)
             {
-                var nwStream = tcpClient.GetStream();
-                if (nwStream.CanRead)
+                var stream = tcpClient.GetStream();
+                if (stream.CanRead)
                 {
                     var bufferSize = 256;
                     var buffer = new byte[bufferSize];
@@ -178,10 +175,10 @@
                     {
                         do
                         {
-                            int noOfBytes = nwStream.Read(buffer, 0, bufferSize);
+                            int noOfBytes = stream.Read(buffer, 0, bufferSize);
                             sbData.Append(Encoding.ASCII.GetString(buffer, 0, noOfBytes));
                         }
-                        while (tcpClient.Connected && nwStream.DataAvailable);
+                        while (tcpClient.Connected && stream.DataAvailable);
                     }
                     catch (Exception)
                     { }
@@ -189,5 +186,6 @@
             }
             return sbData.ToString();
         }
+
     }
 }
