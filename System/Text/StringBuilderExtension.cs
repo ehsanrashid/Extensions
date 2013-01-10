@@ -102,19 +102,15 @@
             if (0 != sb.Length)
             {
                 var length = 0;
-                var num2 = sb.Length;
-                while ((sb[length] == ' ') && (length < num2))
-                    length++;
+                while ((sb[length] == ' ') && (length < sb.Length))
+                    ++length;
                 if (length > 0)
-                {
                     sb.Remove(0, length);
-                    num2 = sb.Length;
-                }
-                length = num2 - 1;
+                length = sb.Length - 1;
                 while ((sb[length] == ' ') && (length > -1))
-                    length--;
-                if (length < (num2 - 1))
-                    sb.Remove(length + 1, (num2 - length) - 1);
+                    --length;
+                if (length < (sb.Length - 1))
+                    sb.Remove(length + 1, (sb.Length - length) - 1);
             }
             return sb;
         }
@@ -157,29 +153,30 @@
         public static int IndexOf(this StringBuilder sb, String str, int startIndex = 0, bool ignoreCase = false)
         {
             var length = str.Length;
-            var num2 = (sb.Length - length) + 1;
-            if (ignoreCase == false)
+            if (ignoreCase)
             {
-                for (var i = startIndex; i < num2; i++)
-                    if (sb[i] == str[0])
+                for (var j = startIndex; j < (sb.Length - length) + 1; j++)
+                    if (char.ToLower(sb[j]) == char.ToLower(str[0]))
                     {
-                        var num3 = 1;
-                        while ((num3 < length) && (sb[i + num3] == str[num3]))
-                            num3++;
-                        if (num3 == length)
-                            return i;
+                        var len = 1;
+                        while ((len < length) && (char.ToLower(sb[j + len]) == char.ToLower(str[len])))
+                            len++;
+                        if (len == length)
+                            return j;
                     }
             }
             else
-                for (var j = startIndex; j < num2; j++)
-                    if (char.ToLower(sb[j]) == char.ToLower(str[0]))
+            {
+                for (var i = startIndex; i < (sb.Length - length) + 1; i++)
+                    if (sb[i] == str[0])
                     {
-                        var num3 = 1;
-                        while ((num3 < length) && (char.ToLower(sb[j + num3]) == char.ToLower(str[num3])))
-                            num3++;
-                        if (num3 == length)
-                            return j;
+                        var len = 1;
+                        while ((len < length) && (sb[i + len] == str[len]))
+                            len++;
+                        if (len == length)
+                            return i;
                     }
+            }
             return -1;
         }
 
@@ -187,24 +184,25 @@
         ///   Determine whether a String is begin with a given text
         /// </summary>
         /// <param name="sb"> </param>
-        /// <param name="value"> </param>
+        /// <param name="str"> </param>
         /// <param name="startIndex"> </param>
         /// <param name="ignoreCase"> </param>
         /// <returns> </returns>
-        public static bool StartsWith(this StringBuilder sb, String value, int startIndex = 0, bool ignoreCase = false)
+        public static bool StartsWith(this StringBuilder sb, String str, int startIndex = 0, bool ignoreCase = false)
         {
-            var length = value.Length;
-            var num2 = startIndex + length;
-            if (ignoreCase == false)
+            var length = str.Length;
+            if (ignoreCase)
             {
-                for (var i = startIndex; i < num2; i++)
-                    if (sb[i] != value[i - startIndex])
+                for (var j = startIndex; j < startIndex + length; j++)
+                    if (char.ToLower(sb[j]) != char.ToLower(str[j - startIndex]))
                         return false;
             }
             else
-                for (var j = startIndex; j < num2; j++)
-                    if (char.ToLower(sb[j]) != char.ToLower(value[j - startIndex]))
+            {
+                for (var i = startIndex; i < startIndex + length; i++)
+                    if (sb[i] != str[i - startIndex])
                         return false;
+            }
             return true;
         }
 
