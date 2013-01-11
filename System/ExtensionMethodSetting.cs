@@ -10,7 +10,7 @@
     /// <remarks>Added by Jtolar</remarks>
     public static class ExtensionMethodSetting
     {
-        
+
         /// <summary>
         /// Gets or Sets the default encoding scheme extension methods should use
         /// </summary>
