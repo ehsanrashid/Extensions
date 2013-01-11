@@ -38,7 +38,7 @@
 
         public static StringBuilder Remove(this StringBuilder sb, char ch)
         {
-            for (var i = 0; i < sb.Length;)
+            for (var i = 0; i < sb.Length; )
                 if (sb[i] == ch)
                     sb.Remove(i, 1);
                 else
