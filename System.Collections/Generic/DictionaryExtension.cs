@@ -163,7 +163,6 @@
         public static bool IsEmpty<TKey, TValue>(this IDictionary<TKey, TValue> collection)
         {
             collection.ExceptionIfNull("The collection cannot be null.", "collection");
-
             return collection.Count == 0;
         }
 
