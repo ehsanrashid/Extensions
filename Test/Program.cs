@@ -27,7 +27,7 @@ namespace Test
 
             //Console.WriteLine(s);
 
-            //var ss1 = s1.Remove(new[] {"e", "o", "d"});
+            //var ss1 = s1.Remove(new[] { "e", "o", "d" });
             //var ss2 = s1.Remove(new[] { 'e', 'o', 'd' });
 
             //var s = s1.ToSecureString();
@@ -52,9 +52,12 @@ namespace Test
             //Console.WriteLine(pl.HasNextPage);
             //Console.WriteLine(pl.NoOfItems);
             //Console.WriteLine(pl.NoOfPages);
-            
-            
-           
+
+			Graph<int> graph;
+
+
+			Tree<int> tree = new Tree<int>(3);
+			
 
             Console.Read();
 
