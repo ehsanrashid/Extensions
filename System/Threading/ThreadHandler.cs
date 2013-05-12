@@ -101,7 +101,14 @@ namespace System.Threading
         {
             lock (this)
             {
-                _thread.Sleep(millisecondsTimeout);
+                Thread.Sleep(millisecondsTimeout);
+            }
+        }
+        public void Sleep(TimeSpan timeout)
+        {
+            lock (this)
+            {
+                Thread.Sleep(timeout);
             }
         }
 
