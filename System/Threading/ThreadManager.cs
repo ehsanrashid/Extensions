@@ -103,7 +103,7 @@ namespace System.Threading
 
         internal bool OnErrorEvent(Exception exp)
         {
-            return null != OnError && OnError(exp);
+            return (null != OnError) && OnError(exp);
         }
 
         public void Stop()

@@ -7,8 +7,8 @@ namespace System.Threading
         
         public WorkItem(WaitCallback callback, Object parameter)
         {
-            Parameter = parameter;
             Callback = callback;
+            Parameter = parameter;
         }
     }
 }

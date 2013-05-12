@@ -3,28 +3,28 @@ namespace System.Threading
     /// <summary>
     /// References the method that will handle the OnJob event.
     /// </summary>
-    public delegate void HandlerForOnJob(ThreadHandlerEventArgs arg);
+    public delegate void OnJobHandler(ThreadHandlerEventArgs arg);
 
     /// <summary>
     /// References the method that will handle the OnAbort event.
     /// </summary>
-    public delegate void HandlerForOnAbort(ThreadHandlerEventArgs arg);
+    public delegate void OnAbortHandler(ThreadHandlerEventArgs arg);
 
     /// <summary>
     /// References the method that will handle the OnFinish event.
     /// </summary>
-    public delegate void HandlerForOnFinish(ThreadHandlerEventArgs arg);
+    public delegate void OnFinishHandler(ThreadHandlerEventArgs arg);
 
     /// <summary>
     /// References the method that will handle the OnTerminate event.
     /// NOTE: This is the ThreadHandler's cleanup-event. Exceptions here are not handled, and are not taken as thread exceptions.
     /// </summary>
-    public delegate void HandlerForOnTerminate(ThreadHandlerEventArgs arg);
+    public delegate void OnTerminateHandler(ThreadHandlerEventArgs arg);
 
     /// <summary>
     /// References the method that will handle the OnException event.
     /// </summary>
-    public delegate void HandlerForOnException(ThreadHandlerExceptionArgs arg);
+    public delegate void OnExceptionHandler(ThreadHandlerExceptionArgs arg);
 
     /// <summary>
     /// Summary description for ThreadHandler.
@@ -39,27 +39,27 @@ namespace System.Threading
         /// <summary>
         /// Event is raised once, when the processing starts.
         /// </summary>
-        public event HandlerForOnJob OnJob;
+        public event OnJobHandler OnJob;
 
         /// <summary>
         /// On aborting this event's delegate function may do extra calculations.
         /// </summary>
-        public event HandlerForOnAbort OnAbort;
+        public event OnAbortHandler OnAbort;
 
         /// <summary>
         /// If thread is finished SUCCESFULLY, this event will be raised.
         /// </summary>
-        public event HandlerForOnFinish OnFinish;
+        public event OnFinishHandler OnFinish;
 
         /// <summary>
         /// If thread is aborted, just before leawing the ThreadHandler's working function this event will be triggered.
         /// </summary>
-        public event HandlerForOnTerminate OnTerminate;
+        public event OnTerminateHandler OnTerminate;
 
         /// <summary>
         /// When the event delegates exceptions are not handled, the thread will catch the exception!
         /// </summary>
-        public event HandlerForOnException OnException;
+        public event OnExceptionHandler OnException;
 
         /// <summary>
         /// Starting the thread.
@@ -72,6 +72,20 @@ namespace System.Threading
             }
         }
 
+
+        /// <summary>
+        /// Joinging the thread.
+        /// </summary>
+        public void Join()
+        {
+            lock (this)
+            {
+                _thread.Join();
+            }
+        }
+
+        public bool IsAlive { get { lock (this) { return _thread.IsAlive; } } }
+
         /// <summary>
         /// Aborting the thread...
         /// </summary>
@@ -80,6 +94,14 @@ namespace System.Threading
             lock (this)
             {
                 _thread.Abort();
+            }
+        }
+
+        public void Sleep(int millisecondsTimeout)
+        {
+            lock (this)
+            {
+                _thread.Sleep(millisecondsTimeout);
             }
         }
 
@@ -93,12 +115,12 @@ namespace System.Threading
 
         public ThreadHandler()
         {
-            _thread = new Thread(Worker);
+            _thread = new Thread(Work);
         }
 
         public ThreadHandler(Threads thread)
         {
-            _thread = new Thread(Worker);
+            _thread = new Thread(Work);
 
             OnJob += thread.OnJob;
             OnFinish += thread.OnFinish;
@@ -110,7 +132,7 @@ namespace System.Threading
         /// <summary>
         /// Threads main function.
         /// </summary>
-        void Worker()
+        void Work()
         {
             // Create the event-arg-object which will be used in each event.
             ThreadHandlerEventArgs evArgs = null;
