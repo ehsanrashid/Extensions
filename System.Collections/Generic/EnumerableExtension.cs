@@ -415,6 +415,40 @@
             return enumerable;
         }
 
+        /*
+        public static IEnumerable<T> OrderBy<T>(this IEnumerable<T> enumerable, String sortExpression)
+        {
+            sortExpression += "";
+            string[] parts = sortExpression.Split(' ');
+            bool descending = false;
+            string property = "";
+
+            if (parts.Length > 0 && parts[0] != "")
+            {
+                property = parts[0];
+
+                if (parts.Length > 1)
+                {
+                    descending = parts[1].ToLower().Contains("esc");
+                }
+
+                PropertyInfo prop = typeof(T).GetProperty(property);
+
+                if (prop == null)
+                {
+                    throw new Exception("No property '" + property + "' in + " + typeof(T).Name + "'");
+                }
+
+                if (descending)
+                    return enumerable.OrderByDescending(x => prop.GetValue(x, null));
+                else
+                    return enumerable.OrderBy(x => prop.GetValue(x, null));
+            }
+
+            return enumerable;
+        }
+        */
+
         /// <summary>
         ///   Apply an OrderBy rule that is based on a sort property.
         /// </summary>
@@ -808,6 +842,26 @@
         {
             return (count.HasValue ? Enumerable.Skip(enumerable, count.Value) : enumerable);
         }
+
+        public static Dictionary<TFirstKey, Dictionary<TSecondKey, TValue>> Pivot<TSource, TFirstKey, TSecondKey, TValue>(this IEnumerable<TSource> source, Func<TSource, TFirstKey> firstKeySelector, Func<TSource, TSecondKey> secondKeySelector, Func<IEnumerable<TSource>, TValue> aggregate)
+        {
+            var retVal = new Dictionary<TFirstKey, Dictionary<TSecondKey, TValue>>();
+
+            var lookup = source.ToLookup(firstKeySelector);
+            foreach (var item in lookup)
+            {
+                var dict = new Dictionary<TSecondKey, TValue>();
+                retVal.Add(item.Key, dict);
+                var subdict = item.ToLookup(secondKeySelector);
+                foreach (var subitem in subdict)
+                {
+                    dict.Add(subitem.Key, aggregate(subitem));
+                }
+            }
+
+            return retVal;
+        }
+
 
         #region Numbers
 

@@ -2,6 +2,7 @@ namespace System
 {
     using Globalization;
     using Linq;
+    using System.ComponentModel;
 
     /// <summary>
     /// Extension methods for the enum data type
@@ -152,6 +153,21 @@ namespace System
             if (!typeof(T).IsEnum) throw new ArgumentException("variable must be an Enum", "self");
 
             return (T) Enum.Parse(typeof(T), value);
+        }
+
+
+        public static String GetEnumDescription<T>(String value)
+        {
+            Type type = typeof(T);
+            var name = Enum.GetNames(type).Where(f => f.Equals(value, StringComparison.CurrentCultureIgnoreCase)).Select(d => d).FirstOrDefault();
+
+            if (name.IsNotNullOrEmpty())
+            {
+                return String.Empty;
+            }
+            var field = type.GetField(name);
+            var customAttribute = field.GetCustomAttributes(typeof(DescriptionAttribute), false);
+            return customAttribute.Length > 0 ? ((DescriptionAttribute) customAttribute[0]).Description : name;
         }
     }
 }

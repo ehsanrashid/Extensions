@@ -106,5 +106,13 @@
             return false;
         }
 
+        public static void DeleteIfExists(this FileInfo fileInfo)
+        {
+            if (fileInfo.Exists)
+            {
+                fileInfo.Delete();
+            }
+        }
+
     }
 }
