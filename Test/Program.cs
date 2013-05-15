@@ -4,6 +4,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Threading;
 
 
 namespace Test
@@ -53,14 +54,22 @@ namespace Test
             //Console.WriteLine(pl.NoOfItems);
             //Console.WriteLine(pl.NoOfPages);
 
-			Graph<int> graph;
+			//Graph<int> graph;
 
 
-			Tree<int> tree = new Tree<int>(3);
+			//Tree<int> tree = new Tree<int>(3);
 			
 
             Console.Read();
 
         }
+
+        protected void ExecuteThread<T>(Action<T> action, T parameters, int maxStackSize = 0)
+        {
+            var thread = new Thread(() => action(parameters), maxStackSize);
+            thread.Start();
+            thread.Join();
+        }
+
     }
 }
