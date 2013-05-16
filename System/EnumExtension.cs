@@ -91,11 +91,12 @@ namespace System
         public static bool HasFlags<T>(this T self, params T[] flags)
             where T : struct, IComparable, IFormattable, IConvertible
         {
-            if (!typeof(T).IsEnum) throw new ArgumentException("variable must be an Enum", "self");
+            var type = typeof(T);
+            if (!type.IsEnum) throw new ArgumentException("variable must be an Enum", "self");
 
             foreach (var flag in flags)
             {
-                if (!Enum.IsDefined(typeof(T), flag)) return false;
+                if (!Enum.IsDefined(type, flag)) return false;
                 var numFlag = Convert.ToUInt64(flag);
                 if ((Convert.ToUInt64(self) & numFlag) != numFlag) return false;
             }
@@ -150,15 +151,16 @@ namespace System
         public static T ToEnum<T>(this T self, String value)
             where T : struct, IComparable, IFormattable, IConvertible
         {
-            if (!typeof(T).IsEnum) throw new ArgumentException("variable must be an Enum", "self");
+            var type = typeof(T);
+            if (!type.IsEnum) throw new ArgumentException("variable must be an Enum", "self");
 
-            return (T) Enum.Parse(typeof(T), value);
+            return (T) Enum.Parse(type, value);
         }
 
 
         public static String GetEnumDescription<T>(String value)
         {
-            Type type = typeof(T);
+            var type = typeof(T);
             var name = Enum.GetNames(type).Where(f => f.Equals(value, StringComparison.CurrentCultureIgnoreCase)).Select(d => d).FirstOrDefault();
 
             if (name.IsNotNullOrEmpty())

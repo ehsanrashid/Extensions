@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Threading;
+using System.Security.AccessControl;
 
 
 namespace Test
@@ -69,6 +70,37 @@ namespace Test
             var thread = new Thread(() => action(parameters), maxStackSize);
             thread.Start();
             thread.Join();
+        }
+
+
+
+
+        // Adds an ACL entry on the specified file for the specified account.
+        public static void AddFileSecurity(String fileName, String account, FileSystemRights rights, AccessControlType controlType)
+        {
+            // Get a FileSecurity object that represents the
+            // current security settings.
+            FileSecurity fSecurity = File.GetAccessControl(fileName);
+
+            // Add the FileSystemAccessRule to the security settings.
+            fSecurity.AddAccessRule(new FileSystemAccessRule(account, rights, controlType));
+
+            // Set the new access settings.
+            File.SetAccessControl(fileName, fSecurity);
+        }
+
+        // Removes an ACL entry on the specified file for the specified account.
+        public static void RemoveFileSecurity(String fileName, String account, FileSystemRights rights, AccessControlType controlType)
+        {
+            // Get a FileSecurity object that represents the
+            // current security settings.
+            FileSecurity fSecurity = File.GetAccessControl(fileName);
+
+            // Remove the FileSystemAccessRule from the security settings.
+            fSecurity.RemoveAccessRule(new FileSystemAccessRule(account, rights, controlType));
+
+            // Set the new access settings.
+            File.SetAccessControl(fileName, fSecurity);
         }
 
     }
