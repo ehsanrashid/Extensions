@@ -110,15 +110,15 @@
             {
                 while (Count == 0)
                 {
-                    Monitor.Wait(_locker, Timeout);
+                    if (Monitor.Wait(_locker, Timeout)) break;
                     if (ExitContext)
                     {
                         if (Count == 0) return default(T);
                         break;
                     }
                 }
-                return base.Dequeue();
             }
+            return base.Dequeue();
         }
 
         public void Enqueues(IEnumerable<T> enumerable)
