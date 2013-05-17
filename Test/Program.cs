@@ -10,7 +10,70 @@ using System.Security.AccessControl;
 
 namespace Test
 {
-    class Program
+
+    using System;
+    using System.Threading;
+    using System.Collections.Generic;
+
+    public class PCQueue
+    {
+        readonly object _locker = new object();
+        Thread[] _workers;
+        Queue<Action> _itemQ = new Queue<Action>();
+
+        public PCQueue(int workerCount)
+        {
+            _workers = new Thread[workerCount];
+
+            // Create and start a separate thread for each worker
+            for (int i = 0; i < workerCount; ++i)
+            {
+                (_workers[i] = new Thread(new ThreadStart(Consume))).Start();
+            }
+        }
+
+        public void Shutdown(bool waitForWorkers)
+        {
+            // Enqueue one null item per worker to make each exit.
+            foreach (Thread worker in _workers)
+                Produce(null);
+
+            // Wait for workers to finish
+            if (waitForWorkers)
+            {
+                foreach (Thread worker in _workers)
+                    worker.Join();
+            }
+        }
+
+        // Enqueue
+        public void Produce(Action item)
+        {
+            lock (_locker)
+            {
+                _itemQ.Enqueue(item);           // We must pulse because we're
+                Monitor.Pulse(_locker);         // changing a blocking condition.
+            }
+        }
+
+        // Dequeue
+        void Consume()
+        {
+            while (true)                        // Keep consuming until
+            {                                   // told otherwise.
+                Action item = null;
+                lock (_locker)
+                {
+                    while (_itemQ.Count == 0) Monitor.Wait(_locker);
+                    item = _itemQ.Dequeue();
+                }
+                if (item != null) item();        // Execute item.
+            }
+        }
+    }
+
+
+    static class Program
     {
         static void Main(string[] args)
         {
@@ -59,20 +122,37 @@ namespace Test
 
 
 			//Tree<int> tree = new Tree<int>(3);
-			
+
+            PCQueue q = new PCQueue(2);
+
+            Console.WriteLine("Enqueuing 10 items...");
+
+            for (int i = 0; i < 10; i++)
+            {
+                int itemNumber = i;      // To avoid the captured variable trap
+                q.Produce(() =>
+                {
+                    Thread.Sleep(1000);          // Simulate time-consuming work
+                    Console.Write(" Task" + itemNumber);
+                });
+            }
+
+            q.Shutdown(true);
+            Console.WriteLine();
+            Console.WriteLine("Workers complete!");
 
             Console.Read();
 
         }
 
-        protected void ExecuteThread<T>(Action<T> action, T parameters, int maxStackSize = 0)
+
+
+        public static void ExecuteThread<T>(Action<T> action, T parameters, int maxStackSize = 0)
         {
             var thread = new Thread(() => action(parameters), maxStackSize);
             thread.Start();
             thread.Join();
         }
-
-
 
 
         // Adds an ACL entry on the specified file for the specified account.
@@ -104,4 +184,7 @@ namespace Test
         }
 
     }
+
+
+
 }
