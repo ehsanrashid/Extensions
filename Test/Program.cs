@@ -18,32 +18,38 @@ namespace Test
     public class PCQueue
     {
         readonly object _locker = new object();
-        Thread[] _workers;
+        Thread[] _thWorkers;
         Queue<Action> _itemQ = new Queue<Action>();
 
         public PCQueue(int workerCount)
         {
-            _workers = new Thread[workerCount];
+            _thWorkers = new Thread[workerCount];
 
             // Create and start a separate thread for each worker
             for (int i = 0; i < workerCount; ++i)
             {
-                (_workers[i] = new Thread(new ThreadStart(Consume))).Start();
+                (_thWorkers[i] = new Thread(new ThreadStart(Consume))).Start();
             }
         }
 
         public void Shutdown(bool waitForWorkers)
         {
             // Enqueue one null item per worker to make each exit.
-            foreach (Thread worker in _workers)
-                Produce(null);
-
-            // Wait for workers to finish
-            if (waitForWorkers)
+            foreach (Thread thWorker in _thWorkers)
             {
-                foreach (Thread worker in _workers)
-                    worker.Join();
+                Produce(null);
+                // Wait for workers to finish
+                if (waitForWorkers)
+                {
+                    thWorker.Join();
+                }
             }
+            //// Wait for workers to finish
+            //if (waitForWorkers)
+            //{
+            //    foreach (Thread thWorker in _thWorkers)
+            //        thWorker.Join();
+            //}
         }
 
         // Enqueue
@@ -118,10 +124,10 @@ namespace Test
             //Console.WriteLine(pl.NoOfItems);
             //Console.WriteLine(pl.NoOfPages);
 
-			//Graph<int> graph;
+            //Graph<int> graph;
 
 
-			//Tree<int> tree = new Tree<int>(3);
+            //Tree<int> tree = new Tree<int>(3);
 
             PCQueue q = new PCQueue(2);
 
@@ -142,7 +148,6 @@ namespace Test
             Console.WriteLine("Workers complete!");
 
             Console.Read();
-
         }
 
 
