@@ -186,9 +186,11 @@ namespace System
         /// <param name="function"> The function to be executed. </param>
         /// <returns> An target type instance or null. </returns>
         /// <example>
-        ///   <code>var tree = ...
+        ///   <code>
+        ///     var tree = ...
         ///     var node = tree.FindNodeByValue("");
-        ///     var parentByType = node.FindTypeByRecursion%lt;TheType&gt;(n => n.Parent);</code>
+        ///     var parentByType = node.FindTypeByRecursion%lt;TheType&gt;(n => n.Parent);
+        ///     </code>
         /// </example>
         public static K FindTypeByRecursion<T, K>(this T self, Func<T, T> function)
             where T : class
