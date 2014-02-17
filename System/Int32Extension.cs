@@ -222,16 +222,16 @@
             return value;
         }
 
-        /// <summary>
-        /// To check whether an index is in the range of the given array.
-        /// </summary>
-        /// <param name="index">Index to check</param>
-        /// <param name="array">Array where to check</param>
-        /// <returns></returns>
-        public static bool IsIndexInArray(this Int32 index, Array array)
-        {
-            return index.GetArrayIndex().InRange(array.GetLowerBound(0), array.GetUpperBound(0));
-        }
+        ///// <summary>
+        ///// To check whether an index is in the range of the given array.
+        ///// </summary>
+        ///// <param name="index">Index to check</param>
+        ///// <param name="array">Array where to check</param>
+        ///// <returns></returns>
+        //public static bool IsIndexInArray(this Int32 index, Array array)
+        //{
+        //    return index.GetArrayIndex().InRange(array.GetLowerBound(0), array.GetUpperBound(0));
+        //}
 
         /// <summary>
         /// To get Array index from a given based on a number.

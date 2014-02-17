@@ -76,7 +76,7 @@
             if (default(Array) != array)
             {
                 var arrIndex = at.GetArrayIndex();
-                if (arrIndex.IsIndexInArray(array)) Array.Clear(array, arrIndex, 1);
+                if (array.WithinIndex(arrIndex)) Array.Clear(array, arrIndex, 1);
             }
             return array;
         }
@@ -119,7 +119,7 @@
             if (default(T[]) != array)
             {
                 var arrIndex = at.GetArrayIndex();
-                if (arrIndex.IsIndexInArray(array)) array[arrIndex] = default(T);
+                if (array.WithinIndex(arrIndex)) array[arrIndex] = default(T);
             }
             return array;
         }
