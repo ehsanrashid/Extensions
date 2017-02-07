@@ -184,7 +184,7 @@
             var maxHeight = 0;
             //foreach (Tree<T> child in _Children)
             //    maxHeight = Math.Max(child.Height, maxHeight);
-            maxHeight = _Children.Max((child) => child.Height);
+            maxHeight = _Children.Max(child => child.Height);
             return maxHeight;
         }
 
@@ -244,12 +244,14 @@
         public bool Remove(T item)
         {
             for (var i = 0; i < Count; i++)
-                if (_Children[i]._Data.Equals(item))
+            {
+                if (_Children[i]._Data.Equals (item))
                 {
-                    _Children[i]._Parent = default(Tree<T>);
-                    _Children.RemoveAt(i);
+                    _Children[i]._Parent = default (Tree<T>);
+                    _Children.RemoveAt (i);
                     return true;
                 }
+            }
             return false;
         }
 
@@ -270,10 +272,14 @@
         /// <returns> true if item is found in the <see cref="T:System.Collections.Generic.ICollection`1"></see> ; otherwise, false. </returns>
         public bool Contains(T item)
         {
-            using (var enumerator = GetEnumerator())
-                while (enumerator.MoveNext())
-                    if (item.Equals(enumerator.Current))
+            using (var enumerator = GetEnumerator ())
+            {
+                while (enumerator.MoveNext ())
+                {
+                    if (item.Equals (enumerator.Current))
                         return true;
+                }
+            }
             return false;
         }
 
@@ -317,7 +323,9 @@
                     //    stack.Push(tree[i]);
                     //}
                     foreach (var child in tree._Children)
-                        stack.Push(child);
+                    {
+                        stack.Push (child);
+                    }
                 }
             }
         }
